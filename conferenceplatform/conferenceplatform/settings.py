@@ -76,7 +76,7 @@ WSGI_APPLICATION = 'conferenceplatform.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'oursite',
+        'NAME': 'conference',
         'USER': DBUSERNAME,
         'PASSWORD': DBPASSWORD,
         'HOST': '127.0.0.1',
