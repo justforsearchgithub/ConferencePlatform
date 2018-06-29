@@ -1,5 +1,5 @@
 from django.db import models
-from account.models import EnterpriseUser, NormalUser
+from account.models import OrganizationUser, NormalUser
 
 def conference_directory_path(instance, filename):
     return 'conference_{0}/{1}'.format(instance.conference.pk, filename)
@@ -9,7 +9,7 @@ class Subject(models.Model):
     name = models.CharField(max_length=200,primary_key=True)
 
 class Conference(models.Model):
-    enterprise = models.ForeignKey(EnterpriseUser, on_delete=models.CASCADE)
+    organization = models.ForeignKey(OrganizationUser, on_delete=models.CASCADE)
     title = models.CharField(max_length=200)
     subject = models.ForeignKey(Subject, on_delete=models.CASCADE)
     introduction = models.TextField()
@@ -57,7 +57,7 @@ class RegisterInformation(models.Model):
     user = models.ForeignKey(NormalUser, on_delete=models.CASCADE)
     conference = models.ForeignKey(Conference, on_delete=models.CASCADE)
     people = models.TextField()
-    image = models.ImageField(upload_to=conference_directory_path)
+    pay_voucher = models.FileField(upload_to=conference_directory_path)
     description = models.TextField()
 
     class meta:

@@ -6,15 +6,25 @@ from django.contrib.auth.models import User
 class NormalUser(models.Model):
     user = models.OneToOneField(User, primary_key=True, on_delete=models.CASCADE)
 
+def organization_directory_path(instance, filename):
+    return 'organization_{0}/{1}'.format(instance.pk, filename)
 
-class EnterpriseUser(models.Model):
+
+class OrganizationUser(models.Model):
     user = models.OneToOneField(User, primary_key=True, on_delete=models.CASCADE)
-    name = models.CharField(max_length=200)
+    org_name = models.CharField(max_length=200)
+    department = models.CharField(max_length=200)
+    contacts = models.CharField(max_length=200)
+    phone_number = models.CharField(max_length=20)
+    address = models.CharField(max_length=200)
+    bussiness_license = models.FileField()
+    id_card = models.FileField()
+    
 
-
-class EnterpriseSubUser(models.Model):
+class OrganizationSubUser(models.Model):
     user = models.OneToOneField(User, primary_key=True, on_delete=models.CASCADE)
-    enterprise = models.ForeignKey(EnterpriseUser, on_delete=models.CASCADE)
+    organization = models.ForeignKey(OrganizationUser, on_delete=models.CASCADE)
+
 
 
 class OurAdmin(models.Model):
@@ -26,7 +36,7 @@ class User_Permission(models.Model):
     class Meta:
         permissions = (
             ('NormalUser_Permission', 'permission for Normal User'),
-            ('EnterpriseUser_Permission', 'permission for Enterprise User'),
-            ('EnterpriseSubUser_Permission',  'permission for Enterprise Sub User'),
+            ('OrganizationUser_Permission', 'permission for Organization User'),
+            ('OrganizationSubUser_Permission',  'permission for Organization Sub User'),
             ('OurAdmin_Permssion', 'permission for Admin'),
         )
