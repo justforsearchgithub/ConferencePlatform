@@ -9,7 +9,7 @@ class NormalUser(models.Model):
 
 class EnterpriseUser(models.Model):
     user = models.OneToOneField(User, primary_key=True, on_delete=models.CASCADE)
-    name = models.CharField(200)
+    name = models.CharField(max_length=200)
 
 
 class EnterpriseSubUser(models.Model):
@@ -17,7 +17,7 @@ class EnterpriseSubUser(models.Model):
     enterprise = models.ForeignKey(EnterpriseUser, on_delete=models.CASCADE)
 
 
-class OurAmin(models.Model):
+class OurAdmin(models.Model):
     user = models.OneToOneField(User, primary_key=True, on_delete=models.CASCADE)
 
 
