@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.contrib.auth import authenticate, logout
+from django.contrib.auth import authenticate, logout, login
 from django.http import JsonResponse
 from .models import *
 from .forms import *
@@ -36,6 +36,7 @@ def user_login(request):
         else:
             ouradmin = OurAdmin.objects.get(user=user)
             data['data']['user_type'] = 'our_admin'
+        login(request, user)
     else:
         data['message'] = 'username or password error'
     return JsonResponse(data, safe=False)

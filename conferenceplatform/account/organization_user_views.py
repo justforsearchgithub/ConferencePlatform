@@ -6,7 +6,7 @@ from django.contrib.auth.models import User
 from django.db.transaction import atomic, DatabaseError
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.auth.models import Permission
-from .forms import *
+from .forms import OrganizationUserRegisterForm
 
 #我们在这里用email来作为username
 def organization_user_register(request):
