@@ -108,3 +108,4 @@ def conference_register(request, id):
         return JsonResponse({'message': 'reduplicate register'})
     except Submission.DoesNotExist:
         return JsonResponse({'message': 'invalid paper id'})
+

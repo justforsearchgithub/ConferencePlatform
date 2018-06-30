@@ -66,7 +66,7 @@ class Submission(models.Model):
 class RegisterInformation(models.Model):
     user = models.ForeignKey(NormalUser, on_delete=models.CASCADE)
     conference = models.ForeignKey(Conference, on_delete=models.CASCADE)
-    submission = models.ForeignKey(Submission, on_delete=models.SET_NULL)
+    submission = models.ForeignKey(Submission, on_delete=models.CASCADE)
     participants = models.TextField()
     pay_voucher = models.FileField(upload_to=conference_directory_path)
 
