@@ -22,5 +22,6 @@ from 前端：
     end_time 流程结束时间，   place 流程地点，  activity  流程活动说明
 to 前端：
     json对象，{'message': <str>}, 数据成员'message'表示错误信息，有如下取值：
-    'success', 'invalid uploaded data', 'permission denied'
+    'success', 'invalid uploaded data', 'permission denied',
+    'conference does not exist' url里的id代表的会议不存在
 

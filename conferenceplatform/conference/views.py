@@ -63,4 +63,5 @@ def add_conference(request):
     else:
         return JsonResponse({'message': 'invalid uploaded data'})
 
-def paper_submit(request)
+def paper_submit(request, id):
+    assert request.method == ''
