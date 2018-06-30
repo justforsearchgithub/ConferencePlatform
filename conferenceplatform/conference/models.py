@@ -13,17 +13,17 @@ class Conference(models.Model):
     title = models.CharField(max_length=200)
     subject = models.ForeignKey(Subject, on_delete=models.CASCADE)
     introduction = models.TextField()
-    soliciting_request = models.TextField()
+    soliciting_requirement = models.TextField()
     paper_template = models.FileField(upload_to=conference_directory_path)
-    register_request = models.TextField()
+    register_requirement = models.TextField()
 
-    start_accept_time = models.DateTimeField(auto_now=True)
-    stop_accept_time = models.DateTimeField(blank=True, null=True)
-    stop_modify_time = models.DateTimeField(blank=True, null=True)
+    accept_start = models.DateTimeField(auto_now=True)
+    accept_due = models.DateTimeField(blank=True, null=True)
+    modify_due = models.DateTimeField(blank=True, null=True)
     # 中间有一个审核状态
-    regiser_start_time = models.DateTimeField(blank=True, null=True)
-    conference_start_time = models.DateTimeField()
-    conference_end_time = models.DateTimeField()
+    register_start = models.DateTimeField(blank=True, null=True)
+    conference_start = models.DateTimeField()
+    conference_due = models.DateTimeField()
 
 class Activity(models.Model):
     conference = models.ForeignKey(Conference, on_delete=models.CASCADE)
