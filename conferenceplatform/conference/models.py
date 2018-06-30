@@ -39,9 +39,6 @@ class Submission(models.Model):
     paper = models.FileField(upload_to=conference_directory_path)
     paper_name = models.CharField(max_length=200)
     paper_abstract = models.TextField()
-<<<<<<< HEAD
-    modified_message = models.TextField(blank=True, null=True)
-=======
     authors = models.CharField(max_length=255)
     institute = models.CharField(max_length=200)
     
@@ -51,7 +48,6 @@ class Submission(models.Model):
     modified = models.BooleanField(default=False)
     modified_time = models.DateTimeField(blank=True, null=True)
     modified_explain = models.TextField(blank=True, null=True)    
->>>>>>> 修改了conference里的接口文档，关掉了csrf
 
     STATE_CHOICES = (
         ('S', 'Suspending')
