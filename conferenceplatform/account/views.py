@@ -12,19 +12,23 @@ def user_login(request):
     username = request.POST['username']
     password = request.POST['password']
     user = authenticate(request, username=username, password=password)
+    data = {}
     if user is not None:
         if user.has_perm('account.NormalUser_Permission'):
             normaluser = NormalUser.objects.get(user=user)
-            #return normaluser json data
+            data['user_type'] = 'normal_user'
+            return JsonResponse(data, safe=False)
         elif user.has_perm('account.OrganizationUser_Permission'):
             organizationuser = OrganizationUser.objects.get(user=user)
-            #
+            data['user_type'] = 'organization_user'
         elif user.has_perm('account.OrganizationSubUser_Permission'):
             organizationsubuser = OrganizationUser.objects.get(user=user)
-            #
+            data['user_type'] = 'organization_sub_user'
         else:
             ouradmin = OurAdmin.objects.get(user=user)
-            #
+            data['user_type'] = 'our_admin'
     else:
-        #return error message json data
-        return
+        data['error_message'] = 'username or password error'
+    return JsonResponse(data, safe=False)
+
+
