@@ -43,3 +43,4 @@ to 前端：
     json对象，{'message': <str>}, 数据成员'message'表示错误信息，有如下取值：
     'success', 'invalid uploaded data', 'invalid conference pk', 'invalid paper id'
     'reduplicate register' 一个用户对于一个会议重复注册
+    'not matching' 论文与会议或用户无关联
