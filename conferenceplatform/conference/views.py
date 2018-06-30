@@ -16,10 +16,9 @@ from account.decorators import user_has_permission
 def add_conference(request):
     assert request.method == 'POST'
     form = ConferenceInfoForm(request.POST, request.FILES)
-
     if form.is_valid():
         with database_transaction.atomic():
-            org = utils.get_organization(request.user)
+            org = get_organization(request.user)
             assert org is not None
             try:
                 subject = Subject.ojbects.get(name=form.cleaned_data['subject'])
@@ -41,7 +40,7 @@ def add_conference(request):
 
                 paper_template=form.paper_template
             )
-            if not utils.valid_timepoints(conf):
+            if not valid_timepoints(conf):
                 return JsonResponse({'message': 'timepoints not reasonable'})
             conf.save()
 
@@ -49,42 +48,24 @@ def add_conference(request):
             activities_json = json.loads(activities_json_str)
             
             try:
-                
-            except KeyError:
-                pass                
-
+                for activity in activities_json:
+                    add_activity(conf, activity)
+            except KeyError as e:
+                print(e)
             return JsonResponse({'message': 'success'})
     else:
         return JsonResponse({'message': 'invalid uploaded data'})
 
- def add_activity(conference, act_json):    
-    form = ActivityInfoForm(request.POST)
-    if form.is_valid():
-        with database_transaction.atomic():
-            try:
-                conf = Conference.objects.get(pk=id) 
-            except Conference.DoesNotExist:
-                return JsonResponse({'message': 'conference does not exist'})
-
-            org = utils.get_organization(request.user)
-            assert org is not None
-            if conf.organization.pk != org.pk:
-                return JsonResponse({'message': 'permission error'})
-
-            Activity.objects.create(
-                conference=conf, start_time=form.cleaned_data['start_time'],
-                end_time=form.cleaned_data['end_time'], place=form.cleaned_data['place'],
-                activity=form.cleaned_data['activity'],
-            )
-            return JsonResponse({'message': 'success'})
-    else:
-        return JsonResponse({'message': 'invalid uploaded data'})
 
 @user_has_permission('account.NormalUser_Permission')
 def paper_submit(request, id):
     assert request.method == 'POST'
     with database_transaction.atomic():
-        conf = Conference.objects.get(pk=id)
+        try:
+            conf = Conference.objects.get(pk=id)
+        except Conference.DoesNotExist:
+            return JsonResponse({'message': 'invalid conference pk'})
+
         normal_user = request.user.normaluser
         try:
             Submission.objects.create(
@@ -92,8 +73,31 @@ def paper_submit(request, id):
                 conference=conf, paper=request.FILES['paper'],
                 paper_name=request.POST['paper_name'], 
                 paper_abstract=request.POST['paper_abstract'],
+                authors=request.POST['authors'],
                 state='S', 
             )
             return JsonResponse({'message': 'success'})
         except MultiValueDictKeyError:
             return JsonResponse({'message': 'invalid uploaded data'})
+
+@user_has_permission('account.NormalUser_Permission')
+def conference_register(request, id):
+    assert request.method == 'POST'
+    try:
+        conf = Conference.objects.get(pk=id)
+    except Conference.DoesNotExist:
+        return JsonResponse({'message': 'invalid conference pk'})
+
+    try:
+        with database_transaction.atomic():
+            paper_id = int(request.POST['participants'])
+            paper_submission = Submission.objects.get(pk=paper_id)
+            RegisterInfomation.objects.create(
+                user=request.user.normaluser,
+                conference=conf,
+                participants=request.POST['participants'],
+                submission=,
+                pay_voucher=request.FILES['pay_voucher'],
+            )
+    except MultiValueDictKeyError:
+        return JsonResponse({'message': 'invalid uploaded data'})

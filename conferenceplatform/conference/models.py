@@ -62,9 +62,9 @@ class Submission(models.Model):
 class RegisterInformation(models.Model):
     user = models.ForeignKey(NormalUser, on_delete=models.CASCADE)
     conference = models.ForeignKey(Conference, on_delete=models.CASCADE)
-    people = models.TextField()
+    submission = models.ForeignKey(Submission, on_delete=models.SET_NULL)
+    participants = models.TextField()
     pay_voucher = models.FileField(upload_to=conference_directory_path)
-    description = models.TextField()
 
     class meta:
         unique_together=('user', 'conference')

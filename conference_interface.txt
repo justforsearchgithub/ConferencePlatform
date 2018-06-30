@@ -22,4 +22,7 @@ url: conference/<会议的主键id>/paper_submit
 method: post
 说明：普通用户提交论文
 from 前端：
-    post : 
+    post: authors 作者们 institute 机构  paper_name paper_abstract  paper 上传的论文文件
+to 前端:    
+    json对象，{'message': <str>}, 数据成员'message'表示错误信息，有如下取值：
+    'success', 'invalid uploaded data', 'invalid conference pk' 不正确的会议主键
