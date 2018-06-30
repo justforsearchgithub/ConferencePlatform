@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.http import JsonResponse
 from django.utils.datastructures import MultiValueDictKeyError
 from django.db import transaction as database_transaction   
+from django.db import IntegrityError, DatabaseError
 from django.utils import timezone
 import datetime
 import json
@@ -60,14 +61,10 @@ def add_conference(request):
 @user_has_permission('account.NormalUser_Permission')
 def paper_submit(request, id):
     assert request.method == 'POST'
-    with database_transaction.atomic():
-        try:
+    try:
+        with database_transaction.atomic():
             conf = Conference.objects.get(pk=id)
-        except Conference.DoesNotExist:
-            return JsonResponse({'message': 'invalid conference pk'})
-
-        normal_user = request.user.normaluser
-        try:
+            normal_user = request.user.normaluser
             Submission.objects.create(
                 submitter=normal_user, institute=request.POST['institute'],
                 conference=conf, paper=request.FILES['paper'],
@@ -77,27 +74,37 @@ def paper_submit(request, id):
                 state='S', 
             )
             return JsonResponse({'message': 'success'})
-        except MultiValueDictKeyError:
-            return JsonResponse({'message': 'invalid uploaded data'})
+    except Conference.DoesNotExist:
+        return JsonResponse({'message': 'invalid conference pk'})
+    except MultiValueDictKeyError:
+        return JsonResponse({'message': 'invalid uploaded data'})
+    except IntegrityError:
+        return JsonResponse({'message': 'multiple submission'})
 
 @user_has_permission('account.NormalUser_Permission')
 def conference_register(request, id):
     assert request.method == 'POST'
     try:
-        conf = Conference.objects.get(pk=id)
-    except Conference.DoesNotExist:
-        return JsonResponse({'message': 'invalid conference pk'})
-
-    try:
         with database_transaction.atomic():
-            paper_id = int(request.POST['participants'])
+            conf = Conference.objects.get(pk=id)
+            paper_submission_id = int(request.POST['paper_id'])            
             paper_submission = Submission.objects.get(pk=paper_id)
+            if paper_submission.submitter.pk != request.user.normaluer.pk \
+                or paper_submission.conference.pk != conf.pk:
+                return JsonResponse({'message': 'not matching'})
             RegisterInfomation.objects.create(
                 user=request.user.normaluser,
                 conference=conf,
                 participants=request.POST['participants'],
-                submission=,
+                submission=paper_submission,
                 pay_voucher=request.FILES['pay_voucher'],
             )
+            return JsonResponse({'message': 'success'})
+    except Conference.DoesNotExist:
+        return JsonResponse({'message': 'invalid conference pk'})
     except MultiValueDictKeyError:
         return JsonResponse({'message': 'invalid uploaded data'})
+    except IntegrityError:
+        return JsonResponse({'message': 'reduplicate register'})
+    except Submission.DoesNotExist:
+        return JsonResponse({'message': 'invalid paper id'})

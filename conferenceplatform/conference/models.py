@@ -56,6 +56,10 @@ class Submission(models.Model):
         ('R', 'Rejected'),
     )
     state = models.CharField(max_length=1, choices=STATE_CHOICES)
+
+    class meta:
+        unique_together = ('submitter', 'conference')
+
     
 
 

@@ -1,5 +1,8 @@
 conference模块接口文档：
 
+有一些通用的错误信息讲道理每个请求里都可能遇到，写在这，不再在下面给出：
+    'permission error' 账号行为与其身份不匹配, 'anonymous user' 用户没有登录
+
 url: conference/add_conference
 method: post
 from 前端：
@@ -15,7 +18,7 @@ from 前端：
     形式的对象
 to 前端：
     json对象，{'message': <str>}, 数据成员'message'表示错误信息，有如下取值：
-    'success', 'invalid uploaded data', 'permission error', 'anonymous user' 用户没有登录，
+    'success', 'invalid uploaded data', 
     'timepoints not reasonable' 那些会议时间点设立不合理
 
 url: conference/<会议的主键id>/paper_submit
@@ -26,3 +29,17 @@ from 前端：
 to 前端:    
     json对象，{'message': <str>}, 数据成员'message'表示错误信息，有如下取值：
     'success', 'invalid uploaded data', 'invalid conference pk' 不正确的会议主键
+    'multiple submission'  该用户在该会议已经提交过论文了
+
+url: conference/<会议的主键id>/conference_register
+method: post
+说明：普通用户注册
+from 前端：
+    post: paper_id 参与会议的paper的id（如果），participants 与会者的信息（考虑到这些信息只需要在展示时使用，
+    能读即可，不想为其建立单独数据库表，希望前端用序列化的json传递过来，格式为：
+        [{'name': <str>, 'gender': <男or女>, 'reservation' /*是否预定住宿*/: <bool>}, ...]  ）
+    pay_voucher 缴费凭证的照片或者pdf文件
+to 前端：
+    json对象，{'message': <str>}, 数据成员'message'表示错误信息，有如下取值：
+    'success', 'invalid uploaded data', 'invalid conference pk', 'invalid paper id'
+    'reduplicate register' 一个用户对于一个会议重复注册
