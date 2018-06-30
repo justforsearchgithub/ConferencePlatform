@@ -1,0 +1,26 @@
+conference模块接口文档：
+
+url: conference/add_conference
+method: post
+from 前端：
+    使用post方法向后端
+    传送数据如下：title 会议名称， subject 学科， introduction 简介，
+    soliciting_requirement 投稿要求说明， register_requirement 注册会议要求说明，
+    accept_start 开始接受投稿的时间， accept_due 投稿截止时间
+    register_start 开始会议注册时间， register_due 截止
+    conference_start （到场）开会时间，   conference_due 闭会时间
+    paper_template  文件，论文的模板
+to 前端：
+    json对象，{'message': <str>}, 数据成员'message'表示错误信息，有如下取值：
+    'success', 'invalid uploaded data', 'permission denied'
+
+url: conference/<会议的主键id>/add_activity
+method: post
+说明：添加会议流程
+from 前端：
+    使用post方法向后端传送数据如下：start_time 流程开始时间
+    end_time 流程结束时间，   place 流程地点，  activity  流程活动说明
+to 前端：
+    json对象，{'message': <str>}, 数据成员'message'表示错误信息，有如下取值：
+    'success', 'invalid uploaded data', 'permission denied'
+
