@@ -7,15 +7,20 @@ from django.db.transaction import atomic, DatabaseError
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.auth.models import Permission
 from .forms import *
+from .decorators import *
 
-#我们在这里用email来作为username
-def normal_user_register(request):
+#这里是需要OrganizationUser登录才能使用的
+
+@user_has_permission('account.OrganizationUser_Permission')
+def organization_sub_user_register(request):
+    
+
     assert request.method == 'POST'
     data = {'message':'', 'data':{}}
-    form = NormalUserRegisterForm(request.POST)
+    form = OrganizationSubUserForm(request.POST)
     if form.is_valid is False:
         data['message'] = 'format error'
-        return JsonResponse(data, safe=False)
+        return JsonResponse(data)
     
     username = form.cleaned_data['username']
     password = form.cleaned_data['password']
@@ -33,13 +38,14 @@ def normal_user_register(request):
     try:
         with atomic():
             new_user = User.objects.create_user(username, email=username, password=password)
-            
             content_type = ContentType.objects.get_for_model(User_Permission)
-            permission = Permission.objects.get(content_type=content_type,codename='NormalUser_Permission')
+            permission = Permission.objects.get(content_type=content_type,codename='OrganizationSubUser_Permission')
             new_user.save()
             new_user.user_permissions.add(permission)
-            normal_user = NormalUser(user=new_user)
-            normal_user.save()
+            organization_sub_user = OrganizationSubUser(
+                user = new_user,
+                organization = request.user.organizationuser
+            )
             data['message'] = 'success'
     except DatabaseError:
         data['message'] = 'database error'
