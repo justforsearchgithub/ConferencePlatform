@@ -44,8 +44,9 @@ def organization_user_register(request):
             
             content_type = ContentType.objects.get_for_model(User_Permission)
             permission = Permission.objects.get(content_type=content_type,codename='OrganizationUser_Permission')
+            permission2 = Permission.objects.get(content_type=content_type, codename='ConferenceRelated_Permission')
             new_user.save()
-            new_user.user_permissions.add(permission)
+            new_user.user_permissions.add(permission, permission2)
             organization_user = OrganizationUser(
                 user = new_user,
                 org_name = org_name,

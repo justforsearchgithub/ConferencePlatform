@@ -38,4 +38,5 @@ class User_Permission(models.Model):
             ('OrganizationUser_Permission', 'permission for Organization User'),
             ('OrganizationSubUser_Permission',  'permission for Organization Sub User'),
             ('OurAdmin_Permssion', 'permission for Admin'),
+            ('ConferenceRelated_Permission', 'permission for Conference Related actions'),
         )

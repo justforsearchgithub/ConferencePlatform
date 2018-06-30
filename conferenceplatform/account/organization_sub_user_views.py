@@ -40,8 +40,9 @@ def organization_sub_user_register(request):
             new_user = User.objects.create_user(username, email=username, password=password)
             content_type = ContentType.objects.get_for_model(User_Permission)
             permission = Permission.objects.get(content_type=content_type,codename='OrganizationSubUser_Permission')
+            permission2 = Permission.objects.get(content_type=content_type, codename='ConferenceRelated_Permission')
             new_user.save()
-            new_user.user_permissions.add(permission)
+            new_user.user_permissions.add(permission, permission2)
             organization_sub_user = OrganizationSubUser(
                 user = new_user,
                 organization = request.user.organizationuser
