@@ -4,4 +4,4 @@ from .views import *
 
 class SimpleTest(TestCase):
     def setUp(self):
-        
+        pass
