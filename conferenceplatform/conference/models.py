@@ -50,7 +50,7 @@ class Submission(models.Model):
     modified_explain = models.TextField(blank=True, null=True)    
 
     STATE_CHOICES = (
-        ('S', 'Suspending')
+        ('S', 'Suspending'),
         ('P', 'Passed'),
         ('M', 'NeedModify'),
         ('R', 'Rejected'),
