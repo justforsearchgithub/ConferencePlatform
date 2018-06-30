@@ -1,3 +1,7 @@
-from django.test import TestCase
+from django.contrib.auth.models import AnonymousUser, User
+from django.test import RequestFactory, TestCase
+from .views import *
 
-# Create your tests here.
+class SimpleTest(TestCase):
+    def setUp(self):
+        

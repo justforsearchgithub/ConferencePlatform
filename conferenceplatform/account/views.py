@@ -44,7 +44,7 @@ def change_password(request):
     data = {'message':'', 'data':{}}
     assert request.method == 'POST'
     change_password_form = ChangePasswordForm(request.POST)
-    if change_password_form.is_valid is False:
+    if change_password_form.is_valid() is False:
         data['message'] = 'format error'
         return JsonResponse(data, safe=False)
     

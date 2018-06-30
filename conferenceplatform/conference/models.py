@@ -42,7 +42,7 @@ class Submission(models.Model):
     paper = models.FileField(upload_to=conference_directory_path)
     paper_name = models.CharField(max_length=200)
     paper_abstract = models.TextField()
-    modified_message = models.CharField(blank=True, null=True)
+    modified_message = models.TextField(blank=True, null=True)
 
     STATE_CHOICES = (
         ('P', 'Passed'),

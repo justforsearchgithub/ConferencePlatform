@@ -18,7 +18,7 @@ def organization_sub_user_register(request):
     assert request.method == 'POST'
     data = {'message':'', 'data':{}}
     form = OrganizationSubUserForm(request.POST)
-    if form.is_valid is False:
+    if form.is_valid() is False:
         data['message'] = 'format error'
         return JsonResponse(data)
     
@@ -31,7 +31,7 @@ def organization_sub_user_register(request):
         data['message'] = 'password error'
         return JsonResponse(data, safe=False)
     search_user = User.objects.filter(username = username)
-    if search_user.length() != 0:
+    if len(search_user) != 0:
         data['message'] = 'username error'
         return JsonResponse(data, safe=False)
     
