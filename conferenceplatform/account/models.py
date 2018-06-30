@@ -18,7 +18,8 @@ class OrganizationUser(models.Model):
     phone_number = models.CharField(max_length=20)
     address = models.CharField(max_length=200)
     bussiness_license = models.FileField()
-    id_card = models.FileField()
+    id_card_front = models.FileField(upload_to=organization_directory_path)
+    id_card_reverse = models.FileField(upload_to=organization_directory_path)
     
 
 class OrganizationSubUser(models.Model):
@@ -26,10 +27,8 @@ class OrganizationSubUser(models.Model):
     organization = models.ForeignKey(OrganizationUser, on_delete=models.CASCADE)
 
 
-
 class OurAdmin(models.Model):
     user = models.OneToOneField(User, primary_key=True, on_delete=models.CASCADE)
-
 
 
 class User_Permission(models.Model):

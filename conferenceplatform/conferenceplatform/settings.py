@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'account',
+    'conference',
 ]
 
 MIDDLEWARE = [
@@ -77,7 +78,7 @@ WSGI_APPLICATION = 'conferenceplatform.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'conference ',
+        'NAME': 'conference',
         'USER': DBUSERNAME,
         'PASSWORD': DBPASSWORD,
         'HOST': '127.0.0.1',
