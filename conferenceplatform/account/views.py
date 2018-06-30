@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.contrib.auth import authenticate
+from django.contrib.auth import authenticate, logout
 from django.http import JsonResponse
 from .models import *
 from .forms import *
@@ -65,3 +65,8 @@ def change_password(request):
     
     return JsonResponse(data, safe=True)
 
+def user_logout(request):
+    data = {'message':'', 'data':{}}
+    logout(request)
+    data['message'] = 'success'
+    return JsonResponse(data)
