@@ -5,7 +5,6 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.auth.models import Permission  
-import pytz
 
 def add_permission(u, perm_str):
     content_type = ContentType.objects.get_for_model(User_Permission)

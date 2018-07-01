@@ -1,6 +1,5 @@
 from django.db import models
 from account.models import OrganizationUser, NormalUser
-import pytz
 
 def conference_directory_path(instance, filename):
     return 'conference_{0}/{1}'.format(instance.id, filename)
