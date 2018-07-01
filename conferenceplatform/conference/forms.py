@@ -16,7 +16,7 @@ class ConferenceInfoForm(forms.Form):
 
     paper_template = forms.FileField()
 
-    activities = form.CharField() # json对象
+    activities = forms.CharField() # json对象
 
 class ActivityInfoForm(forms.Form):
     start_time = forms.DateTimeField()

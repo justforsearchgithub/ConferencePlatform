@@ -32,3 +32,6 @@ class OrganizationSubUserForm(forms.Form):
     username = forms.CharField()
     password = forms.CharField()
     confirm_password = forms.CharField()
+
+class DeleteSubUserForm(forms.Form):
+    sub_user_username = forms.CharField()

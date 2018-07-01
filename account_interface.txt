@@ -101,3 +101,14 @@ output:
             organization_user
             organization_sub_user
             our_admin
+
+path:account/delete_sub_user/
+input:
+    POST
+        sub_user_username
+output:
+    message:
+        format error
+        sub_user not found
+        this sub_user is not yours
+        success

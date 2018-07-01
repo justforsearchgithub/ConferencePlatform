@@ -14,7 +14,6 @@ from .decorators import *
 @user_has_permission('account.OrganizationUser_Permission')
 def organization_sub_user_register(request):
     
-
     assert request.method == 'POST'
     data = {'message':'', 'data':{}}
     form = OrganizationSubUserForm(request.POST)
@@ -47,8 +46,35 @@ def organization_sub_user_register(request):
                 user = new_user,
                 organization = request.user.organizationuser
             )
+            organization_sub_user.save()
             data['message'] = 'success'
     except DatabaseError:
         data['message'] = 'database error'
     
     return JsonResponse(data, safe=False)
+
+@user_has_permission('account.OrganizationUser_Permission')
+def delete_sub_user(request):
+    data = {'message':'', 'data':{}}
+    assert request.method == 'POST'
+    form = DeleteSubUserForm(request.POST)
+    if form.is_valid() is False:
+        data['message'] = 'format error'
+        return JsonResponse(data)
+    
+    username = form.cleaned_data['sub_user_username']
+
+    sub_user = OrganizationSubUser.objects.filter(user__username = username)
+    if len(sub_user) == 0:
+        data['message'] = 'sub_user not found'
+        return JsonResponse(data)
+    
+    org_user = OrganizationUser.objects.get(user = request.user)
+    if sub_user[0].organization != org_user:
+        data['message'] = 'this sub_user is not yours'
+        return JsonResponse(data)
+    
+    user = sub_user[0].user
+    user.delete()
+    data['message'] = 'success'
+    return JsonResponse(data)
