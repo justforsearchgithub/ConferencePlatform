@@ -5,8 +5,15 @@ input:
 output:
     输出会议的全部属性
     message: 'success'/'invalid conference id'
-    data: { organization,注册机构
-            title,
+    data: { organization:{
+                            'org_id': 注册机构id,
+                            'org_name': 机构名称,
+                            'department':部门名称,
+                            'contacts':联系人,
+                            'phone_number',
+                            'address',
+                           },
+            title,会议名称
             subject,所属学科
             introduction,会议简介
             soliciting_requirement,投稿要求

@@ -42,7 +42,7 @@ def add_conference(request):
                 conference_due=form.cleaned_data['conference_due'],
                 #paper_template=form.cleaned_data['paper_template'],
             )
-            conf.paper_template = form.cleaned_data['paper_template']
+            conf.paper_template = request.FILES['paper_template']
             conf.save()
             if not valid_timepoints(conf):
                 conf.delete()
