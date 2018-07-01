@@ -7,6 +7,7 @@ from .normal_user_views import *
 from .organization_user_views import *
 from .admin_user_views import *
 from .organization_sub_user_views import *
+import django
 
 # Create your views here.
 
@@ -85,4 +86,16 @@ def user_type(request):
     else:
         data['data']['user_type'] = 'our_admin'
     return JsonResponse(data)
-    
+
+def get_username(request):
+    data = {}
+    user = request.user
+    if user is None:
+        data['username'] = 'anonymous user'
+        return JsonResponse(data)
+    data['username'] = user.username
+    return JsonResponse(data)
+
+def get_csrf_token(request):
+    token = django.middleware.csrf.get_token(request)
+    return JsonResponse({'token': token})
