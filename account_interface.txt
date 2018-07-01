@@ -112,3 +112,10 @@ output:
         sub_user not found
         this sub_user is not yours
         success
+
+
+path:account/csrf_token
+input:
+    GET
+output:
+    token
