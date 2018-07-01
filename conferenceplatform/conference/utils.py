@@ -1,6 +1,7 @@
 from django.utils import timezone
 from enum import Enum
 from .models import *
+import datetime
 
 class ConferenceStatus(Enum):
     not_started = 1
@@ -30,7 +31,7 @@ def valid_timepoints(conf):
     return res
 
 def conference_status(conf):
-    now = timezone.now()
+    now = datetime.datetime.now()
     if now < conf.accept_start:
         return ConferenceStatus.not_started
     elif now < conf.accept_due:

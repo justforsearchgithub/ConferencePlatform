@@ -71,7 +71,6 @@ class TestConference(TestCase):
             print('  ', a.start_time, ' ', a.end_time, ' ', a.place, ' ', a.activity)
         c.get('/account/logout/')
 
-        c = Client()    
         response = c.post('/account/login/', 
             {'username':'714465499@qq.com', 'password':'123456'})
         print(response.content)
@@ -81,9 +80,24 @@ class TestConference(TestCase):
                      'institute': 'BUAA', 'authors': 'ShiLetong, IanBlair', 'paper': fp})
         print(response.content)
         sub = Submission.objects.all()[0]
+        print('submission pk: ', sub.pk)
         print('submission conf pk: ', sub.conference.pk)
         print('submission submitter: ', sub.submitter.user.username)
-        c.get('/account/logout/')
+    
+        with open('/home/shiletong/codes/write.c') as fp:
+            response = c.post('/conference/conference/1/register/', 
+                        {'listen_only': 'true',
+                        'participants': [{'name':'ShiLetong', 'gender':'男', 'reservation':False}], 
+                        'pay_voucher': fp})
+        print(response.content)
+        reg = RegisterInformation.objects.all()[0]
+        print('register submitter: ', reg.user.user.username)
+        print('register conf pk: ', reg.conference.pk)
+        # print('register submission pk', reg.submission.pk)
+        print('participants: ', reg.participants)
+        
+
+
 
 
 

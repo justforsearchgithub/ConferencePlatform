@@ -31,6 +31,7 @@ to 前端:
     json对象，{'message': <str>}, 数据成员'message'表示错误信息，有如下取值：
     'success', 'invalid uploaded data', 'invalid conference pk' 不正确的会议主键
     'multiple submission'  该用户在该会议已经提交过论文了
+    'wrong time range' 不在可以提交论文的时间范围内
 
 url: conference/<会议的主键id>/conference_register
 method: post
@@ -46,3 +47,5 @@ to 前端：
     'success', 'invalid uploaded data', 'invalid conference pk', 'invalid paper id'
     'reduplicate register' 一个用户对于一个会议重复注册
     'not matching' 论文与会议或用户无关联
+    'wrong time range'  不再可以注册会议的时间范围内
+    'paper not passed'  论文没有通过，还妄图靠论文来参会
