@@ -88,7 +88,7 @@ def conference_register(request, id):
         with database_transaction.atomic():
             conf = Conference.objects.get(pk=id)
             paper_submission_id = int(request.POST['paper_id'])            
-            paper_submission = Submission.objects.get(pk=paper_id)
+            paper_submission = Submission.objects.get(pk=paper_submission_id)
             if paper_submission.submitter.pk != request.user.normaluer.pk \
                 or paper_submission.conference.pk != conf.pk:
                 return JsonResponse({'message': 'not matching'})
