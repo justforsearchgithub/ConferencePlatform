@@ -17,9 +17,9 @@ class OrganizationUser(models.Model):
     contacts = models.CharField(max_length=200)
     phone_number = models.CharField(max_length=20)
     address = models.CharField(max_length=200)
-    bussiness_license = models.FileField(upload_to=organization_directory_path)
-    id_card_front = models.FileField(upload_to=organization_directory_path)
-    id_card_reverse = models.FileField(upload_to=organization_directory_path)
+    bussiness_license = models.FileField(upload_to=organization_directory_path, null=True)
+    id_card_front = models.FileField(upload_to=organization_directory_path, null=True)
+    id_card_reverse = models.FileField(upload_to=organization_directory_path, null=True)
     
 
 class OrganizationSubUser(models.Model):

@@ -16,6 +16,7 @@ class Conference(models.Model):
     soliciting_requirement = models.TextField()
     paper_template = models.FileField(upload_to=conference_directory_path)
     register_requirement = models.TextField()
+    template_no = models.IntegerField()
 
     accept_start = models.DateTimeField(auto_now=True)
     accept_due = models.DateTimeField(blank=True, null=True)
@@ -56,15 +57,19 @@ class Submission(models.Model):
         ('R', 'Rejected'),
     )
     state = models.CharField(max_length=1, choices=STATE_CHOICES)
+
+    class meta:
+        unique_together = ('submitter', 'conference')
+
     
 
 
 class RegisterInformation(models.Model):
     user = models.ForeignKey(NormalUser, on_delete=models.CASCADE)
     conference = models.ForeignKey(Conference, on_delete=models.CASCADE)
-    people = models.TextField()
+    submission = models.ForeignKey(Submission, on_delete=models.CASCADE)
+    participants = models.TextField()
     pay_voucher = models.FileField(upload_to=conference_directory_path)
-    description = models.TextField()
 
     class meta:
         unique_together=('user', 'conference')
