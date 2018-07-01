@@ -33,14 +33,16 @@ def add_conference(request):
                 introduction=form.cleaned_data['introduction'], 
                 soliciting_requirement=form.cleaned_data['soliciting_requirement'],            
                 register_requirement=form.cleaned_data['register_requirement'],
-                accept_start=timezone.now(),
+                accept_start=datetime.datetime.now(),
                 accept_due=form.cleaned_data['accept_due'],
                 # modify_due=form.cleaned_data['modify_due'],
                 register_start=form.cleaned_data['register_start'],
                 conference_start=form.cleaned_data['conference_start'],
                 conference_due=form.cleaned_data['conference_due'],
-                paper_template=form.cleaned_data['paper_template'],
+                #paper_template=form.cleaned_data['paper_template'],
             )
+            conf.paper_template = form.cleaned_data['paper_template']
+            conf.save()
             if not valid_timepoints(conf):
                 conf.delete()
                 return JsonResponse({'message': 'timepoints not reasonable'})            
@@ -65,14 +67,17 @@ def paper_submit(request, id):
         with database_transaction.atomic():
             conf = Conference.objects.get(pk=id)
             normal_user = request.user.normaluser
-            Submission.objects.create(
+            s = Submission.objects.create(
                 submitter=normal_user, institute=request.POST['institute'],
-                conference=conf, paper=request.FILES['paper'],
+                conference=conf, 
+                #paper=request.FILES['paper'],
                 paper_name=request.POST['paper_name'], 
                 paper_abstract=request.POST['paper_abstract'],
                 authors=request.POST['authors'],
                 state='S', 
             )
+            s.paper = request.FILES['paper']
+            s.save()
             return JsonResponse({'message': 'success'})
     except Conference.DoesNotExist:
         return JsonResponse({'message': 'invalid conference pk'})
@@ -92,13 +97,15 @@ def conference_register(request, id):
             if paper_submission.submitter.pk != request.user.normaluer.pk \
                 or paper_submission.conference.pk != conf.pk:
                 return JsonResponse({'message': 'not matching'})
-            RegisterInformation.objects.create(
+            r = RegisterInformation.objects.create(
                 user=request.user.normaluser,
                 conference=conf,
                 participants=request.POST['participants'],
                 submission=paper_submission,
-                pay_voucher=request.FILES['pay_voucher'],
+                # pay_voucher=request.FILES['pay_voucher'],
             )
+            r.pay_voucher = request.FILES['pay_voucher']
+            r.save()
             return JsonResponse({'message': 'success'})
     except Conference.DoesNotExist:
         return JsonResponse({'message': 'invalid conference pk'})

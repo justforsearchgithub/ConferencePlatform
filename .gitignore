@@ -108,6 +108,7 @@ venv.bak/
 !**/migrations
 !**/migrations/__init__.py
 media/
+conferenceplatform/__init__.py
 
 customsetting.py
 
