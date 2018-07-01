@@ -3,7 +3,7 @@ conference模块接口文档：
 有一些通用的错误信息讲道理每个请求里都可能遇到，写在这，不再在下面给出：
     'permission error' 账号行为与其身份不匹配, 'anonymous user' 用户没有登录
 
-url: conference/add_conference
+url: conference/add_conference/
 method: post
 from 前端：
     使用post方法向后端
@@ -22,7 +22,7 @@ to 前端：
     'success', 'invalid uploaded data', 
     'timepoints not reasonable' 那些会议时间点设立不合理
 
-url: conference/<会议的主键id>/paper_submit
+url: conference/<会议的主键id>/paper_submit/
 method: post
 说明：普通用户提交论文
 from 前端：
@@ -33,7 +33,7 @@ to 前端:
     'multiple submission'  该用户在该会议已经提交过论文了
     'wrong time range' 不在可以提交论文的时间范围内
 
-url: conference/<会议的主键id>/conference_register
+url: conference/<会议的主键id>/conference_register/
 method: post
 说明：普通用户注册
 from 前端：
