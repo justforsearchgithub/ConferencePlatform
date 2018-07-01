@@ -32,14 +32,14 @@ def add_conference(request):
                 introduction=form.cleaned_data['introduction'], 
                 soliciting_requirement=form.cleaned_data['soliciting_requirement'],            
                 register_requirement=form.cleaned_data['register_requirement'],
-                accept_start=timezone.now()
+                accept_start=timezone.now(),
                 accept_due=form.cleaned_data['accept_due'],
                 # modify_due=form.cleaned_data['modify_due'],
                 register_start=form.cleaned_data['register_start'],
                 conference_start=form.cleaned_data['conference_start'],
-                conference_due=datetime.cleaned_data['conference_due']
+                conference_due=datetime.cleaned_data['conference_due'],
 
-                paper_template=form.paper_template
+                paper_template=form.paper_template,
             )
             if not valid_timepoints(conf):
                 return JsonResponse({'message': 'timepoints not reasonable'})
@@ -92,7 +92,7 @@ def conference_register(request, id):
             if paper_submission.submitter.pk != request.user.normaluer.pk \
                 or paper_submission.conference.pk != conf.pk:
                 return JsonResponse({'message': 'not matching'})
-            RegisterInfomation.objects.create(
+            RegisterInformation.objects.create(
                 user=request.user.normaluser,
                 conference=conf,
                 participants=request.POST['participants'],
