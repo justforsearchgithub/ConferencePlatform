@@ -45,7 +45,7 @@ def subject_information(request):
         result['message'] = 'success'
         return JsonResponse(result)
     except Subject.DoesNotExist:
-        result['message'] = ['invalid subject pk']
+        result['message'] = ['no subjects']
         return JsonResponse(result)
 
 
@@ -55,7 +55,8 @@ def activity_information(request,id):
     try:
         activity = Activity.objects.get(pk=id)
         data = {
-            'conference': activity.conference.pk,
+            'conference_id': activity.conference.pk,
+            'conference_title': activity.conference.title,
             'start_time': activity.start_time,
             'end_time': activity.end_time,
             'place': activity.place,
@@ -75,8 +76,9 @@ def submission_information(request,id):
     try:
         submission = Submission.objects.get(pk=id)
         data = {
-            'submitter': submission.submitter.pk,
-            'conference': submission.conference.pk,
+            'submitter_id': submission.submitter.pk,
+            'conference_id': submission.conference.pk,
+            'conference_title': submission.conference.title,
             'paper': submission.paper,
             'paper_name': submission.paper_name,
             'paper_abstract': submission.paper_abstract,
@@ -103,9 +105,9 @@ def register_information(request, id):
     try:
         info = RegisterInformation.objects.get(pk=id)
         data = {
-            'user': info.user.pk,
-            'conference': info.conference.pk,
-            'submission': info.sumbission.pk,
+            'user_id': info.user.pk,
+            'conference_id': info.conference.pk,
+            'submission_id': info.sumbission.pk,
             'participants': info.participants,
             'pay_voucher': info.pay_voucher,
         }

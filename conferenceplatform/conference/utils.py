@@ -21,11 +21,13 @@ def get_organization(user):
         return None
 
 def valid_timepoints(conf):
-    return (conf.accept_start < conf.accept_due 
-        and conf.accept_due < conf.modify_due
-        and conf.modify_due < conf.register_start
+    res =  (conf.accept_start < conf.accept_due 
         and conf.register_start < conf.conference_start
         and conf.conference_start < conf.conference_due)
+    if conf.modify_due != None:
+        res = (res and conf.accept_due < conf.modify_due 
+                and conf.modify_due < conf.register_start)
+    return res
 
 def conference_status(conf):
     now = timezone.now()

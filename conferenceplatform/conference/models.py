@@ -2,8 +2,7 @@ from django.db import models
 from account.models import OrganizationUser, NormalUser
 
 def conference_directory_path(instance, filename):
-    return 'conference_{0}/{1}'.format(instance.conference.pk, filename)
-
+    return 'conference_{0}/{1}'.format(instance.id, filename)
 
 class Subject(models.Model):
     name = models.CharField(max_length=200,primary_key=True)

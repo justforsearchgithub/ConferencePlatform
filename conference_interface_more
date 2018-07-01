@@ -1,0 +1,55 @@
+path:conference/conference/<int:id>/information/
+input:
+    GET
+        id,会议的id
+output:
+    输出会议的全部属性
+    message: 'success'/'invalid conference id'
+    data: { organization,注册机构
+            title,
+            subject,所属学科
+            introduction,会议简介
+            soliciting_requirement,投稿要求
+            paper_template,论文模板
+            register_requirement,注册要求
+            accept_start,开始投稿时间
+            accept_due,投稿截止时间
+            modify_due,修改截止日期
+            register_start,注册开始时间
+            conference_start,会议开始时间
+            conference_due,会议结束时间}
+
+path:subjects/
+input:
+    GET
+output:
+    输出全部学科
+    message: 'success'/'no subjects'
+    dada:  { 'names': [] }
+
+path:conference/activity/<int:id>
+input:
+    GET
+        id,活动的id
+output:
+    输出该活动的全部属性
+    message: 'success'/'invalid activity pk'
+    dada: { 'conference_id', 活动所属会议的id,
+            'conference_title',活动所属会议名称
+            'start_time',
+            'end_time',
+            'place',
+            'activity',}
+
+path:conference/register_information/<int:id>
+input:
+    GET
+        id,注册会议信息的id
+output:
+    输出该注册信息的全部属性
+    message: 'success'/'invalid register information pk'
+    dada: { 'user_id',用户id
+            'conference_id',会议id'
+            'submission_id',论文提交信息的id
+            'participants',
+            'pay_voucher',}
