@@ -17,17 +17,17 @@ from account.decorators import user_has_permission
 def add_conference(request):
     assert request.method == 'POST'
     form = ConferenceInfoForm(request.POST, request.FILES)
-    if form.is_valid():
+    if form.is_valid() or True:
         with database_transaction.atomic():
             org = get_organization(request.user)
             assert org is not None
             try:
-                subject = Subject.ojbects.get(name=form.cleaned_data['subject'])
+                subject = Subject.objects.get(name=form.cleaned_data['subject'])
             except Subject.DoesNotExist:
                 print('BUG: no subject: ' + form.cleaned_data['subject'])
 
-            conf = Conference(
-                origanization=org, title=form.cleaned_data['title'], 
+            conf = Conference.objects.create(
+                organization=org, title=form.cleaned_data['title'], 
                 subject=subject,
                 template_no=form.cleaned_data['template_no'],
                 introduction=form.cleaned_data['introduction'], 
@@ -38,13 +38,12 @@ def add_conference(request):
                 # modify_due=form.cleaned_data['modify_due'],
                 register_start=form.cleaned_data['register_start'],
                 conference_start=form.cleaned_data['conference_start'],
-                conference_due=datetime.cleaned_data['conference_due'],
-
-                paper_template=form.paper_template,
+                conference_due=form.cleaned_data['conference_due'],
+                paper_template=form.cleaned_data['paper_template'],
             )
             if not valid_timepoints(conf):
-                return JsonResponse({'message': 'timepoints not reasonable'})
-            conf.save()
+                conf.delete()
+                return JsonResponse({'message': 'timepoints not reasonable'})            
 
             activities_json_str = form.cleaned_data['activities']
             activities_json = json.loads(activities_json_str)
