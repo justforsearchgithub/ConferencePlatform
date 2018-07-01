@@ -92,18 +92,27 @@ def conference_register(request, id):
     try:
         with database_transaction.atomic():
             conf = Conference.objects.get(pk=id)
-            paper_submission_id = int(request.POST['paper_id'])            
-            paper_submission = Submission.objects.get(pk=paper_submission_id)
-            if paper_submission.submitter.pk != request.user.normaluer.pk \
-                or paper_submission.conference.pk != conf.pk:
-                return JsonResponse({'message': 'not matching'})
-            r = RegisterInformation.objects.create(
-                user=request.user.normaluser,
-                conference=conf,
-                participants=request.POST['participants'],
-                submission=paper_submission,
-                # pay_voucher=request.FILES['pay_voucher'],
-            )
+            if request.post['listen_only'] == 'false':
+                paper_submission_id = int(request.POST['paper_id'])            
+                paper_submission = Submission.objects.get(pk=paper_submission_id)
+                if paper_submission.submitter.pk != request.user.normaluer.pk \
+                    or paper_submission.conference.pk != conf.pk:
+                    return JsonResponse({'message': 'not matching'})
+                r = RegisterInformation.objects.create(
+                    user=request.user.normaluser,
+                    conference=conf,
+                    participants=request.POST['participants'],
+                    submission=paper_submission,
+                    # pay_voucher=request.FILES['pay_voucher'],
+                )
+                
+            else:
+                # listen only
+                r = RegisterInformation.objects.create(
+                    user=request.user.normaluser,
+                    conference=conf,
+                    participants=request.POST['participants'],
+                )
             r.pay_voucher = request.FILES['pay_voucher']
             r.save()
             return JsonResponse({'message': 'success'})

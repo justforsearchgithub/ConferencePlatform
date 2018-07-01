@@ -36,7 +36,8 @@ url: conference/<会议的主键id>/conference_register
 method: post
 说明：普通用户注册
 from 前端：
-    post: paper_id 参与会议的paper的id（如果），participants 与会者的信息（考虑到这些信息只需要在展示时使用，
+    post: listen_only  仅仅聆听会议  传字符串 true 或者 false 就好
+    paper_id 参与会议的paper的id（如果），participants 与会者的信息（考虑到这些信息只需要在展示时使用，
     能读即可，不想为其建立单独数据库表，希望前端用序列化的json传递过来，格式为：
         [{'name': <str>, 'gender': <男or女>, 'reservation' /*是否预定住宿*/: <bool>}, ...]  ）
     pay_voucher 缴费凭证的照片或者pdf文件

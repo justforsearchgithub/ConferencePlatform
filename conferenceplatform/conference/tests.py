@@ -46,7 +46,7 @@ class TestConference(TestCase):
         Subject.objects.create(name='renleixue')
     def testAddConference(self):
         c = Client()
-        response = c.post('/account/login/', 
+        response = c.post('/account/login/',
                     {'username':'shiletong@buaa.edu.cn', 'password':'123456'})
         self.assertEqual(response.status_code, 200)
         print(response.content)
@@ -70,9 +70,20 @@ class TestConference(TestCase):
         for a in Activity.objects.filter(conference=conf):
             print('  ', a.start_time, ' ', a.end_time, ' ', a.place, ' ', a.activity)
         c.get('/account/logout/')
-    def testPaperSubmit(self):
-        c = Client()
-        response = c.post('')
+
+        c = Client()    
+        response = c.post('/account/login/', 
+            {'username':'714465499@qq.com', 'password':'123456'})
+        print(response.content)
+        with open('/home/shiletong/writ') as fp:
+            response = c.post('/conference/conference/1/paper_submit/',
+                    {'paper_name': 'yangzhukexue', 'paper_abstract': 'howtoyangzhu',
+                     'institute': 'BUAA', 'authors': 'ShiLetong, IanBlair', 'paper': fp})
+        print(response.content)
+        sub = Submission.objects.all()[0]
+        print('submission conf pk: ', sub.conference.pk)
+        print('submission submitter: ', sub.submitter.user.username)
+        c.get('/account/logout/')
 
 
 
