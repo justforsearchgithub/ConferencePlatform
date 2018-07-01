@@ -1,6 +1,7 @@
 from django.utils import timezone
 from enum import Enum
 from .models import *
+import datetime
 
 class ConferenceStatus(Enum):
     not_started = 1
@@ -8,8 +9,9 @@ class ConferenceStatus(Enum):
     accepting_modification = 3
     reviewing = 4 # 结束接受修改后和开始会议注册前
     accepting_register = 5
-    meeting = 6
-    over = 7 # 
+    register_ended = 6
+    meeting = 7
+    over = 8 # 
 
 
 def get_organization(user):
@@ -22,7 +24,8 @@ def get_organization(user):
 
 def valid_timepoints(conf):
     res =  (conf.accept_start < conf.accept_due 
-        and conf.register_start < conf.conference_start
+        and conf.register_start < conf.register_due
+        and conf.register_due < conf.conference_start
         and conf.conference_start < conf.conference_due)
     if conf.modify_due != None:
         res = (res and conf.accept_due < conf.modify_due 
@@ -30,7 +33,7 @@ def valid_timepoints(conf):
     return res
 
 def conference_status(conf):
-    now = timezone.now()
+    now = datetime.datetime.now()
     if now < conf.accept_start:
         return ConferenceStatus.not_started
     elif now < conf.accept_due:
@@ -39,8 +42,10 @@ def conference_status(conf):
         return ConferenceStatus.accepting_modification
     elif now < conf.register_start:
         return ConferenceStatus.reviewing
-    elif now < conf.conference_start:
+    elif now < conf.register_due:
         return ConferenceStatus.accepting_register
+    elif now < conf.conference_start:
+        return ConferenceStatus.register_ended
     elif now < conf.conference_due:
         return ConferenceStatus.meeting
     else:

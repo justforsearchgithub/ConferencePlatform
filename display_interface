@@ -1,0 +1,44 @@
+path:display/my_conference
+input:
+    必须先登录
+    method:GET
+output:
+    输出该单位用户或其子用户的全部会议
+    message: 'success'/'no conference'/'invalid organization user'
+    dada: [{
+                'conference_id':xxx,
+                'conference_title':xxx,
+            },{
+                'conference_id':xxx,
+                'conference_title':xxx,
+            }]
+
+path:display/my_submission
+input:
+    必须先登录
+    method:GET
+output:
+    输出该用户的所有提交论文列表
+    message: 'success'/'no submissions'
+    dada: [{
+                'submission_id': xxx,
+                'paper_name': xxx,
+            },{
+                'submission_id': xxx,
+                'paper_name': xxx,
+            }]
+
+path:display/conference/my_submission
+input:
+    必须先登录
+    method:GET
+output:
+    输出一个会议的所有提交论文列表
+    message: 'success'/'no submissions'/'no conference'
+    dada: [{
+                'submission_id': xxx,
+                'paper_name': xxx,
+            },{
+                'submission_id': xxx,
+                'paper_name': xxx,
+            }]

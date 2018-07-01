@@ -1,5 +1,6 @@
 from django.db import models
 from account.models import OrganizationUser, NormalUser
+import pytz
 
 def conference_directory_path(instance, filename):
     return 'conference_{0}/{1}'.format(instance.id, filename)
@@ -13,7 +14,7 @@ class Conference(models.Model):
     subject = models.ForeignKey(Subject, on_delete=models.CASCADE)
     introduction = models.TextField()
     soliciting_requirement = models.TextField()
-    paper_template = models.FileField(upload_to=conference_directory_path)
+    paper_template = models.FileField(upload_to=conference_directory_path, null=True) 
     register_requirement = models.TextField()
     template_no = models.IntegerField()
 
@@ -22,6 +23,7 @@ class Conference(models.Model):
     modify_due = models.DateTimeField(blank=True, null=True)
     # 中间有一个审核状态
     register_start = models.DateTimeField(blank=True, null=True)
+    register_due = models.DateTimeField(blank=True, null=True)
     conference_start = models.DateTimeField()
     conference_due = models.DateTimeField()
 
@@ -36,7 +38,7 @@ class Submission(models.Model):
     submitter = models.ForeignKey(NormalUser, on_delete=models.CASCADE)
     conference = models.ForeignKey(Conference, on_delete=models.CASCADE)
 
-    paper = models.FileField(upload_to=conference_directory_path)
+    paper = models.FileField(upload_to=conference_directory_path, null=True)
     paper_name = models.CharField(max_length=200)
     paper_abstract = models.TextField()
     authors = models.CharField(max_length=255)
@@ -66,7 +68,7 @@ class Submission(models.Model):
 class RegisterInformation(models.Model):
     user = models.ForeignKey(NormalUser, on_delete=models.CASCADE)
     conference = models.ForeignKey(Conference, on_delete=models.CASCADE)
-    submission = models.ForeignKey(Submission, on_delete=models.CASCADE)
+    submission = models.ForeignKey(Submission, on_delete=models.CASCADE, null=True)
     participants = models.TextField()
     pay_voucher = models.FileField(upload_to=conference_directory_path)
 

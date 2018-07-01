@@ -1,4 +1,5 @@
 from django import forms
+import pytz
 
 class ConferenceInfoForm(forms.Form):
     title = forms.CharField(max_length=200)
@@ -11,6 +12,7 @@ class ConferenceInfoForm(forms.Form):
     accept_due = forms.DateTimeField()
     # modify_due = forms.DateTimeField()
     register_start = forms.DateTimeField()
+    register_due = forms.DateTimeField()
     conference_start = forms.DateTimeField()
     conference_due = forms.DateTimeField()
     paper_template = forms.FileField() # 需上传
