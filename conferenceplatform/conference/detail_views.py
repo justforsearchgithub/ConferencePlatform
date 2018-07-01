@@ -1,12 +1,13 @@
 from django.shortcuts import render
 from django.http import JsonResponse
 from .utils import *
+from account.models import *
 from account.decorators import user_has_permission
 
 
 def get_conference_detail(conference):
     data = {
-        'organization': conference.organization,
+        'organization': get_organization_detail(conference.organization),
         'title': conference.title,
         'subject': conference.subject,
         'introduction': conference.introduction,
@@ -19,6 +20,17 @@ def get_conference_detail(conference):
         'register_start': conference.register_start,
         'conference_start': conference.conference_start,
         'conference_due': conference.conference_due,
+    }
+    return data
+
+def get_organization_detail(org):
+    data = {
+        'org_id': org.pk,
+        'org_name': org.org_name,
+        'department': org.department,
+        'contacts': org.contacts,
+        'phone_number': org.phone_number,
+        'address': org.address,
     }
     return data
 
@@ -63,13 +75,14 @@ def get_register_detail(info):
     return data
 
 
-@user_has_permission('account.OrganizationUser_Permission')
+#@user_has_permission('account.OrganizationUser_Permission')
 def conference_information(request, id):
     assert request.method == 'GET'
     result = {'message': ''}
     try:
         conference = Conference.objects.get(pk=id)
         data = get_conference_detail(conference)
+        data['organization'] = conference.organization
         result['data'] = data
         result['message'] = 'success'
         return JsonResponse(result)
