@@ -25,16 +25,12 @@ def user_login(request):
     if user is not None:
         data['message'] = 'success'
         if user.has_perm('account.NormalUser_Permission'):
-            #normaluser = NormalUser.objects.get(user=user)
             data['data']['user_type'] = 'normal_user'
         elif user.has_perm('account.OrganizationUser_Permission'):
-            #organizationuser = OrganizationUser.objects.get(user=user)
             data['data']['user_type'] = 'organization_user'
         elif user.has_perm('account.OrganizationSubUser_Permission'):
-            #organizationsubuser = OrganizationUser.objects.get(user=user)
             data['data']['user_type'] = 'organization_sub_user'
         else:
-            #ouradmin = OurAdmin.objects.get(user=user)
             data['data']['user_type'] = 'our_admin'
         login(request, user)
     else:
@@ -71,3 +67,22 @@ def user_logout(request):
     logout(request)
     data['message'] = 'success'
     return JsonResponse(data)
+
+def user_type(request):
+    data = {'message':'', 'data':{}}
+    user = request.user
+    if user is None:
+        data['message'] = 'anonymous user'
+        return JsonResponse(data)
+    
+    data['message'] = 'success'
+    if user.has_perm('account.NormalUser_Permission'):
+        data['data']['user_type'] = 'normal_user'
+    elif user.has_perm('account.OrganizationUser_Permission'):
+        data['data']['user_type'] = 'organization_user'
+    elif user.has_perm('account.OrganizationSubUser_Permission'):
+        data['data']['user_type'] = 'organization_sub_user'
+    else:
+        data['data']['user_type'] = 'our_admin'
+    return JsonResponse(data)
+    

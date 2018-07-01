@@ -21,6 +21,9 @@ response = c.post(
 
 from django.test import Client
 c = Client()
+c.login(username = '123@qq.com', password = '123')
+c.post('/account/delete_sub_user/', {'sub_user_username':'subuser5@qq.com'})
+
 fp1 = open('/home/elin/file/file1')
 fp2 = open('/home/elin/file/file2')
 fp3 = open('/home/elin/file/file3')
