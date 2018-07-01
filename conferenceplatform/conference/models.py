@@ -6,7 +6,7 @@ def conference_directory_path(instance, filename):
     return 'conference_{0}/{1}'.format(instance.id, filename)
 
 class Subject(models.Model):
-    name = models.CharField(max_length=200,primary_key=True)
+    name = models.CharField(max_length=50,primary_key=True)
 
 class Conference(models.Model):
     organization = models.ForeignKey(OrganizationUser, on_delete=models.CASCADE)
