@@ -29,6 +29,7 @@ def add_conference(request):
             conf = Conference(
                 origanization=org, title=form.cleaned_data['title'], 
                 subject=subject,
+                template_no=form.cleaned_data['template_no']
                 introduction=form.cleaned_data['introduction'], 
                 soliciting_requirement=form.cleaned_data['soliciting_requirement'],            
                 register_requirement=form.cleaned_data['register_requirement'],

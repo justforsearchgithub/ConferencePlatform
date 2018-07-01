@@ -46,7 +46,7 @@ def conference_status(conf):
 
 def add_activity(conference, act_json):    
      Activity.objects.create(
-         conference=conferencee,
+         conference=conference,
          start_time=act_json['start_time'],
          end_time=act_json['end_time'],
          place=act_json['place'],

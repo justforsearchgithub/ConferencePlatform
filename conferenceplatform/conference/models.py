@@ -16,6 +16,7 @@ class Conference(models.Model):
     soliciting_requirement = models.TextField()
     paper_template = models.FileField(upload_to=conference_directory_path)
     register_requirement = models.TextField()
+    template_no = models.IntegerField()
 
     accept_start = models.DateTimeField(auto_now=True)
     accept_due = models.DateTimeField(blank=True, null=True)

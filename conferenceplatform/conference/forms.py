@@ -6,7 +6,7 @@ class ConferenceInfoForm(forms.Form):
     introduction = forms.CharField()
     soliciting_requirement = forms.CharField()
     register_requirement = forms.CharField()
-
+    template_no = forms.IntegerField()
     # accept_start = forms.DateTimeField()
     accept_due = forms.DateTimeField()
     # modify_due = forms.DateTimeField()
