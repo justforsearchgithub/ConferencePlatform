@@ -99,3 +99,16 @@ def get_username(request):
 def get_csrf_token(request):
     token = django.middleware.csrf.get_token(request)
     return JsonResponse({'token': token})
+
+
+def upload_pic(request):
+    assert request.method == 'POST'
+    pic = request.FILES.get('pic')
+
+    try:
+        with atomic():
+            justpic = JustPic(pic = pic)
+            justpic.save()
+    except DatabaseError:
+        return JsonResponse({'message':'fail'})
+    return JsonResponse({'message' : 'success'})

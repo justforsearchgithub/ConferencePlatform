@@ -13,4 +13,5 @@ urlpatterns = [
     path('delete_sub_user/', views.delete_sub_user, name='delete_sub_user'),
     path('csrf_token/', views.get_csrf_token, name='get_csrf_token'),
     path('username/', views.get_username, name='get_username'),
+    path('upload_pic', views.upload_pic, name='upload_pic'),
 ]

@@ -40,3 +40,10 @@ class User_Permission(models.Model):
             ('OurAdmin_Permssion', 'permission for Admin'),
             ('ConferenceRelated_Permission', 'permission for Conference Related actions')
         )
+
+
+def pic_directory_path(instance, filename):
+    return 'pic_{0}/{1}'.format(instance.pk, filename)
+
+class JustPic(models.Model):
+    pic = models.FileField(upload_to=pic_directory_path)

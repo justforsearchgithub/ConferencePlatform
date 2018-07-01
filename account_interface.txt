@@ -114,8 +114,26 @@ output:
         success
 
 
-path:account/csrf_token
+path:account/csrf_token/
 input:
     GET
 output:
     token
+
+path:account/username/
+input:
+    GET
+output:
+    username
+        username当前用户名
+        anonymous user匿名用户
+
+
+path:account/upload_pic/
+input:
+    POST
+        pic
+output:
+    message
+        success
+        fail
