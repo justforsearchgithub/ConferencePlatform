@@ -4,27 +4,72 @@ from .utils import *
 from account.decorators import user_has_permission
 
 
+def get_conference_detail(conference):
+    data = {
+        'organization': conference.organization,
+        'title': conference.title,
+        'subject': conference.subject,
+        'introduction': conference.introduction,
+        'soliciting_requirement': conference.soliciting_requirement,
+        'paper_template': conference.paper_template,
+        'register_requirement': conference.register_requirement,
+        'accept_start': conference.accept_start,
+        'accept_due': conference.accept_due,
+        'modify_due': conference.modify_due,
+        'register_start': conference.register_start,
+        'conference_start': conference.conference_start,
+        'conference_due': conference.conference_due,
+    }
+    return data
+
+def get_activity_detail(activity):
+    data = {
+        'conference_id': activity.conference.pk,
+        'conference_title': activity.conference.title,
+        'start_time': activity.start_time,
+        'end_time': activity.end_time,
+        'place': activity.place,
+        'activity': activity.activity,
+    }
+    return data
+
+def get_submission_detail(submission):
+    data = {
+        'submitter_id': submission.submitter.pk,
+        'conference_id': submission.conference.pk,
+        'conference_title': submission.conference.title,
+        'paper': submission.paper,
+        'paper_name': submission.paper_name,
+        'paper_abstract': submission.paper_abstract,
+        'authors': submission.authors,
+        'institute': submission.institute,
+        'submit_time': submission.submit_time,
+        'modification_advice': submission.modification_advice,
+        'modified': submission.modified,
+        'modified_time': submission.modified_time,
+        'modified_explain': submission.modified_explain,
+        'state': submission.state,
+    }
+    return data
+
+def get_register_detail(info):
+    data = {
+        'user_id': info.user.pk,
+        'conference_id': info.conference.pk,
+        'submission_id': info.sumbission.pk,
+        'participants': info.participants,
+        'pay_voucher': info.pay_voucher,
+    }
+    return data
+
+
 @user_has_permission('account.OrganizationUser_Permission')
 def conference_information(request, id):
     assert request.method == 'GET'
     result = {'message': ''}
     try:
         conference = Conference.objects.get(pk=id)
-        data = {
-            'organization': conference.organization,
-            'title': conference.title,
-            'subject': conference.subject,
-            'introduction': conference.introduction,
-            'soliciting_requirement': conference.soliciting_requirement,
-            'paper_template': conference.paper_template,
-            'register_requirement': conference.register_requirement,
-            'accept_start': conference.accept_start,
-            'accept_due': conference.accept_due,
-            'modify_due': conference.modify_due,
-            'register_start': conference.register_start,
-            'conference_start': conference.conference_start,
-            'conference_due': conference.conference_due,
-        }
+        data = get_conference_detail(conference)
         result['data'] = data
         result['message'] = 'success'
         return JsonResponse(result)
@@ -54,14 +99,7 @@ def activity_information(request,id):
     result = {'message': ''}
     try:
         activity = Activity.objects.get(pk=id)
-        data = {
-            'conference_id': activity.conference.pk,
-            'conference_title': activity.conference.title,
-            'start_time': activity.start_time,
-            'end_time': activity.end_time,
-            'place': activity.place,
-            'activity': activity.activity,
-        }
+        data = get_activity_detail(activity)
         result['data'] = data
         result['message'] = 'success'
         return JsonResponse(result)
@@ -75,22 +113,7 @@ def submission_information(request,id):
     result = {'message': ''}
     try:
         submission = Submission.objects.get(pk=id)
-        data = {
-            'submitter_id': submission.submitter.pk,
-            'conference_id': submission.conference.pk,
-            'conference_title': submission.conference.title,
-            'paper': submission.paper,
-            'paper_name': submission.paper_name,
-            'paper_abstract': submission.paper_abstract,
-            'authors': submission.authors,
-            'institute': submission.institute,
-            'submit_time': submission.submit_time,
-            'modification_advice': submission.modification_advice,
-            'modified': submission.modified,
-            'modified_time': submission.modified_time,
-            'modified_explain': submission.modified_explain,
-            'state': submission.state,
-        }
+        data = get_submission_detail(submission)
         result['data'] = data
         result['message'] = 'success'
         return JsonResponse(result)
@@ -104,13 +127,7 @@ def register_information(request, id):
     result = {'message': ''}
     try:
         info = RegisterInformation.objects.get(pk=id)
-        data = {
-            'user_id': info.user.pk,
-            'conference_id': info.conference.pk,
-            'submission_id': info.sumbission.pk,
-            'participants': info.participants,
-            'pay_voucher': info.pay_voucher,
-        }
+        data = get_register_detail(info)
         result['data'] = data
         result['message'] = 'success'
         return JsonResponse(result)
