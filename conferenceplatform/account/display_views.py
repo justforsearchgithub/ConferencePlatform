@@ -54,3 +54,24 @@ def get_submissions_by_submitter(request):
 
 def test1(request):
     return JsonResponse({'123': '123'})
+
+
+def get_papers_by_conference(request, id):
+    assert request.method == 'GET'
+    result = {'message': '', 'data': []}
+    try:
+        conference = Conference.objects.get(pk=id)
+        papers = Submission.objects.get(conference=conference)
+        data = []
+        for paper in papers:
+            data.append({
+                'submission_id': paper.pk,
+                'paper_name': paper.paper_name,
+            })
+        result['data'] = data
+        result['message'] = 'success'
+    except Submission.DoesNotExist:
+        result['message'] = ['no submissions']
+    except Conference.DoesNotExist:
+        result['message'] = ['no conference']
+    return JsonResponse(result)
