@@ -87,3 +87,17 @@ input:
 output:
     message
         success
+
+path:account/user_type/
+input:
+    GET
+output:
+    message
+        success
+        anonymous user
+    data
+        user_type
+            normal_user
+            organization_user
+            organization_sub_user
+            our_admin
