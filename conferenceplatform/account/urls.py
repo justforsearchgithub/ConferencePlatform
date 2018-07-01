@@ -11,4 +11,5 @@ urlpatterns = [
     path('logout/', views.user_logout, name='user_logout'),
     path('user_type/', views.user_type, name='user_type'),
     path('delete_sub_user/', views.delete_sub_user, name='delete_sub_user'),
+    path('csrf_token/', views.get_csrf_token, name='get_csrf_token'),
 ]
