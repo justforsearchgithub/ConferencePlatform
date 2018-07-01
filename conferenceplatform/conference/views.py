@@ -37,6 +37,7 @@ def add_conference(request):
                 accept_due=form.cleaned_data['accept_due'],
                 # modify_due=form.cleaned_data['modify_due'],
                 register_start=form.cleaned_data['register_start'],
+                register_due=form.cleaned_data['register_due'],
                 conference_start=form.cleaned_data['conference_start'],
                 conference_due=form.cleaned_data['conference_due'],
                 #paper_template=form.cleaned_data['paper_template'],

@@ -55,7 +55,8 @@ class TestConference(TestCase):
                     {'title':'chuibi dahui', 'subject': 'renleixue', 'template_no': 3,
                         'introduction': 'interesting', 'soliciting_requirement': 'meiyou',
                         'register_requirement': 'meiyou', 'accept_due': '2018-7-2 12:00',
-                        'register_start': '2018-7-4 12:00', 'conference_start': '2018-7-5 12:00',
+                        'register_start': '2018-7-4 12:00', 'register_due': '2018-7-4 20:00',
+                         'conference_start': '2018-7-5 12:00',
                         'conference_due': '2018-7-8 12:00', 'paper_template': fp,
                         'activities': 
                         '[{"start_time":"2018-7-6 12:00", "end_time":"2018-7-6 15:00", "place":"beijing", "activity":"chishi"}, \

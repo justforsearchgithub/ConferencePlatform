@@ -23,6 +23,7 @@ class Conference(models.Model):
     modify_due = models.DateTimeField(blank=True, null=True)
     # 中间有一个审核状态
     register_start = models.DateTimeField(blank=True, null=True)
+    register_due = models.DateTimeField(blank=True, null=True)
     conference_start = models.DateTimeField()
     conference_due = models.DateTimeField()
 
