@@ -47,16 +47,10 @@ def organization_user_register(request):
                 contacts = contacts,
                 phone_number = phone_number,
                 address = address,
-                #bussiness_license = bussiness_license,
-                #id_card_front = id_card_front,
-                #id_card_reverse = id_card_reverse,
+                bussiness_license = bussiness_license,
+                id_card_front = id_card_front,
+                id_card_reverse = id_card_reverse,
             )
-            if bussiness_license is not None:
-                organization_user.bussiness_license = bussiness_license
-            if id_card_front is not None:
-                organization_user.id_card_front = id_card_front
-            if id_card_reverse is not None:
-                organization_user.id_card_reverse = id_card_reverse
             
             organization_user.save()
             data['message'] = 'success'
