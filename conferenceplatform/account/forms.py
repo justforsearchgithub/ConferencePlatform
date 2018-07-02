@@ -24,9 +24,9 @@ class OrganizationUserRegisterForm(forms.Form):
     contacts = forms.CharField()
     phone_number = forms.CharField()
     address = forms.CharField()
-    bussiness_license = forms.FileField()
-    id_card_front = forms.FileField()
-    id_card_reverse = forms.FileField()
+    bussiness_license = forms.FileField(required=False)
+    id_card_front = forms.FileField(required=False)
+    id_card_reverse = forms.FileField(required=False)
 
 class OrganizationSubUserForm(forms.Form):
     username = forms.CharField()
