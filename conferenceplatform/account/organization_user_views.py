@@ -51,10 +51,10 @@ def organization_user_register(request):
                 id_card_front = id_card_front,
                 id_card_reverse = id_card_reverse,
             )
-            
+
             organization_user.save()
             data['message'] = 'success'
-    except DatabaseError:
-        data['message'] = 'database error'
+    except DatabaseError as e:
+        data['message'] = str(e)
     
     return JsonResponse(data, safe=False)
