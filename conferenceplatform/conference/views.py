@@ -138,3 +138,7 @@ def conference_register(request, id):
 @user_has_permission('account.ConferenceRelated_Permission')
 def set_modify_due(request, id):
     now = datetime.datetime.now()
+    try:
+        conf = Conference.objects.get(pk=id)
+    except Conference.DoesNotExist:
+        return JsonResponse({})
