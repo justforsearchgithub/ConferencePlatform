@@ -9,10 +9,10 @@ def get_conference_detail(conference):
     data = {
         'organization': get_organization_detail(conference.organization),
         'title': conference.title,
-        'subject': conference.subject,
+        'subject': conference.subject.name,
         'introduction': conference.introduction,
         'soliciting_requirement': conference.soliciting_requirement,
-        'paper_template': conference.paper_template,
+        #'paper_template': conference.paper_template,
         'register_requirement': conference.register_requirement,
         'accept_start': conference.accept_start,
         'accept_due': conference.accept_due,
@@ -31,6 +31,7 @@ def get_organization_detail(org):
         'contacts': org.contacts,
         'phone_number': org.phone_number,
         'address': org.address,
+        'email': org.user.username,
     }
     return data
 
@@ -50,7 +51,7 @@ def get_submission_detail(submission):
         'submitter_id': submission.submitter.pk,
         'conference_id': submission.conference.pk,
         'conference_title': submission.conference.title,
-        'paper': submission.paper,
+        #'paper': submission.paper,
         'paper_name': submission.paper_name,
         'paper_abstract': submission.paper_abstract,
         'authors': submission.authors,
@@ -70,7 +71,7 @@ def get_register_detail(info):
         'conference_id': info.conference.pk,
         'submission_id': info.sumbission.pk,
         'participants': info.participants,
-        'pay_voucher': info.pay_voucher,
+        #'pay_voucher': info.pay_voucher,
     }
     return data
 
@@ -82,13 +83,11 @@ def conference_information(request, id):
     try:
         conference = Conference.objects.get(pk=id)
         data = get_conference_detail(conference)
-        data['organization'] = conference.organization
         result['data'] = data
         result['message'] = 'success'
-        return JsonResponse(result)
     except Conference.DoesNotExist:
-        result['message'] = ['invalid conference pk']
-        return JsonResponse(result)
+        result['message'] = 'invalid conference pk'
+    return JsonResponse(result)
 
 
 def subject_information(request):

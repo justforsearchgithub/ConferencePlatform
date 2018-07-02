@@ -12,6 +12,7 @@ output:
                             'contacts':联系人,
                             'phone_number',
                             'address',
+                            'email',会议主办方邮箱
                            },
             title,会议名称
             subject,所属学科
