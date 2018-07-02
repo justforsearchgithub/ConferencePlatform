@@ -5,7 +5,7 @@ input:
 output:
     输出该单位用户或其子用户的全部会议
     message: 'success'/'no conference'/'invalid organization user'
-    dada: [{
+    data: [{
                 'conference_id':xxx,
                 'conference_title':xxx,
             },{
@@ -20,7 +20,7 @@ input:
 output:
     输出该用户的所有提交论文列表
     message: 'success'/'no submissions'
-    dada: [{
+    data: [{
                 'submission_id': xxx,
                 'paper_name': xxx,
             },{
@@ -28,17 +28,40 @@ output:
                 'paper_name': xxx,
             }]
 
-path:display/conference/my_submission
+path:display/conference/<int:id>/papers
 input:
     必须先登录
+    id:会议id
     method:GET
 output:
     输出一个会议的所有提交论文列表
     message: 'success'/'no submissions'/'no conference'
-    dada: [{
+    data: [{
                 'submission_id': xxx,
                 'paper_name': xxx,
             },{
                 'submission_id': xxx,
                 'paper_name': xxx,
+            }]
+
+path:display/conference/<int:id>/activities
+input:
+    必须先登录
+    id:会议id
+    method:GET
+output:
+    输出一个会议的所有活动
+    message: 'success'/'no activities'/'no conference'
+    data: [{
+                'activity_id',
+                'activity_name',活动名称
+                'start_time'
+                'end_time'
+                'place': 活动地点
+            },{
+                'activity_id',
+                'activity_name',活动名称
+                'start_time'
+                'end_time'
+                'place': 活动地点
             }]
