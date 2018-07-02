@@ -147,3 +147,14 @@ def register_information(request, id):
     except RegisterInformation.DoesNotExist:
         result['message'] = ['invalid register information pk']
         return JsonResponse(result)
+
+
+
+
+def top10_hot_conferences(request):
+    ret = {'message':'success', 'data':[]}
+    top10 = Conference.objects.order_by('-num_submission')[0:10]
+    for c in top10:
+        ret['data'].append({'pk': c.pk, 'title': c.title, 'subject': c.subject.name, 
+                            'organization': c.organization})
+    return JsonResponse(result)

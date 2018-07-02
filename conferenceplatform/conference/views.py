@@ -81,6 +81,8 @@ def paper_submit(request, id):
             )
             s.paper = request.FILES['paper']
             s.save()
+            conf.num_submission = conf.num_submission + 1
+            conf.save()
             return JsonResponse({'message': 'success'})
     except Conference.DoesNotExist:
         return JsonResponse({'message': 'invalid conference pk'})
@@ -132,3 +134,7 @@ def conference_register(request, id):
     except Submission.DoesNotExist:
         return JsonResponse({'message': 'invalid paper id'})
 
+
+@user_has_permission('account.ConferenceRelated_Permission')
+def set_modify_due(request, id):
+    now = datetime.datetime.now()
