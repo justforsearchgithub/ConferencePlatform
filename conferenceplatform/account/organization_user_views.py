@@ -31,6 +31,14 @@ def organization_user_register(request):
     id_card_front = form.cleaned_data['id_card_front']
     id_card_reverse = form.cleaned_data['id_card_reverse']
     
+    if password != confirm_password:
+        data['message'] = 'password error'
+        return JsonResponse(data, safe=False)
+    search_user = User.objects.filter(username__icontains = username)
+    if len(search_user) != 0:
+        data['message'] = 'username error'
+        return JsonResponse(data, safe=False)
+
     try:
         with atomic():
             new_user = User.objects.create_user(username, email=username, password=password)

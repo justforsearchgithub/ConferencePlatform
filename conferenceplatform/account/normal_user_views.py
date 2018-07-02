@@ -25,7 +25,7 @@ def normal_user_register(request):
     if password != confirm_password:
         data['message'] = 'password error'
         return JsonResponse(data, safe=False)
-    search_user = User.objects.filter(username = username)
+    search_user = User.objects.filter(username__icontains = username)
     if len(search_user) != 0:
         data['message'] = 'username error'
         return JsonResponse(data, safe=False)
