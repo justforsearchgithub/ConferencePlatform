@@ -3,6 +3,7 @@ from django.http import JsonResponse
 from account.decorators import user_has_permission
 from conference.models import *
 from .models import *
+from conference.utils import get_organization
 from conference import detail_views
 from account import decorators
 
@@ -12,14 +13,10 @@ def get_conferences_by_organization(request):
     assert request.method == 'GET'
     result = {'message': '', 'data': []}
     try:
-        if request.user.has_perm('account.OrganizationSubUser_Permission'):
-            org_sub_user = OrganizationSubUser.objects.get(user=request.user)
-            organization = org_sub_user.organization
-        elif request.user.has_perm('account.OrganizationUser_Permission'):
-            organization = OrganizationUser.objects.get(user=request.user)
-        else:
+        org = get_organization(request.user)
+        if org is None:
             return JsonResponse({'message': 'permission error'})
-        conferences = Conference.objects.filter(organization=organization)
+        conferences = Conference.objects.filter(organization=org)
         data = []
         for con in conferences:
             data.append({
