@@ -1,6 +1,5 @@
 from django.db import models
 from account.models import OrganizationUser, NormalUser
-import pytz
 
 def conference_directory_path(instance, filename):
     return 'conference_{0}/{1}'.format(instance.id, filename)
@@ -41,7 +40,7 @@ class Submission(models.Model):
     paper = models.FileField(upload_to=conference_directory_path, null=True)
     paper_name = models.CharField(max_length=200)
     paper_abstract = models.TextField()
-    authors = models.CharField(max_length=255)
+    authors = models.CharField(max_length=200)
     institute = models.CharField(max_length=200)
     
     submit_time = models.DateTimeField(auto_now=True)
