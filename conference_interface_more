@@ -18,7 +18,7 @@ output:
             subject,所属学科
             introduction,会议简介
             soliciting_requirement,投稿要求
-            paper_template,论文模板
+            paper_template,论文模板，返回的是路径/media/xxx，加到ip地址后可访问
             register_requirement,注册要求
             accept_start,开始投稿时间
             accept_due,投稿截止时间
@@ -60,4 +60,26 @@ output:
             'conference_id',会议id'
             'submission_id',论文提交信息的id
             'participants',
-            'pay_voucher',}
+            'pay_voucher',文件路径,返回的是路径/media/xxx，加到ip地址后可访问}
+
+path:conference/submission/<int:id>/
+input:
+    GET
+        id,论文信息的id
+output:
+    输出该提交信息的全部属性
+    message: 'success'/'invalid submission pk'
+    dada: { 'submitter_id',
+            'conference_id',
+            'conference_title',
+            'paper': 文件路径,返回的是路径/media/xxx，加到ip地址后可访问
+            'paper_name',
+            'paper_abstract',
+            'authors',
+            'institute',
+            'submit_time': submission.submit_time,
+            'modification_advice': submission.modification_advice,
+            'modified': submission.modified,
+            'modified_time': submission.modified_time,
+            'modified_explain': submission.modified_explain,
+            'state': submission.state,}

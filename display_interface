@@ -65,3 +65,20 @@ output:
                 'end_time'
                 'place': 活动地点
             }]
+
+path:display/my_subusers
+input:
+    必须先登录
+    method:GET
+output:
+    输出该单位用户的全部子用户
+    message: 'success'/'no conference'/'invalid organization user'
+    data: [{
+                'sub_user_id':
+                'sub_username':
+                'sub_password':
+            },{
+                'sub_user_id':
+                'sub_username':
+                'sub_password':
+            }]
