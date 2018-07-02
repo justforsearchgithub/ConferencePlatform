@@ -28,9 +28,10 @@ output:
                 'paper_name': xxx,
             }]
 
-path:display/conference/my_submission
+path:display/conference/<int:id>/papers
 input:
     必须先登录
+    id:会议id
     method:GET
 output:
     输出一个会议的所有提交论文列表
@@ -41,4 +42,26 @@ output:
             },{
                 'submission_id': xxx,
                 'paper_name': xxx,
+            }]
+
+path:display/conference/<int:id>/activities
+input:
+    必须先登录
+    id:会议id
+    method:GET
+output:
+    输出一个会议的所有活动
+    message: 'success'/'no activities'/'no conference'
+    dada: [{
+                'activity_id',
+                'activity_name',活动名称
+                'start_time'
+                'end_time'
+                'place': 活动地点
+            },{
+                'activity_id',
+                'activity_name',活动名称
+                'start_time'
+                'end_time'
+                'place': 活动地点
             }]
