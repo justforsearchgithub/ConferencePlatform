@@ -167,3 +167,12 @@ STATIC_URL = '/static/'
 MEDIA_ROOT = 'media'
 MEDIA_URL = '/media/'
 
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST= 'smtp.163.com'
+EMAIL_PORT= 25
+EMAIL_HOST_USER = 'demonsNearby@163.com'
+EMAIL_HOST_PASSWORD = 'guojiao1573'
+EMAIL_USE_TLS = True
+EMAIL_USE_SSL = False
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER ``
