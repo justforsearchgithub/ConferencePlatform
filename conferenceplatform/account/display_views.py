@@ -106,3 +106,41 @@ def get_activities_by_conference(request, id):
     except Conference.DoesNotExist:
         result['message'] = ['no conference']
     return JsonResponse(result)
+
+
+@user_has_permission('account.OrganizationUser_Permission')
+def get_subuser_by_org(request):
+    assert request.method == 'GET'
+    result = {'message': '', 'data': []}
+    try:
+        org = OrganizationUser.objects.get(user=request.user)
+        subusers = OrganizationSubUser.objects.filter(organization=org)
+        data = []
+        for sub in subusers:
+            data.append({
+                'sub_user_id': sub.pk,
+                'sub_username': sub.user.username,
+                'sub_password': sub.user.password,
+            })
+        result['data'] = data
+        result['message'] = 'success'
+    except OrganizationUser.DoesNotExist:
+        result['message'] = ['invalid organization user']
+    return JsonResponse(result)
+
+
+def get_images_by_org(request):
+    assert request.method == 'GET'
+    result = {'message': '', 'data': {}}
+    try:
+        org = OrganizationUser.objects.get(user=request.user)
+        data = {
+            'bussiness_license': org.bussiness_license.url,
+            'id_card_front':  org.id_card_front.url,
+            'id_card_reverse':org.id_card_reverse.url,
+        }
+        result['data'] = data
+        result['message'] = 'success'
+    except OrganizationUser.DoesNotExist:
+        result['message'] = ['invalid organization user']
+    return JsonResponse(result)

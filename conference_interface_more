@@ -18,7 +18,7 @@ output:
             subject,所属学科
             introduction,会议简介
             soliciting_requirement,投稿要求
-            paper_template,论文模板
+            paper_template,论文模板，返回的是路径/media/xxx，加到ip地址后可访问
             register_requirement,注册要求
             accept_start,开始投稿时间
             accept_due,投稿截止时间
@@ -33,7 +33,7 @@ input:
 output:
     输出全部学科
     message: 'success'/'no subjects'
-    dada:  { 'names': [] }
+    data:  { 'names': [] }
 
 path:conference/activity/<int:id>
 input:
@@ -42,7 +42,7 @@ input:
 output:
     输出该活动的全部属性
     message: 'success'/'invalid activity pk'
-    dada: { 'conference_id', 活动所属会议的id,
+    data: { 'conference_id', 活动所属会议的id,
             'conference_title',活动所属会议名称
             'start_time',
             'end_time',
@@ -56,8 +56,30 @@ input:
 output:
     输出该注册信息的全部属性
     message: 'success'/'invalid register information pk'
-    dada: { 'user_id',用户id
+    data: { 'user_id',用户id
             'conference_id',会议id'
             'submission_id',论文提交信息的id
             'participants',
-            'pay_voucher',}
+            'pay_voucher',文件路径,返回的是路径/media/xxx，加到ip地址后可访问}
+
+path:conference/submission/<int:id>/
+input:
+    GET
+        id,论文信息的id
+output:
+    输出该提交信息的全部属性
+    message: 'success'/'invalid submission pk'
+    data: { 'submitter_id',
+            'conference_id',
+            'conference_title',
+            'paper': 文件路径,返回的是路径/media/xxx，加到ip地址后可访问
+            'paper_name',
+            'paper_abstract',
+            'authors',
+            'institute',
+            'submit_time': submission.submit_time,
+            'modification_advice': submission.modification_advice,
+            'modified': submission.modified,
+            'modified_time': submission.modified_time,
+            'modified_explain': submission.modified_explain,
+            'state': submission.state,}

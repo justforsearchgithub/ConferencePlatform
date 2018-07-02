@@ -55,3 +55,12 @@ to 前端：
     'not matching' 论文与会议或用户无关联
     'wrong time range'  不再可以注册会议的时间范围内
     'paper not passed'  论文没有通过，还妄图靠论文来参会
+
+url: conference/top10_hot_references/
+method: get
+说明：top10劲的会议
+to 前端：
+    json对象，{'message':'success', 'data': [ 一个对象，如下所示... ] }
+    数组里的对象：{'title':<str>, 'pk':<int> 会议主键, 'organization':<str>, 'subject':<str>}
+    这些属性不够还可以再商量    
+    应该不会有报错的机会
