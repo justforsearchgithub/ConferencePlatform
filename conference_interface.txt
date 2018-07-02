@@ -33,7 +33,7 @@ to 前端:
     'multiple submission'  该用户在该会议已经提交过论文了
     'wrong time range' 不在可以提交论文的时间范围内
 
-url: conference/conference/<会议的主键id>/conference_register/
+url: conference/conference/<会议的主键id>/register/
 method: post
 说明：普通用户注册
 from 前端：
