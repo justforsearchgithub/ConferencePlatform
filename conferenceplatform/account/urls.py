@@ -14,4 +14,7 @@ urlpatterns = [
     path('csrf_token/', views.get_csrf_token, name='get_csrf_token'),
     path('username/', views.get_username, name='get_username'),
     path('upload_pic/', views.upload_pic, name='upload_pic'),
+    path('collect/<int:pk>/', views.collect, name='collect'),
+    path('discollect/<int:pk>/', views.discollect, name='discollect'),
+    path('collect_list/', views.collect_list, name='collect_list'),
 ]

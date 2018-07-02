@@ -7,6 +7,8 @@ from django.db.transaction import atomic, DatabaseError
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.auth.models import Permission
 from .forms import *
+from .decorators import user_has_permission
+from conference.models import Conference
 
 #我们在这里用email来作为username
 def normal_user_register(request):
@@ -45,3 +47,42 @@ def normal_user_register(request):
         data['message'] = 'database error'
     
     return JsonResponse(data, safe=False)
+
+@user_has_permission('account.NormalUser_Permission')
+def collect(request, pk):
+    data = {'message':'', 'data':{}}
+    assert request.method == 'POST'
+    conf = Conference.objects.filter(pk = pk)
+    if len(conf) == 0:
+        data['message'] = "conference not exist"
+        return JsonResponse(data)
+    conf = conf[0]
+    conf.collect_user.add(request.user.normaluser)
+    data['message'] = 'susccess'
+    return JsonResponse(data)
+
+@user_has_permission('account.NormalUser_Permission')
+def discollect(request, pk):
+    data = {'message':'', 'data':{}}
+    assert request.method == 'POST'
+    conf = Conference.objects.filter(pk = pk)
+    if len(conf) == 0:
+        data['message'] = "conference not exist"
+        return JsonResponse(data)
+    conf = conf[0]
+    conf.collect_user.remove(request.user.normaluser)
+    data['message'] = 'susccess'
+    return JsonResponse(data)
+
+@user_has_permission('account.NormalUser_Permission')
+def collect_list(request):
+    data = {'message':'', 'data':[]}
+    assert request.method == 'POST'
+
+    conf_list = request.user.normaluser.collections.all()
+    
+    data['message'] = 'success'
+    for conf in conf_list:
+        data['data'].append({'id':conf.pk, 'title': conf.title})
+    
+    return JsonResponse(data)

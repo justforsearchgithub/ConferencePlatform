@@ -26,6 +26,8 @@ class Conference(models.Model):
     conference_start = models.DateTimeField()
     conference_due = models.DateTimeField()
 
+    collect_user = models.ManyToManyField(NormalUser, related_name='collections')
+
 class Activity(models.Model):
     conference = models.ForeignKey(Conference, on_delete=models.CASCADE)
     start_time = models.DateTimeField()

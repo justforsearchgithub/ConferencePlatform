@@ -7,11 +7,17 @@ url: conference/add_conference/
 method: post
 from 前端：
     使用post方法向后端
-    传送数据如下：title 会议名称， subject 学科， introduction 简介，
-    soliciting_requirement 投稿要求说明， register_requirement 注册会议要求说明，    
+    传送数据如下：
+    title 会议名称， 
+    subject 学科， 
+    introduction 简介，
+    soliciting_requirement 投稿要求说明， 
+    register_requirement 注册会议要求说明，    
     accept_due 投稿截止时间 (开始投稿时间用当前时间)
-    register_start 开始会议注册时间， register_due 截止
-    conference_start （到场）开会时间，   conference_due 闭会时间
+    register_start 开始会议注册时间， 
+    register_due 截止
+    conference_start （到场）开会时间，   
+    conference_due 闭会时间
     paper_template  文件，论文的模板
     activities  序列化的json数组，数组元素为    
     {'start_time':<datetime>, 'end_time':<datetime>, 'place':<str>, 'activity':<str>}
