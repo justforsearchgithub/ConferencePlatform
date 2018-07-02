@@ -137,8 +137,13 @@ def conference_register(request, id):
 
 @user_has_permission('account.ConferenceRelated_Permission')
 def set_modify_due(request, id):
+    assert request.method == 'POST'
     now = datetime.datetime.now()
     try:
-        conf = Conference.objects.get(pk=id)
+        with database_transaction.atomic():
+            conf = Conference.objects.get(pk=id)
+            cleaner = forms.DateTimeField()
+            due = cleaner.clean(request.POST['modify_due'])
+            
     except Conference.DoesNotExist:
-        return JsonResponse({})
+        return JsonResponse({'message': 'invalid conference pk'})

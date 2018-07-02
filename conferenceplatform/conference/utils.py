@@ -7,12 +7,12 @@ class ConferenceStatus(Enum):
     not_started = 1
     accepting_submission = 2
     accepting_modification = 3
+    reviewing_accepting_modification = 9
     reviewing = 4 # 结束接受修改后和开始会议注册前
     accepting_register = 5
     register_ended = 6
     meeting = 7
     over = 8 # 
-    modification_due_not_given = 9
 
 
 def get_organization(user):
