@@ -72,7 +72,7 @@ def user_logout(request):
 def user_type(request):
     data = {'message':'', 'data':{}}
     user = request.user
-    if request.user.is_authenticated:
+    if request.user.is_authenticated is False:
         data['message'] = 'anonymous user'
         return JsonResponse(data)
     
