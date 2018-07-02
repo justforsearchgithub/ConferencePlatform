@@ -11,11 +11,11 @@ class Conference(models.Model):
     organization = models.ForeignKey(OrganizationUser, on_delete=models.CASCADE)
     title = models.CharField(max_length=200)
     subject = models.ForeignKey(Subject, on_delete=models.CASCADE)
-    introduction = models.TextField()
-    soliciting_requirement = models.TextField()
+    introduction = models.TextField(null=True)
+    soliciting_requirement = models.TextField(null=True)
     paper_template = models.FileField(upload_to=conference_directory_path, null=True) 
-    register_requirement = models.TextField()
-    template_no = models.IntegerField()
+    register_requirement = models.TextField(null=True)
+    template_no = models.IntegerField(null=True)
 
     accept_start = models.DateTimeField(auto_now=True)
     accept_due = models.DateTimeField(blank=True, null=True)
@@ -23,25 +23,25 @@ class Conference(models.Model):
     # 中间有一个审核状态
     register_start = models.DateTimeField(blank=True, null=True)
     register_due = models.DateTimeField(blank=True, null=True)
-    conference_start = models.DateTimeField()
-    conference_due = models.DateTimeField()
+    conference_start = models.DateTimeField(null=True)
+    conference_due = models.DateTimeField(null=True)
 
 class Activity(models.Model):
     conference = models.ForeignKey(Conference, on_delete=models.CASCADE)
-    start_time = models.DateTimeField()
-    end_time = models.DateTimeField()
-    place = models.CharField(max_length=200)
-    activity = models.CharField(max_length=200)
+    start_time = models.DateTimeField(null=True)
+    end_time = models.DateTimeField(null=True)
+    place = models.CharField(max_length=200,null=True)
+    activity = models.CharField(max_length=200,null=True)
 
 class Submission(models.Model):
     submitter = models.ForeignKey(NormalUser, on_delete=models.CASCADE)
     conference = models.ForeignKey(Conference, on_delete=models.CASCADE)
 
     paper = models.FileField(upload_to=conference_directory_path, null=True)
-    paper_name = models.CharField(max_length=200)
-    paper_abstract = models.TextField()
-    authors = models.CharField(max_length=200)
-    institute = models.CharField(max_length=200)
+    paper_name = models.CharField(max_length=200,null=True)
+    paper_abstract = models.TextField(null=True)
+    authors = models.CharField(max_length=200,null=True)
+    institute = models.CharField(max_length=200,null=True)
     
     submit_time = models.DateTimeField(auto_now=True)
 
@@ -56,7 +56,7 @@ class Submission(models.Model):
         ('M', 'NeedModify'),
         ('R', 'Rejected'),
     )
-    state = models.CharField(max_length=1, choices=STATE_CHOICES)
+    state = models.CharField(max_length=1, choices=STATE_CHOICES,null=True)
 
     class meta:
         unique_together = ('submitter', 'conference')
@@ -67,9 +67,9 @@ class Submission(models.Model):
 class RegisterInformation(models.Model):
     user = models.ForeignKey(NormalUser, on_delete=models.CASCADE)
     conference = models.ForeignKey(Conference, on_delete=models.CASCADE)
-    submission = models.ForeignKey(Submission, on_delete=models.CASCADE, null=True)
-    participants = models.TextField()
-    pay_voucher = models.FileField(upload_to=conference_directory_path)
+    submission = models.ForeignKey(Submission, on_delete=models.CASCADE)
+    participants = models.TextField(null=True)
+    pay_voucher = models.FileField(upload_to=conference_directory_path,null=True)
 
     class meta:
         unique_together=('user', 'conference')
