@@ -37,7 +37,7 @@ def get_submissions_by_submitter(request):
     assert request.method == 'GET'
     result = {'message': '', 'data': []}
     try:
-        submissions = Submission.objects.get(submitter=request.user)
+        submissions = Submission.objects.filter(submitter=request.user)
         data = []
         for sub in submissions:
             #data.append(detail_views.get_submission_detail(sub))
@@ -61,7 +61,7 @@ def get_papers_by_conference(request, id):
     result = {'message': '', 'data': []}
     try:
         conference = Conference.objects.get(pk=id)
-        papers = Submission.objects.get(conference=conference)
+        papers = Submission.objects.filter(conference=conference)
         data = []
         for paper in papers:
             data.append({
@@ -82,7 +82,7 @@ def get_activities_by_conference(request, id):
     result = {'message': '', 'data': []}
     try:
         conference = Conference.objects.get(pk=id)
-        activities = Activity.objects.get(conference=conference)
+        activities = Activity.objects.filter(conference=conference)
         data = []
         for activity in activities:
             data.append({
