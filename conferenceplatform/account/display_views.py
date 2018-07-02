@@ -75,3 +75,27 @@ def get_papers_by_conference(request, id):
     except Conference.DoesNotExist:
         result['message'] = ['no conference']
     return JsonResponse(result)
+
+
+def get_activities_by_conference(request, id):
+    assert request.method == 'GET'
+    result = {'message': '', 'data': []}
+    try:
+        conference = Conference.objects.get(pk=id)
+        activities = Activity.objects.get(conference=conference)
+        data = []
+        for activity in activities:
+            data.append({
+                'activity_id': activity.pk,
+                'activity_name': activity.activity,
+                'start_time': activity.start_time,
+                'end_time': activity.end_time,
+                'place': activity.place,
+            })
+        result['data'] = data
+        result['message'] = 'success'
+    except Activity.DoesNotExist:
+        result['message'] = ['no activities']
+    except Conference.DoesNotExist:
+        result['message'] = ['no conference']
+    return JsonResponse(result)
