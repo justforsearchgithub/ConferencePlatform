@@ -25,7 +25,6 @@ class Conference(models.Model):
     register_due = models.DateTimeField(blank=True, null=True)
     conference_start = models.DateTimeField()
     conference_due = models.DateTimeField()
-    # new field:
     num_submission = models.IntegerField(default=0)
 
     collect_user = models.ManyToManyField(NormalUser, related_name='collections')

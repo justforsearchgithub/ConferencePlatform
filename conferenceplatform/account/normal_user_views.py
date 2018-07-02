@@ -77,12 +77,26 @@ def discollect(request, pk):
 @user_has_permission('account.NormalUser_Permission')
 def collect_list(request):
     data = {'message':'', 'data':[]}
-    assert request.method == 'POST'
-
     conf_list = request.user.normaluser.collections.all()
     
     data['message'] = 'success'
     for conf in conf_list:
         data['data'].append({'id':conf.pk, 'title': conf.title})
     
+    return JsonResponse(data)
+
+@user_has_permission('account.NormalUser_Permission')
+def is_collected(request, pk):
+    data = {'message':'', 'data':{}}
+    conf = Conference.objects.filter(pk = pk)
+    if len(conf) == 0:
+        data['message'] = "conference not exist"
+        return JsonResponse(data)
+    conf = conf[0]
+    user = conf.collect_user.all().filter(user = request.user.normaluser)
+    if len(user) == 0:
+        data['data']['collected'] = False
+    else:
+        data['data']['collected'] = True
+    data['message'] = 'susccess'
     return JsonResponse(data)
