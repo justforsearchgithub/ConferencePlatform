@@ -1,4 +1,4 @@
-path:display/my_conference
+path:display/my_conference/
 input:
     必须先登录
     method:GET
@@ -13,7 +13,7 @@ output:
                 'conference_title':xxx,
             }]
 
-path:display/my_submission
+path:display/my_submission/
 input:
     必须先登录
     method:GET
@@ -28,7 +28,7 @@ output:
                 'paper_name': xxx,
             }]
 
-path:display/conference/<int:id>/papers
+path:display/conference/<int:id>/papers/
 input:
     必须先登录
     id:会议id
@@ -44,7 +44,7 @@ output:
                 'paper_name': xxx,
             }]
 
-path:display/conference/<int:id>/activities
+path:display/conference/<int:id>/activities/
 input:
     必须先登录
     id:会议id
@@ -66,7 +66,7 @@ output:
                 'place': 活动地点
             }]
 
-path:display/my_subusers
+path:display/my_subusers/
 input:
     必须先登录
     method:GET
@@ -82,3 +82,16 @@ output:
                 'sub_username':
                 'sub_password':
             }]
+
+path:display/my_license/
+input:
+    必须先登录
+    method:GET
+output:
+    输出该单位用户的三个证件照对应的url,格式为'/media/xxx',加到ip地址后可访问
+    message: 'success'/'invalid organization user'
+    data: {
+            'bussiness_license':营业执照
+            'id_card_front':身份证正面
+            'id_card_reverse'身份证反面
+          }
