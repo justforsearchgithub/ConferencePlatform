@@ -112,6 +112,5 @@ conferenceplatform/__init__.py
 
 customsetting.py
 
-/conferenceplatform/__init__.py
-__init__.py
+**/conferenceplatform/__init__.py
 .idea/
