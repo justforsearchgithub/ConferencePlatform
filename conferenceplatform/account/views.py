@@ -89,13 +89,13 @@ def user_type(request):
 
 def get_username(request):
     data = {}
-    user = request.user
-    if user is None:
-        data['username'] = 'anonymous user'
+    if request.user.is_authenticated:
+        user = request.user
+        data['username'] = user.username
         return JsonResponse(data)
-    data['username'] = user.username
+    data['username'] = 'anonymous user'
     return JsonResponse(data)
-
+    
 def get_csrf_token(request):
     token = django.middleware.csrf.get_token(request)
     return JsonResponse({'token': token})
