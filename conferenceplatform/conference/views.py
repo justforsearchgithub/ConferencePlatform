@@ -159,3 +159,9 @@ def set_modify_due(request, id):
         return JsonResponse({'message': 'invalid conference pk'})
     except MultiValueDictKeyError:
         return JsonResponse({'message': 'invalid uploaded data'})
+
+
+def num_not_over(request):
+    now = datetime.datetime.now()
+    s = Conference.objects.filter(conference_due__lt=now)
+    return JsonResponse({'message':'success', 'data': s.count()})

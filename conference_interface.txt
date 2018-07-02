@@ -64,3 +64,10 @@ to 前端：
     数组里的对象：{'title':<str>, 'pk':<int> 会议主键, 'organization':<str>, 'subject':<str>}
     这些属性不够还可以再商量    
     应该不会有报错的机会
+
+url: conference/num_not_over/
+method: get
+说明：没有结束的会议的数量
+to 前端：
+    {'message':'success', 'data': <int> 数量 }
+    暂时无错可报
