@@ -166,13 +166,18 @@ def get_registrations_by_conference(request, id):
                     'paper_id': registration.submission.pk,
                     'paper_name': registration.submission.paper_name,
                 })
+            try:
+                voucher_url = registration.pay_coucher.url
+            except AttributeError:
+                voucher_url = None
             data.append({
                 'registration_id': registration.pk,
                 'paper_info': paper_info,
                 'participants': registration.participants,
+                'pay_voucher': voucher_url,
             })
         result['data'] = data
         result['message'] = 'success'
     except Conference.DoesNotExist:
-        result['message'] = ['no conference']
+        result['message'] = ['invalid conference id']
     return JsonResponse(result)
