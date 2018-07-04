@@ -18,4 +18,5 @@ urlpatterns = [
     path('discollect/<int:pk>/', views.discollect, name='discollect'),
     path('collect_list/', views.collect_list, name='collect_list'),
     path('is_collected/<int:pk>/', views.is_collected, name='is_collected'),
+    path('random_6_orgs/', views.random_6_orgs, name='random_6_orgs')
 ]
