@@ -3,6 +3,7 @@ from django.http import JsonResponse
 from account.decorators import user_has_permission
 from conference.models import *
 from .models import *
+from conference.utils import get_organization
 from conference import detail_views
 from account import decorators
 
@@ -12,14 +13,11 @@ def get_conferences_by_organization(request):
     assert request.method == 'GET'
     result = {'message': '', 'data': []}
     try:
-        if request.user.has_perm('account.OrganizationSubUser_Permission'):
-            org_sub_user = OrganizationSubUser.objects.get(user=request.user)
-            organization = org_sub_user.organization
-        elif request.user.has_perm('account.OrganizationUser_Permission'):
-            organization = OrganizationUser.objects.get(user=request.user)
-        else:
+        org = get_organization(request.user)
+        if org is None:
             return JsonResponse({'message': 'permission error'})
-        conferences = Conference.objects.filter(organization=organization)
+        #conferences = Conference.objects.filter(organization=org)
+        conferences = org.conference.all()
         data = []
         for con in conferences:
             data.append({
@@ -42,7 +40,8 @@ def get_submissions_by_submitter(request):
     assert request.method == 'GET'
     result = {'message': '', 'data': []}
     try:
-        submissions = Submission.objects.filter(submitter=request.user)
+        #submissions = Submission.objects.filter(submitter=request.user)
+        submissions = request.user.normaluser.submission.all()
         data = []
         for sub in submissions:
             data.append({
@@ -68,7 +67,8 @@ def get_papers_by_conference(request, id):
         conference = Conference.objects.get(pk=id)
         if conference.organization.user != request.user:
             return JsonResponse({'message': 'permission error'})
-        papers = Submission.objects.filter(conference=conference)
+        #papers = Submission.objects.filter(conference=conference)
+        papers = conference.submission.all()
         data = []
         for paper in papers:
             data.append({
@@ -89,7 +89,8 @@ def get_activities_by_conference(request, id):
     result = {'message': '', 'data': []}
     try:
         conference = Conference.objects.get(pk=id)
-        activities = Activity.objects.filter(conference=conference)
+        #activities = Activity.objects.filter(conference=conference)
+        activities = conference.activity.all()
         data = []
         for activity in activities:
             data.append({
@@ -113,8 +114,9 @@ def get_subuser_by_org(request):
     assert request.method == 'GET'
     result = {'message': '', 'data': []}
     try:
-        org = OrganizationUser.objects.get(user=request.user)
-        subusers = OrganizationSubUser.objects.filter(organization=org)
+        #org = OrganizationUser.objects.get(user=request.user)
+        #subusers = OrganizationSubUser.objects.filter(organization=org)
+        subusers = request.user.organizationuser.organizationsubuser.all()
         data = []
         for sub in subusers:
             data.append({
@@ -133,7 +135,8 @@ def get_images_by_org(request):
     assert request.method == 'GET'
     result = {'message': '', 'data': {}}
     try:
-        org = OrganizationUser.objects.get(user=request.user)
+        #org = OrganizationUser.objects.get(user=request.user)
+        org = request.user.organizationuser
         data = {
             'bussiness_license': org.bussiness_license.url,
             'id_card_front':  org.id_card_front.url,

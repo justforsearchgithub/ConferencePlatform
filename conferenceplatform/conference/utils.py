@@ -6,8 +6,7 @@ import datetime
 class ConferenceStatus(Enum):
     not_started = 1
     accepting_submission = 2
-    accepting_modification = 3
-    reviewing_accepting_modification = 9
+    reviewing_accepting_modification = 3
     reviewing = 4 # 结束接受修改后和开始会议注册前
     accepting_register = 5
     register_ended = 6
@@ -39,24 +38,25 @@ def conference_status(conf):
         return ConferenceStatus.not_started
     elif now < conf.accept_due:
         return ConferenceStatus.accepting_submission
-    else:
+    elif now < conf.register_start:
+        if conf.modify_due == None:
+            return ConferenceStatus.reviewing_accepting_modification
+        else:
+            if now < conf.modify_due:
+                return ConferenceStatus.reviewing_accepting_modification
+            else:                
+                return ConferenceStatus.reviewing     
         # now >= conf.accept_due, 已经结束接受投稿
         # 如果这时 modify_due没有设置，那么进入状态 modification_due_not_given
         # 直到 modify_due 被设置
-        if conf.modify_due == None:
-            return ConferenceStatus.modification_due_not_given
-        elif now < conf.modify_due:
-            return ConferenceStatus.accepting_modification
-        elif now < conf.register_start:
-            return ConferenceStatus.reviewing
-        elif now < conf.register_due:
-            return ConferenceStatus.accepting_register
-        elif now < conf.conference_start:
-            return ConferenceStatus.register_ended
-        elif now < conf.conference_due:
-            return ConferenceStatus.meeting
-        else:
-            return ConferenceStatus.over
+    elif now < conf.register_due:
+        return ConferenceStatus.accepting_register
+    elif now < conf.conference_start:
+        return ConferenceStatus.register_ended
+    elif now < conf.conference_due:
+        return ConferenceStatus.meeting
+    else:
+        return ConferenceStatus.over
 
 def add_activity(conference, act_json):    
      Activity.objects.create(

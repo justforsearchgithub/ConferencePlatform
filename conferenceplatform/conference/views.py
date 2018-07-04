@@ -142,8 +142,26 @@ def set_modify_due(request, id):
     try:
         with database_transaction.atomic():
             conf = Conference.objects.get(pk=id)
+            if conf.modify_due != None:
+                return JsonResponse({'message': 'already set'})
+
             cleaner = forms.DateTimeField()
             due = cleaner.clean(request.POST['modify_due'])
+            if due <= now:
+                return JsonResponse({'message': 'too late'})
+            
+            conf.modify_due = due
+            if not valid_timepoints(conf):
+                conf.modify_due = None
+                retrn JsonResponse({'message': 'time point'})
             
     except Conference.DoesNotExist:
         return JsonResponse({'message': 'invalid conference pk'})
+    except MultiValueDictKeyError:
+        return JsonResponse({'message': 'invalid uploaded data'})
+
+
+def num_not_over(request):
+    now = datetime.datetime.now()
+    s = Conference.objects.filter(conference_due__lt=now)
+    return JsonResponse({'message':'success', 'data': s.count()})
