@@ -20,6 +20,7 @@ def get_conference_detail(conference):
         'register_start': conference.register_start,
         'conference_start': conference.conference_start,
         'conference_due': conference.conference_due,
+        'template_no': conference.template_no,
     }
     return data
 
