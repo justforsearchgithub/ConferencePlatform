@@ -181,5 +181,5 @@ DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
 import djcelery
 djcelery.setup_loader()
-BROKER_URL = 'redis://139.199.24.235:6379/0'
+BROKER_URL = 'redis://:redispassword@139.199.24.235:6379/0'
 BROKER_TRANSPORT = 'redis'
