@@ -18,6 +18,7 @@ def get_conference_detail(conference):
         'accept_due': conference.accept_due,
         'modify_due': conference.modify_due,
         'register_start': conference.register_start,
+        'register_due': conference.register_due,
         'conference_start': conference.conference_start,
         'conference_due': conference.conference_due,
         'template_no': conference.template_no,
