@@ -9,6 +9,7 @@ from .admin_user_views import *
 from .organization_sub_user_views import *
 import django
 import random
+from .tasks import send_register_email
 
 # Create your views here.
 
@@ -128,4 +129,8 @@ def random_6_orgs(request):
             s.add(allorgs[random.randrange(0, n)])
         li = [o.org_name for o in s]
     return JsonResponse({'message': 'success', 'data': li})
-    
+
+def test_email(request):
+    assert request.method == 'POST'
+    send_register_email.delay('852217427@qq.com')
+    return JsonResponse({'message':'success'})
