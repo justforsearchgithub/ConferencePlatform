@@ -18,7 +18,7 @@ from account.decorators import user_has_permission
 def add_conference(request):
     assert request.method == 'POST'
     form = ConferenceInfoForm(request.POST, request.FILES)
-    if form.is_valid() or True:
+    if form.is_valid():
         with database_transaction.atomic():
             org = get_organization(request.user)
             assert org is not None
@@ -42,6 +42,7 @@ def add_conference(request):
                 conference_start=form.cleaned_data['conference_start'],
                 conference_due=form.cleaned_data['conference_due'],
                 #paper_template=form.cleaned_data['paper_template'],
+                venue=form.cleaned_data['venue'],
             )
             conf.paper_template = request.FILES['paper_template']
             conf.save()
@@ -57,6 +58,7 @@ def add_conference(request):
                     add_activity(conf, activity)
             except KeyError as e:
                 print(e)
+                assert(False)
             return JsonResponse({'message': 'success', 'data': {'pk': conf.pk}})
     else:
         return JsonResponse({'message': 'invalid uploaded data'})
@@ -73,8 +75,7 @@ def paper_submit(request, id):
             normal_user = request.user.normaluser
             s = Submission.objects.create(
                 submitter=normal_user, institute=request.POST['institute'],
-                conference=conf, 
-                #paper=request.FILES['paper'],
+                conference=conf,             
                 paper_name=request.POST['paper_name'], 
                 paper_abstract=request.POST['paper_abstract'],
                 authors=request.POST['authors'],
@@ -222,4 +223,11 @@ def submit_after_modification(request, id):
     except MultiValueDictKeyError:
         ret['message'] = 'invalid uploaded data'
     return JsonResponse(ret)
+
+
+def export_submission_info(request, id):
+    pass
+
+def export_register_info(request, id):
+    pass
 

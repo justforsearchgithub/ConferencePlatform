@@ -27,7 +27,8 @@ output:
             register_due,注册结束时间
             conference_start,会议开始时间
             conference_due,会议结束时间
-            template_no,会议模板编号}
+            template_no,会议模板编号
+            venue, 会议的地点}
 
 path:subjects/
 input:
@@ -77,7 +78,8 @@ output:
             'paper': 文件路径,返回的是路径/media/xxx，加到ip地址后可访问
             'paper_name',
             'paper_abstract',
-            'authors',
+            'authors', 为一json对象（而非字符串），
+            格式详见 conference_interface.txt中conference/conference/<会议的主键id>/paper_submit/里的描述
             'institute',
             'submit_time': submission.submit_time,
             'modification_advice': submission.modification_advice,

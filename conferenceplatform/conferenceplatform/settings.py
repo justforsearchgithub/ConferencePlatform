@@ -40,7 +40,7 @@ INSTALLED_APPS = [
     'account',
     'conference',
 
-    'djcelery',
+    #'djcelery',
     #'corsheaders',
 ]
 
