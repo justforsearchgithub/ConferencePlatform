@@ -72,3 +72,9 @@ method: get
 to 前端：
     {'message':'success', 'data': <int> 数量 }
     暂时无错可报
+
+url: account/random_6_orgs/
+method: get
+说明:随机返回6个机构名称
+to 前端:
+    {'message':'success', 'data': [<str>, ...]}

@@ -8,6 +8,7 @@ from .organization_user_views import *
 from .admin_user_views import *
 from .organization_sub_user_views import *
 import django
+import random
 
 # Create your views here.
 
@@ -114,6 +115,17 @@ def upload_pic(request):
     return JsonResponse({'message' : 'success'})
 
 
-def random_10_orgs(request):
+def random_6_orgs(request):
     assert request.method == 'GET'
-    #orgs = OrganizationUser.objects().
+    li = []
+    allorgs = OrganizationUser.objects.all()
+    n = allorgs.count()
+    if n <= 6:
+        li = [o.org_name for o in allorgs]
+    else:
+        s = set()
+        while len(s) < 6:
+            s.add(allorgs[random.randrange(0, n)])
+        li = [o.org_name for o in s]
+    return JsonResponse({'message': 'success', 'data': li})
+    
