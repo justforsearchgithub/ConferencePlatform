@@ -8,5 +8,6 @@ urlpatterns = [
     path('my_license/', display_views.get_images_by_org, name='my_license'),
     path('conference/<int:id>/papers/', display_views.get_papers_by_conference, name='conference_papers'),
     path('conference/<int:id>/activities/', display_views.get_activities_by_conference, name='conference_activities'),
+    path('conference/<int:id>/registrations/', display_views.get_registrations_by_conference, name='conference_registrations'),
     path('test/', display_views.test1, name='test')
 ]

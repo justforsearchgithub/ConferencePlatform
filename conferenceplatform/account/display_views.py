@@ -126,7 +126,7 @@ def get_subuser_by_org(request):
             })
         result['data'] = data
         result['message'] = 'success'
-    except OrganizationUser.DoesNotExist:
+    except AttributeError:
         result['message'] = ['invalid organization user']
     return JsonResponse(result)
 
@@ -144,13 +144,13 @@ def get_images_by_org(request):
         }
         result['data'] = data
         result['message'] = 'success'
-    except OrganizationUser.DoesNotExist:
+    except AttributeError:
         result['message'] = ['invalid organization user']
     return JsonResponse(result)
 
 
 @user_has_permission('account.ConferenceRelated_Permission')
-def get_registration_by_conference(request, id):
+def get_registrations_by_conference(request, id):
     assert request.method == 'GET'
     result = {'message': '', 'data': []}
     try:
@@ -160,11 +160,19 @@ def get_registration_by_conference(request, id):
         registrations = conference.registerinformation_set.all()
         data = []
         for registration in registrations:
-            data.append(detail_views.get_register_detail(registration))
+            paper_info = {}
+            if registration.submission is not None:
+                paper_info.update({
+                    'paper_id': registration.submission.pk,
+                    'paper_name': registration.submission.paper_name,
+                })
+            data.append({
+                'registration_id': registration.pk,
+                'paper_info': paper_info,
+                'participants': registration.participants,
+            })
         result['data'] = data
         result['message'] = 'success'
-    except Submission.DoesNotExist:
-        result['message'] = ['no submissions']
     except Conference.DoesNotExist:
         result['message'] = ['no conference']
     return JsonResponse(result)
