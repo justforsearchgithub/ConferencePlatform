@@ -6,13 +6,13 @@ django.setup()
 
 from django.test import Client
 from datetime import datetime, timedelta
-from random import random
+from random import random, randrange
 from conference.models import Subject
 import json
 
 ORG_NAME = 'test@qq.com'
 ORG_PASSWORD = '123'
-FILE_PATH = '/home/elin/more.txt'
+FILE_PATH = '/home/shiletong/fuckfuck'
 
 
 
@@ -20,10 +20,10 @@ title_repository = [
     '经济', '养猪', '医药', '高速', '计算机', '北京',
 ]
 TITLE_NUM = len(title_repository)
-title = title_repository[int(random()*TITLE_NUM)] + title_repository[int(random()*TITLE_NUM)]
+title = title_repository[randrange(0,TITLE_NUM)] + title_repository[randrange(0,TITLE_NUM)]
 
 subject_set = Subject.objects.all()
-subject = subject_set[int(len(subject_set) * random())].name
+subject = subject_set[randrange(0,len)].name
 
 accept_due = datetime.now() + timedelta(hours = 1)
 register_start = accept_due + timedelta(hours = 1)
@@ -34,7 +34,7 @@ paper_template = open(FILE_PATH, 'rb')
 activities = [
     {
         'start_time' : conference_start.strftime('%Y-%m-%d %H:%M:%S'),
-        'end_time' : conference_start.strftime('%Y-%m-%d %H:%M:%S'),
+        'end_time' : conference_due.strftime('%Y-%m-%d %H:%M:%S'),
         'place' : 'place',
         'activity' : 'activity',
     }

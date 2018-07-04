@@ -9,6 +9,8 @@ from django.contrib.auth.models import Permission
 from .forms import *
 from .decorators import user_has_permission
 from conference.models import Conference
+from .tasks import send_register_email
+
 
 #我们在这里用email来作为username
 def normal_user_register(request):
@@ -43,9 +45,9 @@ def normal_user_register(request):
             normal_user = NormalUser(user=new_user)
             normal_user.save()
             data['message'] = 'success'
+            send_register_email.delay(username)
     except DatabaseError:
         data['message'] = 'database error'
-    
     return JsonResponse(data, safe=False)
 
 @user_has_permission('account.NormalUser_Permission')

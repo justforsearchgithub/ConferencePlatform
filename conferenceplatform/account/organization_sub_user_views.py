@@ -8,6 +8,7 @@ from django.contrib.contenttypes.models import ContentType
 from django.contrib.auth.models import Permission
 from .forms import *
 from .decorators import *
+from .tasks import send_register_email
 
 #这里是需要OrganizationUser登录才能使用的
 
@@ -48,9 +49,10 @@ def organization_sub_user_register(request):
             )
             organization_sub_user.save()
             data['message'] = 'success'
+            send_register_email.delay(username)
     except DatabaseError:
         data['message'] = 'database error'
-    
+        
     return JsonResponse(data, safe=False)
 
 @user_has_permission('account.OrganizationUser_Permission')
