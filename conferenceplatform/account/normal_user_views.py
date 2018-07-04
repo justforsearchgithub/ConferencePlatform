@@ -45,7 +45,7 @@ def normal_user_register(request):
             normal_user = NormalUser(user=new_user)
             normal_user.save()
             data['message'] = 'success'
-            send_register_email.delay(username)
+            #send_register_email.delay(username)
     except DatabaseError:
         data['message'] = 'database error'
     return JsonResponse(data, safe=False)
