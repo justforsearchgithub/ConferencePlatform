@@ -61,7 +61,8 @@ method: get
 说明：top10劲的会议
 to 前端：
     json对象，{'message':'success', 'data': [ 一个对象，如下所示... ] }
-    数组里的对象：{'title':<str>, 'pk':<int> 会议主键, 'organization':<str>, 'subject':<str>}
+    数组里的对象：{'title':<str>, 'pk':<int> 会议主键, 'organization':<str>,
+    'organizationpk':<int>, 'subject':<str>}
     这些属性不够还可以再商量    
     应该不会有报错的机会
 
