@@ -61,7 +61,8 @@ method: get
 说明：top10劲的会议
 to 前端：
     json对象，{'message':'success', 'data': [ 一个对象，如下所示... ] }
-    数组里的对象：{'title':<str>, 'pk':<int> 会议主键, 'organization':<str>, 'subject':<str>}
+    数组里的对象：{'title':<str>, 'pk':<int> 会议主键, 'organization':<str>,
+    'organizationpk':<int>, 'subject':<str>, 'conference_start': <datetime>}
     这些属性不够还可以再商量    
     应该不会有报错的机会
 
@@ -71,3 +72,25 @@ method: get
 to 前端：
     {'message':'success', 'data': <int> 数量 }
     暂时无错可报
+
+url: account/random_6_orgs/
+method: get
+说明:随机返回6个机构名称
+to 前端:
+    {'message':'success', 'data': [<str>, ...]}
+
+
+url: conference/set_modify_due/
+method: post
+说明：设置论文修改后提交的截止日期
+from 前端：
+    'modify_due' 截止时间
+to 前端：
+    {'message':<str>}，message有如下可能取值：
+    'success'
+    'invalid conference pk'  'invalid uploaded data'
+    'timepoints not reasonable' 同 add_conference里的含义
+    'already set' 这个属性已经被设置了
+    'too late'    上传的日期在现在(now)之前
+    'review finished' 评审已经结束了，注册已经开始了
+    'review not finished' 接受投稿还没有结束，评审还没有开始

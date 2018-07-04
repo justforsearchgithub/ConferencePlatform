@@ -95,3 +95,20 @@ output:
             'id_card_front':身份证正面
             'id_card_reverse'身份证反面
           }
+
+path:display/conference/<int:id>/registrations/
+input:
+    获取会议的注册信息列表，必须先登录
+    id:会议id
+    method:GET
+output:
+    输出一个会议的所有注册信息
+    message: 'success'/'invalid conference id'
+    data: [{
+                'registration_id': xxx,
+                'paper_info': (如果有论文提交){'paper_id':xxx, 'paper_name':xxx}
+                'participants': 与会者的信息,格式为：[{'name': <str>, 'gender': <男or女>, 'reservation' /*是否预定住宿*/: <bool>}, ...]
+                'pay_voucher': 支付凭证图片的url,加到ip地址后可访问
+            },{
+                   ...
+            }]

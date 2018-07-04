@@ -149,12 +149,18 @@ def set_modify_due(request, id):
             due = cleaner.clean(request.POST['modify_due'])
             if due <= now:
                 return JsonResponse({'message': 'too late'})
+            if now >= conf.register_start:
+                return JsonResponse({'message': 'review finished'})
+            # 为了测试方便先注释掉：
+            """ if now < conf.accept_due:
+                return JsonResponse({'message': 'review not started'}) """
             
             conf.modify_due = due
             if not valid_timepoints(conf):
                 conf.modify_due = None
-                return JsonResponse({'message': 'time point'})
-            
+                return JsonResponse({'message': 'timepoints not reasonable'})
+
+            return JsonResponse({'message':'success'})
     except Conference.DoesNotExist:
         return JsonResponse({'message': 'invalid conference pk'})
     except MultiValueDictKeyError:
@@ -163,5 +169,5 @@ def set_modify_due(request, id):
 
 def num_not_over(request):
     now = datetime.datetime.now()
-    s = Conference.objects.filter(conference_due__lt=now)
+    s = Conference.objects.filter(conference_due__gt=now)
     return JsonResponse({'message':'success', 'data': s.count()})
