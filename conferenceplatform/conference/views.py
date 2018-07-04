@@ -153,7 +153,7 @@ def set_modify_due(request, id):
             conf.modify_due = due
             if not valid_timepoints(conf):
                 conf.modify_due = None
-                retrn JsonResponse({'message': 'time point'})
+                return JsonResponse({'message': 'time point'})
             
     except Conference.DoesNotExist:
         return JsonResponse({'message': 'invalid conference pk'})
@@ -163,5 +163,5 @@ def set_modify_due(request, id):
 
 def num_not_over(request):
     now = datetime.datetime.now()
-    s = Conference.objects.filter(conference_due__lt=now)
+    s = Conference.objects.filter(conference_due__gt=now)
     return JsonResponse({'message':'success', 'data': s.count()})
