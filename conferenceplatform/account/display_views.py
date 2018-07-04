@@ -75,10 +75,18 @@ def get_papers_by_conference(request, id):
         #papers = Submission.objects.filter(conference=conference)
         papers = conference.submission_set.all()
         data = []
+
         for paper in papers:
+            try:
+                paper_url = paper.paper.url
+            except ValueError:
+                paper_url = None
             data.append({
                 'submission_id': paper.pk,
                 'paper_name': paper.paper_name,
+                'paper_url': paper_url,
+                'state': paper.state,
+                'submitter': paper.submitter.user.username,
             })
         result['data'] = data
         result['message'] = 'success'
@@ -172,8 +180,8 @@ def get_registrations_by_conference(request, id):
                     'paper_name': registration.submission.paper_name,
                 })
             try:
-                voucher_url = registration.pay_coucher.url
-            except AttributeError:
+                voucher_url = registration.pay_voucher.url
+            except ValueError:
                 voucher_url = None
             data.append({
                 'registration_id': registration.pk,

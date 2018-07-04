@@ -47,9 +47,15 @@ output:
     data: [{
                 'submission_id': xxx,
                 'paper_name': xxx,
+                'paper_url': xxx,
+                'state': xxx,
+                'submitter': xxx,
             },{
                 'submission_id': xxx,
                 'paper_name': xxx,
+                'paper_url': xxx,
+                'state': xxx,
+                'submitter': xxx,
             }]
 
 path:display/conference/<int:id>/activities/

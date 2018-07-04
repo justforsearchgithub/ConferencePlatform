@@ -66,3 +66,12 @@ def add_activity(conference, act_json):
          place=act_json['place'],
          activity=act_json['activity'],
      )
+
+
+def edit_activity(pk, act_json):
+     Activity.objects.filter(pk=pk).update(
+         start_time=act_json['start_time'],
+         end_time=act_json['end_time'],
+         place=act_json['place'],
+         activity=act_json['activity'],
+     )

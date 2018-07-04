@@ -1,5 +1,5 @@
 from django.urls import path
-from . import views, detail_views
+from . import views, detail_views, edit_views
 
 app_name = 'conference'
 urlpatterns = [
@@ -13,5 +13,8 @@ urlpatterns = [
     path('submission/<int:id>/', detail_views.submission_information, name='submission_information'),
     path('register_information/<int:id>/', detail_views.register_information, name='register_information'),
     path('top10_hot_references/', detail_views.top10_hot_conferences, name='top10_hot_references'),
-    path('num_not_over/', views.num_not_over, name='num_not_over'),    
+    path('num_not_over/', views.num_not_over, name='num_not_over'),
+
+    path('edit_conference/<int:id>/', edit_views.edit_conference_by_id, name='edit_conference'),
+    path('edit_activity/<int:id>/', edit_views.edit_activity_by_id, name='edit_activity'),
 ]
