@@ -24,6 +24,7 @@ output:
             accept_due,投稿截止时间
             modify_due,修改截止日期
             register_start,注册开始时间
+            register_due,注册结束时间
             conference_start,会议开始时间
             conference_due,会议结束时间
             template_no,会议模板编号}
