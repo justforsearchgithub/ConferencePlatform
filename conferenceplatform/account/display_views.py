@@ -17,7 +17,7 @@ def get_conferences_by_organization(request):
         if org is None:
             return JsonResponse({'message': 'permission error'})
         #conferences = Conference.objects.filter(organization=org)
-        conferences = org.conference.all()
+        conferences = org.conference_set.all()
         data = []
         for con in conferences:
             data.append({
@@ -41,7 +41,7 @@ def get_submissions_by_submitter(request):
     result = {'message': '', 'data': []}
     try:
         #submissions = Submission.objects.filter(submitter=request.user)
-        submissions = request.user.normaluser.submission.all()
+        submissions = request.user.normaluser.submission_set.all()
         data = []
         for sub in submissions:
             data.append({
@@ -68,7 +68,7 @@ def get_papers_by_conference(request, id):
         if conference.organization.user != request.user:
             return JsonResponse({'message': 'permission error'})
         #papers = Submission.objects.filter(conference=conference)
-        papers = conference.submission.all()
+        papers = conference.submission_set.all()
         data = []
         for paper in papers:
             data.append({
@@ -90,7 +90,7 @@ def get_activities_by_conference(request, id):
     try:
         conference = Conference.objects.get(pk=id)
         #activities = Activity.objects.filter(conference=conference)
-        activities = conference.activity.all()
+        activities = conference.activity_set.all()
         data = []
         for activity in activities:
             data.append({
@@ -116,7 +116,7 @@ def get_subuser_by_org(request):
     try:
         #org = OrganizationUser.objects.get(user=request.user)
         #subusers = OrganizationSubUser.objects.filter(organization=org)
-        subusers = request.user.organizationuser.organizationsubuser.all()
+        subusers = request.user.organizationuser.organizationsubuser_set.all()
         data = []
         for sub in subusers:
             data.append({
@@ -146,4 +146,25 @@ def get_images_by_org(request):
         result['message'] = 'success'
     except OrganizationUser.DoesNotExist:
         result['message'] = ['invalid organization user']
+    return JsonResponse(result)
+
+
+@user_has_permission('account.ConferenceRelated_Permission')
+def get_registration_by_conference(request, id):
+    assert request.method == 'GET'
+    result = {'message': '', 'data': []}
+    try:
+        conference = Conference.objects.get(pk=id)
+        if conference.organization.user != request.user:
+            return JsonResponse({'message': 'permission error'})
+        registrations = conference.registerinformation_set.all()
+        data = []
+        for registration in registrations:
+            data.append(detail_views.get_register_detail(registration))
+        result['data'] = data
+        result['message'] = 'success'
+    except Submission.DoesNotExist:
+        result['message'] = ['no submissions']
+    except Conference.DoesNotExist:
+        result['message'] = ['no conference']
     return JsonResponse(result)
