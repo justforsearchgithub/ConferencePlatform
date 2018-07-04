@@ -153,7 +153,7 @@ def set_modify_due(request, id):
             conf.modify_due = due
             if not valid_timepoints(conf):
                 conf.modify_due = None
-                retrn JsonResponse({'message': 'time point'})
+                return JsonResponse({'message': 'time point'})
             
     except Conference.DoesNotExist:
         return JsonResponse({'message': 'invalid conference pk'})

@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'account',
     'conference',
 
+    'djcelery',
     #'corsheaders',
 ]
 
@@ -176,3 +177,9 @@ EMAIL_HOST_PASSWORD = 'guojiao1573'
 EMAIL_USE_TLS = True
 EMAIL_USE_SSL = False
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER 
+
+
+import djcelery
+djcelery.setup_loader()
+BROKER_URL = 'redis://127.0.0.1:6379/0'
+BROKER_TRANSPORT = 'redis'
