@@ -14,18 +14,26 @@ output:
             }]
 
 path:display/my_submission/
+path:display/my_submission/<str:state>/
+获取用户的提交论文列表,第一个url是获取全部论文，第二个url是根据state获取相应提交状态的论文列表
+state可选参数：S(待审核),P(已通过),M(待修改),R(被拒绝)
 input:
     必须先登录
     method:GET
 output:
-    输出该用户的所有提交论文列表
-    message: 'success'/'no submissions'
+    输出该用户的提交论文列表
+    message: 'success'/'invalid request user'
     data: [{
                 'submission_id': xxx,
                 'paper_name': xxx,
+                'conference_title': 所属会议名称,
+                'state': 提交论文的状态,
+                         有S(待审核),P(已通过),M(待修改),R(被拒绝)四种情况
             },{
                 'submission_id': xxx,
                 'paper_name': xxx,
+                'conference_title': 所属会议名称,
+                'state': 'S/P/M/R'
             }]
 
 path:display/conference/<int:id>/papers/

@@ -36,22 +36,27 @@ def get_conferences_by_organization(request):
 
 
 @user_has_permission('account.NormalUser_Permission')
-def get_submissions_by_submitter(request):
+def get_submissions_by_submitter(request, state=None):
     assert request.method == 'GET'
     result = {'message': '', 'data': []}
     try:
-        #submissions = Submission.objects.filter(submitter=request.user)
-        submissions = request.user.normaluser.submission_set.all()
+        submitter = request.user.normaluser
+        if state is None:
+            submissions = submitter.submission_set.all()
+        else:
+            submissions = Submission.objects.filter(submitter=submitter, state=state)
         data = []
         for sub in submissions:
             data.append({
                 'submission_id': sub.pk,
                 'paper_name': sub.paper_name,
+                'conference_title': sub.conference.title,
+                'state': sub.state,
             })
         result['data'] = data
         result['message'] = 'success'
-    except Submission.DoesNotExist:
-        result['message'] = ['no submissions']
+    except AttributeError:
+        result['message'] = ['invalid request user']
     return JsonResponse(result)
 
 
