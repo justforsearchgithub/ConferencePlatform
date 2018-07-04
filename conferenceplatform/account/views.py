@@ -144,4 +144,3 @@ def test_email(request):
     assert request.method == 'POST'
     send_register_email.delay('852217427@qq.com')
     return JsonResponse({'message':'success'})
-account/views.py
