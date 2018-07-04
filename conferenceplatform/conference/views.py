@@ -4,6 +4,7 @@ from django.utils.datastructures import MultiValueDictKeyError
 from django.db import transaction as database_transaction   
 from django.db import IntegrityError, DatabaseError
 from django.utils import timezone
+from django.core.exceptions import *
 import datetime
 import json
 from account.models import *
@@ -24,7 +25,7 @@ def add_conference(request):
             try:
                 subject = Subject.objects.get(name=form.cleaned_data['subject'])
             except Subject.DoesNotExist:
-                print('BUG: no subject: ' + form.cleaned_data['subject'])
+                return JsonResponse({'message': 'unknown subject'})
 
             conf = Conference.objects.create(
                 organization=org, title=form.cleaned_data['title'], 
@@ -56,7 +57,7 @@ def add_conference(request):
                     add_activity(conf, activity)
             except KeyError as e:
                 print(e)
-            return JsonResponse({'message': 'success'})
+            return JsonResponse({'message': 'success', 'data': {'pk': conf.pk}})
     else:
         return JsonResponse({'message': 'invalid uploaded data'})
 
@@ -83,7 +84,7 @@ def paper_submit(request, id):
             s.save()
             conf.num_submission = conf.num_submission + 1
             conf.save()
-            return JsonResponse({'message': 'success'})
+            return JsonResponse({'message': 'success', 'data': {'pk': s.pk}})
     except Conference.DoesNotExist:
         return JsonResponse({'message': 'invalid conference pk'})
     except MultiValueDictKeyError:
@@ -171,3 +172,54 @@ def num_not_over(request):
     now = datetime.datetime.now()
     s = Conference.objects.filter(conference_due__gt=now)
     return JsonResponse({'message':'success', 'data': s.count()})
+
+
+def submit_after_modification(request, id):
+    assert request.method == 'POST'
+    ret = {'message': 'success', 'data': None}
+    try:
+        with database_transaction.atomic():
+            prevsub = Submission.objects.get(pk=id)
+            if request.user.pk != prevsub.submitter.user.pk:
+                ret['message'] = 'not owned'
+                return JsonResponse(ret)
+
+            conf = prevsub.conference
+            if conference_status(conf) != ConferenceStatus.reviewing_accepting_modification:
+                ret['message'] = 'not accepting modification'
+                return JsonResponse(ret)
+            
+            if prevsub.modified:
+                ret['message'] = 'can\'t modify twice'
+                return JsonResponse(ret)
+            
+            if prevsub.state != 'M':
+                ret['message'] = 'need no modification'
+                return JsonResponse(ret)
+            
+            textcleaner = forms.CharField(required=False)
+            prevsub.modified_time = datetime.datetime.now()
+            prevsub.modified_explain = textcleaner.clean(request.POST['explain'])
+            prevsub.paper = request.FILES['paper']
+            try:
+                name = textcleaner.clean(request.POST['name'])
+                if name != '':
+                    prevsub.paper_name = name
+            except MultiValueDictKeyError:
+                pass
+
+            try:
+                abstract = textcleaner.clean(request.POST['abstract'])
+                if abstract != '':
+                    prevsub.paper_abstract = abstract
+            except MultiValueDictKeyError:
+                pass
+
+            prevsub.modified = True
+
+    except Submission.DoesNotExist:
+        ret['message'] = 'invalid submission pk'
+    except MultiValueDictKeyError:
+        ret['message'] = 'invalid uploaded data'
+    return JsonResponse(ret)
+

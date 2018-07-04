@@ -94,3 +94,20 @@ to 前端：
     'too late'    上传的日期在现在(now)之前
     'review finished' 评审已经结束了，注册已经开始了
     'review not finished' 接受投稿还没有结束，评审还没有开始
+
+
+url: conference/submission/<int:id>/submit_after_modification/
+method: post
+说明：修改后的再次提交，url中的id应为第一次提交后的Submission的主键
+from 前端：
+    explain 修改的解释 paper 修改后的文件 name 论文名称 abstract 摘要 
+    其中 name 和 abstract 若不变，则可以不上传这两项，空字符串也可以
+to 前端：
+    {'message':<str>} message有如下取值
+    'success'
+    'invalid submission pk' 'invalid uploaded data'
+    'not owned' 论文不属于当前登录的用户
+    'not accepting modification' 提交所属的会议并没有在接受修改稿的时间范围内
+    'can't modify twice' 已经改过一次了
+    'need no modification' 无需修改，或已被接受或被拒绝或还没有评审到你
+
