@@ -20,4 +20,5 @@ urlpatterns = [
     path('is_collected/<int:pk>/', views.is_collected, name='is_collected'),
     path('random_6_orgs/', views.random_6_orgs, name='random_6_orgs'),
     path('test_email/', views.test_email, name='test_email'),
+    path('acceptorg/', views.accept_orgnization_register, name='accept_orgnization_register'),
 ]

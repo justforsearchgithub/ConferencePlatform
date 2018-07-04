@@ -8,6 +8,7 @@ output:
         'success'
         'username or password error'
         'format error'
+        not active 
     data
         user_type
             'normal_user'
@@ -191,3 +192,13 @@ output:
             {"id": 5,"title": "北京高速"}
         ]
     }
+
+path:account/acceptorg/
+input:
+    POST
+        org_pk
+output:
+    message
+        format error
+        organization not exist
+        success

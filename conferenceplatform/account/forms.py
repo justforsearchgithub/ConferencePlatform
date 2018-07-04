@@ -35,3 +35,6 @@ class OrganizationSubUserForm(forms.Form):
 
 class DeleteSubUserForm(forms.Form):
     sub_user_username = forms.CharField()
+
+class AcceptorgregForm(forms.Form):
+    org_pk = forms.IntegerField()

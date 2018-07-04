@@ -1,8 +1,8 @@
-import os
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "conferenceplatform.settings") 
+    import os
+    os.environ.setdefault("DJANGO_SETTINGS_MODULE", "conferenceplatform.settings") 
 
-import django
-django.setup()
+    import django
+    django.setup()
 
 from django.test import Client
 from datetime import datetime, timedelta
