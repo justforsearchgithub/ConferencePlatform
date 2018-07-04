@@ -17,6 +17,9 @@ class Conference(models.Model):
     register_requirement = models.TextField()
     template_no = models.IntegerField()
 
+    # 会议地点
+    venue = models.CharField(max_length=100, null=True, blank=True)
+
     accept_start = models.DateTimeField(auto_now=True)
     accept_due = models.DateTimeField(blank=True, null=True)
     modify_due = models.DateTimeField(blank=True, null=True)
@@ -65,8 +68,6 @@ class Submission(models.Model):
         unique_together = ('submitter', 'conference')
 
     
-
-
 class RegisterInformation(models.Model):
     user = models.ForeignKey(NormalUser, on_delete=models.CASCADE)
     conference = models.ForeignKey(Conference, on_delete=models.CASCADE)

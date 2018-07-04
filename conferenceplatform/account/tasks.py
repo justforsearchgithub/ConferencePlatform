@@ -1,7 +1,7 @@
 from django.core.mail import send_mail
-from celery import task
+#from celery import task
 
-@task
+#@task
 def send_register_email(email):
     subject = 'register success on ConferencePlatform'
     message = 'register success on ConferencePlatform'
@@ -16,7 +16,7 @@ def send_register_email(email):
     )
 
 
-@task
+#@task
 def my_send_email(subject, message, to_email):
     send_mail(
         subject,

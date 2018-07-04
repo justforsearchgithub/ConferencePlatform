@@ -3,7 +3,7 @@ from django.http import JsonResponse
 from .utils import *
 from account.models import *
 from account.decorators import user_has_permission
-
+import json
 
 def get_conference_detail(conference):
     data = {
@@ -22,6 +22,7 @@ def get_conference_detail(conference):
         'conference_start': conference.conference_start,
         'conference_due': conference.conference_due,
         'template_no': conference.template_no,
+        'venue': conference.venue,
     }
     return data
 
@@ -50,6 +51,7 @@ def get_activity_detail(activity):
     return data
 
 def get_submission_detail(submission):
+    authors = json.loads(submission.authors)
     data = {
         'submitter_id': submission.submitter.pk,
         'conference_id': submission.conference.pk,
@@ -57,7 +59,7 @@ def get_submission_detail(submission):
         'paper': submission.paper.url,
         'paper_name': submission.paper_name,
         'paper_abstract': submission.paper_abstract,
-        'authors': submission.authors,
+        'authors': authors,
         'institute': submission.institute,
         'submit_time': submission.submit_time,
         'modification_advice': submission.modification_advice,

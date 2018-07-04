@@ -10,6 +10,7 @@ from .organization_sub_user_views import *
 import django
 import random
 from .tasks import send_register_email
+from django.contrib.auth.hashers import check_password
 
 # Create your views here.
 
@@ -26,6 +27,9 @@ def user_login(request):
     user = authenticate(request, username=username, password=password)
 
     if user is not None:
+
+        #tuwei
+
         data['message'] = 'success'
         if user.has_perm('account.NormalUser_Permission'):
             data['data']['user_type'] = 'normal_user'
@@ -37,7 +41,13 @@ def user_login(request):
             data['data']['user_type'] = 'our_admin'
         login(request, user)
     else:
-        data['message'] = 'username or password error'
+        user = User.objects.filter(username = username)
+        if len(user) != 0:
+            if user[0].check_password(password):
+                data['message'] = 'not active'
+        else:
+            data['message'] = 'username or password error'
+
     return JsonResponse(data, safe=False)
 
 def change_password(request):
