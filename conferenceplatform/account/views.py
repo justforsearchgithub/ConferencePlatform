@@ -9,7 +9,7 @@ from .admin_user_views import *
 from .organization_sub_user_views import *
 import django
 import random
-from .tasks import send_register_email
+from .tasks import send_register_email, test_celery
 
 # Create your views here.
 
@@ -133,4 +133,9 @@ def random_6_orgs(request):
 def test_email(request):
     assert request.method == 'POST'
     send_register_email.delay('852217427@qq.com')
+    return JsonResponse({'message':'success'})
+
+def test_celery_view(request):
+    assert request.method == 'POST'
+    test_celery()
     return JsonResponse({'message':'success'})
