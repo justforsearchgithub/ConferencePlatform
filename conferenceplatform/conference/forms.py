@@ -17,6 +17,7 @@ class ConferenceInfoForm(forms.Form):
     conference_due = forms.DateTimeField()
     paper_template = forms.FileField() # 需上传
     activities = forms.CharField() # json对象
+    venue = forms.CharField()
 
 class ActivityInfoForm(forms.Form):
     start_time = forms.DateTimeField()

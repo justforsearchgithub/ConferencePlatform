@@ -22,7 +22,10 @@ from 前端：
     activities  序列化的json数组，数组元素为    
     {'start_time':<datetime>, 'end_time':<datetime>, 'place':<str>, 'activity':<str>}
     形式的对象
-    *****新添加*****:  创建会议使用的模板的编号 template_no
+    创建会议使用的模板的编号 template_no
+    *****新添加*****:  
+    venue 会议地点 
+
 to 前端：
     json对象，{'message': <str>}, 数据成员'message'表示错误信息，有如下取值：
     'success', 'invalid uploaded data', 
@@ -33,6 +36,13 @@ method: post
 说明：普通用户提交论文
 from 前端：
     post: authors 作者们 institute 机构  paper_name paper_abstract  paper 上传的论文文件
+    其中，authors 应为如下格式的json对象序列化后得到的字符串：
+    {'<角色名>': {'name': <str>, 'institute': <str>}, ...}
+    其中，<角色名> 代表第几作者，取值应为如下形式：
+    'A<int>' 代表按顺序排的作者，
+    如 A1 是第一作者: {"A1": {"name": shiletong, "institute":"BUAA"}, ...}
+    最多到 A5
+    'CA' 是通讯作者。
 to 前端:    
     json对象，{'message': <str>}, 数据成员'message'表示错误信息，有如下取值：
     'success', 'invalid uploaded data', 'invalid conference pk' 不正确的会议主键

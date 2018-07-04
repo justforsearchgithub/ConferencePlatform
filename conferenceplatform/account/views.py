@@ -9,7 +9,7 @@ from .admin_user_views import *
 from .organization_sub_user_views import *
 import django
 import random
-from .tasks import send_register_email, test_celery
+from .tasks import send_register_email#, test_celery
 
 # Create your views here.
 
