@@ -62,7 +62,7 @@ method: get
 to 前端：
     json对象，{'message':'success', 'data': [ 一个对象，如下所示... ] }
     数组里的对象：{'title':<str>, 'pk':<int> 会议主键, 'organization':<str>,
-    'organizationpk':<int>, 'subject':<str>}
+    'organizationpk':<int>, 'subject':<str>, 'conference_start': <datetime>}
     这些属性不够还可以再商量    
     应该不会有报错的机会
 

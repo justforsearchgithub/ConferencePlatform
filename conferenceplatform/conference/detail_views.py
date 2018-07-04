@@ -155,5 +155,6 @@ def top10_hot_conferences(request):
     for c in top10:
         ret['data'].append({'pk': c.pk, 'title': c.title, 'subject': c.subject.name,
                             'organizationpk':c.organization.pk, 
-                            'organization': c.organization.org_name})
+                            'organization': c.organization.org_name, 
+                            'conference_start': c.conference_start})
     return JsonResponse(ret)

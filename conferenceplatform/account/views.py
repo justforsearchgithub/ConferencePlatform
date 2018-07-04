@@ -112,3 +112,8 @@ def upload_pic(request):
     except DatabaseError:
         return JsonResponse({'message':'fail'})
     return JsonResponse({'message' : 'success'})
+
+
+def random_10_orgs(request):
+    assert request.method == 'GET'
+    #orgs = OrganizationUser.objects().
