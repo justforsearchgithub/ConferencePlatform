@@ -20,7 +20,13 @@ class OrganizationUser(models.Model):
     bussiness_license = models.FileField(upload_to=organization_directory_path, null=True)
     id_card_front = models.FileField(upload_to=organization_directory_path, null=True)
     id_card_reverse = models.FileField(upload_to=organization_directory_path, null=True)
-    
+
+    STATE_CHOICES = (
+        ('P', 'Passed'),
+        ('M', 'NeedModify'),
+        ('R', 'Rejected'),
+    )
+    is_accepted = models.CharField(max_length=1, choices=STATE_CHOICES, default='M')
 
 class OrganizationSubUser(models.Model):
     user = models.OneToOneField(User, primary_key=True, on_delete=models.CASCADE)
