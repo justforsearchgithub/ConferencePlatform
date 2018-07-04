@@ -15,11 +15,6 @@ class NormalUserRegisterForm(forms.Form):
     password = forms.CharField()
     confirm_password = forms.CharField()
 
-class OurAdminRegisterForm(forms.Form):
-    username = forms.CharField()
-    password = forms.CharField()
-    confirm_password = forms.CharField()
-
 class OrganizationUserRegisterForm(forms.Form):
     username = forms.CharField()
     password = forms.CharField()
