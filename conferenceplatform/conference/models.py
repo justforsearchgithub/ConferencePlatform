@@ -64,7 +64,7 @@ class Submission(models.Model):
     )
     state = models.CharField(max_length=1, choices=STATE_CHOICES)
 
-    class meta:
+    class Meta:
         unique_together = ('submitter', 'conference')
 
     
