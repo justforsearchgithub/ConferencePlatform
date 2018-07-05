@@ -32,13 +32,9 @@ from 前端：
     conference_start （到场）开会时间，
     conference_due 闭会时间
     paper_template  文件，论文的模板
-    activities  序列化的json数组，数组元素为
-    如果为新建活动：
-    {'start_time':<datetime>, 'end_time':<datetime>, 'place':<str>, 'activity':<str>}
-    如果为修改原有活动：
-    {'activity_id':<str>,'start_time':<datetime>, 'end_time':<datetime>, 'place':<str>, 'activity':<str>}
-    形式的对象
-    *****新添加*****:  创建会议使用的模板的编号 template_no
+    activities  序列化的json数组，格式为：
+    [{'start_time':<datetime>, 'end_time':<datetime>, 'place':<str>, 'activity':<str>},{...},]
+    注意：论文的模板和活动若没有更新就不需要上传
 to 前端：
     json对象，{'message': <str>}, 数据成员'message'表示错误信息，有如下取值：
     'success', 'invalid uploaded data',
