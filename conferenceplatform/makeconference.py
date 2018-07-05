@@ -1,8 +1,8 @@
-    import os
-    os.environ.setdefault("DJANGO_SETTINGS_MODULE", "conferenceplatform.settings") 
+import os
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "conferenceplatform.settings") 
 
-    import django
-    django.setup()
+import django
+django.setup()
 
 from django.test import Client
 from datetime import datetime, timedelta
@@ -23,7 +23,7 @@ TITLE_NUM = len(title_repository)
 title = title_repository[randrange(0,TITLE_NUM)] + title_repository[randrange(0,TITLE_NUM)]
 
 subject_set = Subject.objects.all()
-subject = subject_set[randrange(0,len)].name
+subject = subject_set[randrange(0,len(subject_set))].name
 
 accept_due = datetime.now() + timedelta(hours = 1)
 register_start = accept_due + timedelta(hours = 1)

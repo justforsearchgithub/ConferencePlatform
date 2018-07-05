@@ -90,7 +90,7 @@ def get_sheet_value_from_state(sub_state):
 def export_path(conf_id, filename):
     d = os.path.join(MEDIA_ROOT, 'conference_'+str(conf_id)+'/exports/')
     if not os.path.exists(d):
-        os.mkdir(d, 0o775)
+        os.makedirs(d, 0o775)
     return os.path.join(d, filename)
 
 def export_url(conf_id, filename):
