@@ -121,3 +121,19 @@ to 前端：
     'can't modify twice' 已经改过一次了
     'need no modification' 无需修改，或已被接受或被拒绝或还没有评审到你
 
+
+url: conference/submission/<int:id>/review/
+method: post
+说明：针对某个提交的评审
+from 前端：
+    单字母的评审建议 state_choice ，P为通过，R为拒绝，M为建议修改
+    state_choice为M时，还要给出修改建议 advice
+to 前端：
+    {'message':<str>} 取值如下：
+    success
+    'invalid submission pk'
+    'invalid uploaded data'
+    'not reviewing' 当前会议不在评审时间内
+    'not in modification period' 修改期限已过，给人家评建议修改也没有意义
+    'invalid state choice' 如前所述的state_choice取值不对
+    

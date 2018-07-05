@@ -64,7 +64,7 @@ def organization_user_register(request):
 
             organization_user.save()
             data['message'] = 'success'
-            #send_register_email.delay(username)
+            send_register_email.delay(username)
     except DatabaseError as e:
         data['message'] = str(e)
     

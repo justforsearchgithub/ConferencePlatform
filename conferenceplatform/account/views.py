@@ -9,7 +9,7 @@ from .admin_user_views import *
 from .organization_sub_user_views import *
 import django
 import random
-from .tasks import send_register_email
+from .tasks import *
 from django.contrib.auth.hashers import check_password
 
 # Create your views here.
