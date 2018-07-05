@@ -49,7 +49,7 @@ def organization_sub_user_register(request):
             )
             organization_sub_user.save()
             data['message'] = 'success'
-            #send_register_email.delay(username)
+            send_register_email.delay(username)
     except DatabaseError:
         data['message'] = 'database error'
         

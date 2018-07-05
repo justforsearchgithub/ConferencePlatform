@@ -25,3 +25,4 @@ def my_send_email(subject, message, to_email):
         to_email,
         fail_silently=False
     )
+    
