@@ -2,6 +2,8 @@ from django.utils import timezone
 from enum import Enum
 from .models import *
 import datetime
+import os
+from conferenceplatform.settings import MEDIA_ROOT, MEDIA_URL
 
 class ConferenceStatus(Enum):
     not_started = 1
@@ -84,3 +86,13 @@ def get_sheet_value_from_state(sub_state):
         'R': '拒稿',
     }
     return d[sub_state]
+
+def export_path(conf_id, filename):
+    d = os.path.join(MEDIA_ROOT, 'conference_'+str(conf_id)+'/exports/')
+    if not os.path.exists(d):
+        os.mkdir(d, 0o775)
+    return os.path.join(d, filename)
+
+def export_url(conf_id, filename):
+    d = os.path.join(MEDIA_URL, 'conference_'+str(conf_id)+'/exports/')
+    return os.path.join(d, filename)

@@ -12,7 +12,6 @@ from account.models import *
 from .models import *
 from .forms import *
 from .utils import *
-
 from account.decorators import user_has_permission
 
 @user_has_permission('account.ConferenceRelated_Permission')
@@ -144,6 +143,9 @@ def set_modify_due(request, id):
     try:
         with database_transaction.atomic():
             conf = Conference.objects.get(pk=id)
+            if get_organization(request.user).id != id:
+                return JsonResponse({'message': 'permission error'})
+
             if conf.modify_due != None:
                 return JsonResponse({'message': 'already set'})
 
@@ -174,7 +176,7 @@ def num_not_over(request):
     s = Conference.objects.filter(conference_due__gt=now)
     return JsonResponse({'message':'success', 'data': s.count()})
 
-
+@user_has_permission('account.NormalUser_Permission')
 def submit_after_modification(request, id):
     assert request.method == 'POST'
     ret = {'message': 'success', 'data': None}
@@ -225,9 +227,13 @@ def submit_after_modification(request, id):
         ret['message'] = 'invalid uploaded data'
     return JsonResponse(ret)
 
-
+@user_has_permission('account.ConferenceRelated_Permission')
 def export_submission_info(request, id):
     try:
+        conf = Conference.objects.get(pk=id)
+        if get_organization(request.user).pk != conf.organization.pk:
+            return JsonResponse({'message': 'permission error'})
+
         sub_set = Submission.objects.filter(conference_id=id)
         wb = Workbook()
         ws = wb.active
@@ -237,13 +243,36 @@ def export_submission_info(request, id):
         '第四作者', '第四作者单位', '第五作者', '第五作者单位', 
         '通讯作者', '通讯作者单位'])
         for sub in sub_set:
-            li = [sub.submitter.user.username, sub.paper_name, sub.paper_abstract, sub.submit_time]
+            li = [sub.submitter.user.username, sub.paper_name, 
+                  sub.paper_abstract, sub.submit_time.strftime('%Y-%m-%d %H:%M:%S')]
             li.append(get_sheet_value_from_state(sub.state))
             li.append(sub.modification_advice)
             li.append('是' if sub.modified else '否')
-            li.append([sub.modified_time, sub.sub.modified_explain])
-    except Exception:
-        pass
+            if sub.modified:
+                li.extend([sub.modified_time.strftime('%Y-%m-%d %H:%M:%S'), sub.modified_explain])
+            else:
+                li.extend([None, None])
+            print(sub.authors)
+            authors = json.loads(sub.authors)
+            for i in range(1, 6):
+                pos = 'A' + str(i)
+                if pos in authors:
+                    li.extend([authors[pos]['name'], authors[pos]['institute']])
+                else:
+                    li.extend([None, None])
+            if 'CA' in authors:
+                li.extend([authors['CA']['name'], authors['CA']['institute']])
+            else:
+                li.extend([None, None])
+            ws.append(li)
+        fn = 'submission_info.xlsx'
+        path = export_path(id, fn)
+        url = export_url(id, fn)
+        wb.save(path)
+        return JsonResponse({'message': 'success', 'data': url})
+    except Conference.DoesNotExist:
+        return JsonResponse({'message': 'invalid conference pk'})
+        
 
 def export_register_info(request, id):
     pass
