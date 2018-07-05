@@ -49,7 +49,7 @@ class Submission(models.Model):
     authors = models.CharField(max_length=200)
     institute = models.CharField(max_length=200)
     
-    submit_time = models.DateTimeField(auto_now=True)
+    submit_time = models.DateTimeField()
 
     modification_advice = models.TextField(null=True)
     modified = models.BooleanField(default=False)
