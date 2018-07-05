@@ -227,7 +227,16 @@ def submit_after_modification(request, id):
 
 
 def export_submission_info(request, id):
-    pass
+    try:
+        sub_set = Submission.objects.filter(conference_id=id)
+        wb = Workbook()
+        ws = wb.active
+        ws.append(['提交用户', '论文名称', '论文摘要', '提交时间', 
+        '状态', '修改建议', '是否修改过', '修改时间', '修改说明', '第一作者', '第一作者单位',
+        '第二作者', '第二作者单位', '第三作者', '第三作者单位', 
+        '第四作者', '第四作者单位', '第五作者', '第五作者单位', 
+        '通讯作者', '通讯作者单位'])
+        
 
 def export_register_info(request, id):
     pass

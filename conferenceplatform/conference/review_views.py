@@ -6,6 +6,7 @@ from account.models import *
 from account.decorators import user_has_permission
 from django.db import transaction as database_transaction
 from django.utils.datastructures import MultiValueDictKeyError
+from django.core.exceptions import ValidationError
 from django import forms
 from django.core.mail import send_mail
 from conferenceplatform.settings import DEFAULT_FROM_EMAIL
