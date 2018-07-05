@@ -237,13 +237,13 @@ def export_submission_info(request, id):
         sub_set = Submission.objects.filter(conference_id=id)
         wb = Workbook()
         ws = wb.active
-        ws.append(['提交用户', '论文名称', '论文摘要', '提交时间', 
+        ws.append(['提交用户', '论文编号', '论文名称', '论文摘要', '提交时间', 
         '状态', '修改建议', '是否修改过', '修改时间', '修改说明', '第一作者', '第一作者单位',
         '第二作者', '第二作者单位', '第三作者', '第三作者单位', 
         '第四作者', '第四作者单位', '第五作者', '第五作者单位', 
         '通讯作者', '通讯作者单位'])
         for sub in sub_set:
-            li = [sub.submitter.user.username, sub.paper_name, 
+            li = [sub.submitter.user.username, sub.pk ,sub.paper_name, 
                   sub.paper_abstract, sub.submit_time.strftime('%Y-%m-%d %H:%M:%S')]
             li.append(get_sheet_value_from_state(sub.state))
             li.append(sub.modification_advice)
@@ -273,6 +273,37 @@ def export_submission_info(request, id):
     except Conference.DoesNotExist:
         return JsonResponse({'message': 'invalid conference pk'})
         
-
+@user_has_permission('account.ConferenceRelated_Permission')
 def export_register_info(request, id):
-    pass
+    try:
+        conf = Conference.objects.get(pk=id)
+        if get_organization(request.user).pk != conf.organization.pk:
+            return JsonResponse({'message': 'permission error'})
+
+        reg_set = RegisterInformation.objects.filter(conference_id=id)
+        wb = Workbook()
+        ws = wb.active
+        ws.append(['提交用户', '聆听/论文编号', '参会者1', '性别', '是否住宿',
+        '参会者2', '性别', '是否住宿', '参会者3', '性别', '是否住宿',
+        '参会者4', '性别', '是否住宿', '参会者5', '性别', '是否住宿',
+        '参会者6', '性别', '是否住宿',])
+        for reg in reg_set:
+            li = [reg.user.user.username,]
+            if reg.submission == None:
+                li.append('聆听')
+            else:
+                li.append(reg.submission.pk)
+            participants = json.loads(reg.participants)
+            if len(participants) > 6:
+                return JsonResponse({'message': 'too much participants'})            
+            for p in participants:
+                li.extend([p['name'], p['gender'], '是' if p['reservation'] else '否'])
+            ws.append(li)
+
+        fn = 'register_info.xlsx'
+        path = export_path(id, fn)
+        url = export_url(id, fn)
+        wb.save(path)
+        return JsonResponse({"message": 'success', 'data': url})
+    except Conference.DoesNotExist:
+        return JsonResponse({'message': 'invalid conference pk'})

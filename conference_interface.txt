@@ -146,3 +146,6 @@ to 前端：
     data是一个相对url，如果服务器建设顺利，应该能够下载
     message取值有：
     'success'  'invalid conference id'
+
+url: conference/conference/<int:id>/export_register_info/
+细节同上
