@@ -6,6 +6,7 @@ from django.db import IntegrityError, DatabaseError
 from django.utils import timezone
 from django.core.exceptions import *
 import datetime
+from openpyxl import Workbook
 import json
 from account.models import *
 from .models import *
@@ -33,8 +34,7 @@ def add_conference(request):
                 template_no=form.cleaned_data['template_no'],
                 introduction=form.cleaned_data['introduction'], 
                 soliciting_requirement=form.cleaned_data['soliciting_requirement'],            
-                register_requirement=form.cleaned_data['register_requirement'],
-                accept_start=datetime.datetime.now(),
+                register_requirement=form.cleaned_data['register_requirement'],                
                 accept_due=form.cleaned_data['accept_due'],
                 # modify_due=form.cleaned_data['modify_due'],
                 register_start=form.cleaned_data['register_start'],
@@ -74,8 +74,7 @@ def paper_submit(request, id):
                 return JsonResponse({'message': 'wrong time range'})
             normal_user = request.user.normaluser
             s = Submission.objects.create(
-                submitter=normal_user, institute=request.POST['institute'],
-                submit_time=datetime.datetime.now(),
+                submitter=normal_user, institute=request.POST['institute'],                
                 conference=conf,
                 paper_name=request.POST['paper_name'], 
                 paper_abstract=request.POST['paper_abstract'],
@@ -232,4 +231,3 @@ def export_submission_info(request, id):
 
 def export_register_info(request, id):
     pass
-

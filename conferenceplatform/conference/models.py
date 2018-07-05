@@ -20,7 +20,7 @@ class Conference(models.Model):
     # 会议地点
     venue = models.CharField(max_length=100, null=True, blank=True)
 
-    accept_start = models.DateTimeField(auto_now=True)
+    accept_start = models.DateTimeField(auto_now_add=True)
     accept_due = models.DateTimeField(blank=True, null=True)
     modify_due = models.DateTimeField(blank=True, null=True)
     # 中间有一个审核状态
@@ -49,7 +49,7 @@ class Submission(models.Model):
     authors = models.CharField(max_length=200)
     institute = models.CharField(max_length=200)
     
-    submit_time = models.DateTimeField()
+    submit_time = models.DateTimeField(auto_now_add=True)
 
     modification_advice = models.TextField(null=True)
     modified = models.BooleanField(default=False)
