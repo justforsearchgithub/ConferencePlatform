@@ -9,7 +9,7 @@ urlpatterns = [
     path('conference/<int:id>/information/', detail_views.conference_information, name='conference_information'),
     path('conference/<int:id>/set_modify_due/', views.set_modify_due, name='set_modify_due'),
     path('conference/<int:id>/export_submission_info/', views.export_submission_info, 
-         name='export_submission_info')
+         name='export_submission_info'),
     path('subjects/', detail_views.subject_information, name='subject_information'),
     path('activity/<int:id>/', detail_views.activity_information, name='activity_information'),
     path('submission/<int:id>/', detail_views.submission_information, name='submission_information'),
