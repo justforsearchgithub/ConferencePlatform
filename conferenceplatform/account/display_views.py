@@ -7,9 +7,13 @@ from conference.utils import get_organization
 from conference import detail_views
 from account import decorators
 from .tasks import my_send_email
+from django.core.mail import send_mail
 
 
 def test1(request):
+    to_email = ['chd19970620@163.com']
+    send_mail('sadasdasdw', 'asdsadasage.', 'demonsNearby@163.com',
+              to_email, fail_silently=False)
     return JsonResponse({'123': '123'})
 
 
