@@ -75,5 +75,5 @@ class RegisterInformation(models.Model):
     participants = models.TextField()
     pay_voucher = models.FileField(upload_to=conference_directory_path)
 
-    class meta:
+    class Meta:
         unique_together=('user', 'conference')
