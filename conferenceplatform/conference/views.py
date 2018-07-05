@@ -236,7 +236,14 @@ def export_submission_info(request, id):
         '第二作者', '第二作者单位', '第三作者', '第三作者单位', 
         '第四作者', '第四作者单位', '第五作者', '第五作者单位', 
         '通讯作者', '通讯作者单位'])
-        
+        for sub in sub_set:
+            li = [sub.submitter.user.username, sub.paper_name, sub.paper_abstract, sub.submit_time]
+            li.append(get_sheet_value_from_state(sub.state))
+            li.append(sub.modification_advice)
+            li.append('是' if sub.modified else '否')
+            li.append([sub.modified_time, sub.sub.modified_explain])
+    except Exception:
+        pass
 
 def export_register_info(request, id):
     pass

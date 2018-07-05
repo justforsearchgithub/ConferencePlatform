@@ -75,3 +75,12 @@ def edit_activity(pk, act_json):
          place=act_json['place'],
          activity=act_json['activity'],
      )
+
+def get_sheet_value_from_state(sub_state):
+    d = {
+        'S': '待审核',
+        'P': '审核通过',
+        'M': '需要修改',
+        'R': '拒稿',
+    }
+    return d[sub_state]
