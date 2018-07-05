@@ -75,7 +75,8 @@ def paper_submit(request, id):
             normal_user = request.user.normaluser
             s = Submission.objects.create(
                 submitter=normal_user, institute=request.POST['institute'],
-                conference=conf,             
+                submit_time=datetime.datetime.now(),
+                conference=conf,
                 paper_name=request.POST['paper_name'], 
                 paper_abstract=request.POST['paper_abstract'],
                 authors=request.POST['authors'],
@@ -217,6 +218,7 @@ def submit_after_modification(request, id):
                 pass
 
             prevsub.modified = True
+            prevsub.save()
 
     except Submission.DoesNotExist:
         ret['message'] = 'invalid submission pk'
