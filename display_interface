@@ -97,17 +97,26 @@ output:
                 'sub_password':
             }]
 
-path:display/my_license/
+path:display/organization/<int:id>/
 input:
     必须先登录
+    <int:id>为机构用户的id
     method:GET
 output:
-    输出该单位用户的三个证件照对应的url,格式为'/media/xxx',加到ip地址后可访问
+    输出该id对应机构用户的全部信息
     message: 'success'/'invalid organization user'
     data: {
-            'bussiness_license':营业执照
-            'id_card_front':身份证正面
-            'id_card_reverse'身份证反面
+                'org_id': 机构id
+                'org_name':
+                'is_accepted': 是否通过审核
+                'department': 部门
+                'contacts': 联系人
+                'phone_number':
+                'address': 地址
+                'email': 注册企业账号的邮箱
+                'bussiness_license':营业执照,为url形式，如/media/xxx
+                'id_card_front':身份证正面,同上
+                'id_card_reverse'身份证反面,同上
           }
 
 path:display/conference/<int:id>/registrations/
@@ -126,3 +135,24 @@ output:
             },{
                    ...
             }]
+
+path:display/my_org_info/
+input:
+    必须先登录
+    method:GET
+output:
+    display/org_info/:输出该登录用户(企业用户或企业子用户)的全部信息
+    message: 'success'/'permission error'
+    data: {
+                'org_id': 机构id
+                'org_name': 
+                'is_accepted': 是否通过审核
+                'department': 部门
+                'contacts': 联系人
+                'phone_number': 
+                'address': 地址
+                'email': 注册企业账号的邮箱
+                'bussiness_license':营业执照,为url形式，如/media/xxx
+                'id_card_front':身份证正面,同上
+                'id_card_reverse'身份证反面,同上
+          }

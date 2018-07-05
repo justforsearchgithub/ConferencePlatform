@@ -30,11 +30,15 @@ def get_organization_detail(org):
     data = {
         'org_id': org.pk,
         'org_name': org.org_name,
+        'is_accepted': org.is_accepted,
         'department': org.department,
         'contacts': org.contacts,
         'phone_number': org.phone_number,
         'address': org.address,
         'email': org.user.username,
+        'bussiness_license': org.bussiness_license.url,
+        'id_card_front': org.id_card_front.url,
+        'id_card_reverse': org.id_card_reverse.url,
     }
     return data
 
