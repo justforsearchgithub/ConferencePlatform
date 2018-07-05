@@ -9,7 +9,7 @@ from .admin_user_views import *
 from .organization_sub_user_views import *
 import django
 import random
-from .tasks import send_register_email
+from .tasks import *
 from django.contrib.auth.hashers import check_password
 
 # Create your views here.
@@ -142,5 +142,16 @@ def random_6_orgs(request):
 
 def test_email(request):
     assert request.method == 'POST'
-    send_register_email.delay('852217427@qq.com')
+    #send_register_email.delay('852217427@qq.com')
+    subject = '测试注册信息'
+    message = '测试注册成功'
+    to_email = list()
+    to_email.append('852217427@qq.com')
+    send_mail(
+        subject,
+        message,
+        'demonsNearby@163.com',
+        to_email,
+        fail_silently=False
+    )
     return JsonResponse({'message':'success'})
