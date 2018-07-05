@@ -30,6 +30,7 @@ ALLOWED_HOSTS = ['testserver', '127.0.0.1', '140.143.182.214']
 
 # Application definition
 import djcelery
+
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -185,4 +186,6 @@ djcelery.setup_loader()
 #CELERY_RESULT_BACKEND = 'redis://:redispassword@139.199.24.235:6379/0'
 BROKER_URL= 'amqp://guest@localhost//'
 CELERY_RESULT_BACKEND = 'amqp://guest@localhost//'
+from celery import platforms
+platforms.C_FORCE_ROOT = True
 #BROKER_TRANSPORT = 'redis'
