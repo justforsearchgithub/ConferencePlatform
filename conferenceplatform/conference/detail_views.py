@@ -180,3 +180,12 @@ def top10_hot_conferences(request):
                             'organization': c.organization.org_name, 
                             'conference_start': c.conference_start.strftime('%Y-%m-%d %H:%M:%S')})
     return JsonResponse(ret)
+
+def count_conferences_based_on_subject(request):    
+    try:
+        name = request.GET['subject']
+        subject = Subject.objects.get(name=name)
+        n = subject.conference_set.count()
+        return JsonResponse({'message': 'successs', 'data': n})
+    except Subject.DoesNotExist:
+        return JsonResponse({'message': 'invalid subject name'})

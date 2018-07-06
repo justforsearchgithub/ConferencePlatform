@@ -149,3 +149,14 @@ to 前端：
 
 url: conference/conference/<int:id>/export_register_info/
 细节同上
+
+
+url: conference/count_conferences_based_on_subject/
+method: get
+说明: 返回属于某一主题的会议的数量,
+     请求写在url的参数里面
+from 前端：
+    'subject'
+to ：
+    'success'
+    'invalid subject name'

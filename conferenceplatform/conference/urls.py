@@ -24,4 +24,6 @@ urlpatterns = [
 
     path('edit_conference/<int:id>/', edit_views.edit_conference_by_id, name='edit_conference'),
     path('edit_activity/<int:id>/', edit_views.edit_activity_by_id, name='edit_activity'),
+    path('count_conferences_based_on_subject/', detail_views.count_conferences_based_on_subject,
+         name='count_conferences_based_on_subject')
 ]
