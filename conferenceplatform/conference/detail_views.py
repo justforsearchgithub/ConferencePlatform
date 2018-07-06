@@ -1,9 +1,12 @@
+from json import JSONDecodeError
+
 from django.shortcuts import render
 from django.http import JsonResponse
 from .utils import *
 from account.models import *
 from account.decorators import user_has_permission
 import json
+
 
 def get_conference_detail(conference):
     data = {
@@ -26,6 +29,7 @@ def get_conference_detail(conference):
     }
     return data
 
+
 def get_organization_detail(org):
     data = {
         'org_id': org.pk,
@@ -42,6 +46,7 @@ def get_organization_detail(org):
     }
     return data
 
+
 def get_activity_detail(activity):
     data = {
         'activity_id': activity.pk,
@@ -54,14 +59,25 @@ def get_activity_detail(activity):
     }
     return data
 
+
 def get_submission_detail(submission):
-    authors = json.loads(submission.authors)
+    try:
+        authors = json.loads(submission.authors)
+    except JSONDecodeError:
+        authors = submission.authors
+
+    if str(submission.paper_old) == "":
+        paper_old = None
+    else:
+        paper_old = submission.paper_old
     data = {
         'submitter_id': submission.submitter.pk,
         'conference_id': submission.conference.pk,
         'conference_title': submission.conference.title,
         'paper': submission.paper.url,
         'paper_name': submission.paper_name,
+        'paper_old': paper_old,
+        'paper_name_old': submission.paper_name_old,
         'paper_abstract': submission.paper_abstract,
         'authors': authors,
         'institute': submission.institute,
@@ -74,6 +90,7 @@ def get_submission_detail(submission):
     }
     return data
 
+
 def get_register_detail(info):
     data = {
         'user_id': info.user.pk,
@@ -85,7 +102,6 @@ def get_register_detail(info):
     return data
 
 
-#@user_has_permission('account.OrganizationUser_Permission')
 def conference_information(request, id):
     assert request.method == 'GET'
     result = {'message': ''}

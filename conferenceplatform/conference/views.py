@@ -69,8 +69,10 @@ def paper_submit(request, id):
     try:
         with database_transaction.atomic():
             conf = Conference.objects.get(pk=id)
+            '''
             if conference_status(conf) != ConferenceStatus.accepting_submission:
                 return JsonResponse({'message': 'wrong time range'})
+            '''
             normal_user = request.user.normaluser
             s = Submission.objects.create(
                 submitter=normal_user, institute=request.POST['institute'],                
@@ -203,6 +205,8 @@ def submit_after_modification(request, id):
             textcleaner = forms.CharField(required=False)
             prevsub.modified_time = datetime.datetime.now()
             prevsub.modified_explain = textcleaner.clean(request.POST['explain'])
+            prevsub.paper_old = prevsub.paper
+            prevsub.paper_name_old = prevsub.paper_name
             prevsub.paper = request.FILES['paper']
             try:
                 name = textcleaner.clean(request.POST['name'])

@@ -44,7 +44,9 @@ class Submission(models.Model):
     conference = models.ForeignKey(Conference, on_delete=models.CASCADE)
 
     paper = models.FileField(upload_to=conference_directory_path, null=True)
+    paper_old = models.FileField(upload_to=conference_directory_path, blank=True, null=True)
     paper_name = models.CharField(max_length=200)
+    paper_name_old = models.CharField(max_length=200, null=True)
     paper_abstract = models.TextField()
     authors = models.CharField(max_length=200)
     institute = models.CharField(max_length=200)
