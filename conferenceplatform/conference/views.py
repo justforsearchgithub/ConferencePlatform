@@ -44,7 +44,7 @@ def add_conference(request):
                 venue=form.cleaned_data['venue'],
             )
             conf.paper_template = request.FILES['paper_template']
-            if 'modify_due' in request.POST['modify_due']:
+            if 'modify_due' in request.POST:
                 conf.modify_due = request.POST['modify_due']
             conf.save()
             if not valid_timepoints(conf):
