@@ -40,16 +40,19 @@ def review_submission(request, id):
 
 @user_has_permission('account.ConferenceRelated_Permission')
 def edit_conference_by_id(request, id):
+    class EditConForm(ConferenceInfoForm):
+        paper_template = forms.FileField(required=False)
+        activities = forms.CharField(required=False)
+
     assert request.method == 'POST'
-    form = ConferenceInfoForm(request.POST, request.FILES)
-    #form.paper_template.allow_empty_file = True
+    form = EditConForm(request.POST, request.FILES)
     if form.is_valid():
         with database_transaction.atomic():
             org = get_organization(request.user)
             assert org is not None
             try:
                 conference = Conference.objects.get(pk=id)
-                #subject = Subject.objects.filter(name='ha')
+                subject = Subject.objects.get(name=form.cleaned_data['subject'])
             except Subject.DoesNotExist:
                 return JsonResponse({'message': 'unknown subject'})
             except Conference.DoesNotExist:
@@ -59,7 +62,7 @@ def edit_conference_by_id(request, id):
                     return JsonResponse({'message': 'invalid organization user'})
 
             conference.title = form.cleaned_data['title']
-            #conference.subject = subject[0]
+            conference.subject = subject
             conference.template_no = form.cleaned_data['template_no']
             conference.introduction = form.cleaned_data['introduction']
             conference.soliciting_requirement = form.cleaned_data['soliciting_requirement']
@@ -69,21 +72,27 @@ def edit_conference_by_id(request, id):
             conference.register_due = form.cleaned_data['register_due']
             conference.conference_start = form.cleaned_data['conference_start']
             conference.conference_due = form.cleaned_data['conference_due']
+            conference.venue = form.cleaned_data['venue']
 
-            activities_json_str = form.cleaned_data['activities']
-            activities_json = json.loads(activities_json_str)
-            try:
-                for activity in activities_json:
-                    # add_activity(conference, activity)
-                    if 'activity_id' in activity:
-                        edit_activity(str(activity[u'activity_id']), activity)
-                    else:
+            if not valid_timepoints(conference):
+                return JsonResponse({'message': 'timepoints not reasonable'})
+
+            if 'activities' in request.POST:
+                Activity.objects.filter(conference_id=conference.pk).delete()
+                activities_json_str = form.cleaned_data['activities']
+                activities_json = json.loads(activities_json_str)
+                try:
+                    for activity in activities_json:
                         add_activity(conference, activity)
-            except KeyError as e:
-                return JsonResponse({'message': e})
-            else:
-                conference.save()
-                return JsonResponse({'message': 'success'})
+                except KeyError:
+                    return JsonResponse({'message': 'activity key error'})
+
+            if 'paper_template' in request.POST:
+                conference.paper_template = request.FILES['paper_template']
+
+            conference.save()
+            return JsonResponse({'message': 'success'})
+
     else:
         return JsonResponse({'message': 'invalid uploaded data'})
 

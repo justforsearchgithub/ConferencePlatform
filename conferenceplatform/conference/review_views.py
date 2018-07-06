@@ -1,3 +1,4 @@
+from django.core.exceptions import ValidationError
 from django.shortcuts import render
 from django.http import JsonResponse
 from .utils import *
@@ -5,7 +6,9 @@ from account.models import *
 from account.decorators import user_has_permission
 from django.db import transaction as database_transaction
 from django.utils.datastructures import MultiValueDictKeyError
+from django.core.exceptions import ValidationError
 from django import forms
+from account.tasks import my_send_email
 from django.core.mail import send_mail
 from conferenceplatform.settings import DEFAULT_FROM_EMAIL
 
@@ -21,33 +24,31 @@ def review_submission(request,id):
             if org_login == None or org_login.pk != conf.organization.pk:
                 return JsonResponse({'message': 'permission error'})
             conf_status = conference_status(conf)
-            if (conf_status != ConferenceStatus.reviewing_accepting_modification
-                and conf_status != ConferenceStatus.reviewing):
-                return JsonResponse({'message': 'not reviewing'})
             
             state = cleaner.clean(request.POST['state_choice'])
+            sub.state = state
+            con_name = sub.conference.title
             if state == 'P':
-                sub.state = state
-                con_name = sub.conference.title
-                """ send_mail(subject='congratulations', message='your submission in '+con_name+' has been passed',
-                          from_email=DEFAULT_FROM_EMAIL, ail_silently=False)                 """
+                subject = 'congratulations'
+                message = 'your submission in ' + con_name + ' has been passed'
             elif state == 'R':
-                sub.state = state                
-                #send email                
+                subject = 'sorry'
+                message = 'your submission in ' + con_name + ' has been rejected'
             elif state == 'M':
                 if conf_status != ConferenceStatus.reviewing_accepting_modification:
                     return JsonResponse({'message': 'not in modification period'})
-                sub.state = state
-                sub.modification_advice = cleaner.clean(request.POST['advice'])
-                # send mail                
+                advice = cleaner.clean(request.POST['advice'])
+                sub.modification_advice = advice
+                subject = 'information'
+                message = 'your submission in ' + con_name + ' should be modified.\nModified advice: ' + advice
             else:
                 return JsonResponse({'message': 'invalid state choice'})
             sub.save()
+            # my_send_email(subject, message, [sub.submitter.user.username])
             return JsonResponse({'message': 'success'})
     except Submission.DoesNotExist:
         return JsonResponse({'message': 'invalid submission pk'})
     except MultiValueDictKeyError:
         return JsonResponse({'message': 'invalid uploaded data'})
     except ValidationError:
-        print('invalid2')
         return JsonResponse({'message': 'invalid uploaded data'})

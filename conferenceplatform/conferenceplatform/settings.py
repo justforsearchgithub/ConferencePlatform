@@ -40,7 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'account',
     'conference',
-
+    'search',
     'djcelery',
     #'corsheaders',
 ]
@@ -166,7 +166,7 @@ USE_TZ = False
 
 
 STATIC_URL = '/static/'
-MEDIA_ROOT = 'media'
+MEDIA_ROOT = CUSTOM_MEDIA_ROOT
 MEDIA_URL = '/media/'
 
 

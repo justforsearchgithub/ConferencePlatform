@@ -6,6 +6,15 @@ from .models import *
 from conference.utils import get_organization
 from conference import detail_views
 from account import decorators
+from .tasks import my_send_email
+from django.core.mail import send_mail
+
+
+def test1(request):
+    to_email = ['chd19970620@163.com']
+    send_mail('sadasdasdw', 'asdsadasage.', 'demonsNearby@163.com',
+              to_email, fail_silently=False)
+    return JsonResponse({'123': '123'})
 
 
 @user_has_permission('account.ConferenceRelated_Permission')
@@ -60,10 +69,6 @@ def get_submissions_by_submitter(request, state=None):
     return JsonResponse(result)
 
 
-def test1(request):
-    return JsonResponse({'123': '123'})
-
-
 @user_has_permission('account.ConferenceRelated_Permission')
 def get_papers_by_conference(request, id):
     assert request.method == 'GET'
@@ -87,6 +92,7 @@ def get_papers_by_conference(request, id):
                 'paper_url': paper_url,
                 'state': paper.state,
                 'submitter': paper.submitter.user.username,
+                'modification_advice': paper.modification_advice,
             })
         result['data'] = data
         result['message'] = 'success'

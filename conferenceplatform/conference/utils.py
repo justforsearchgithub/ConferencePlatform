@@ -2,6 +2,8 @@ from django.utils import timezone
 from enum import Enum
 from .models import *
 import datetime
+import os
+from conferenceplatform.settings import MEDIA_ROOT, MEDIA_URL
 
 class ConferenceStatus(Enum):
     not_started = 1
@@ -75,3 +77,22 @@ def edit_activity(pk, act_json):
          place=act_json['place'],
          activity=act_json['activity'],
      )
+
+def get_sheet_value_from_state(sub_state):
+    d = {
+        'S': '待审核',
+        'P': '审核通过',
+        'M': '需要修改',
+        'R': '拒稿',
+    }
+    return d[sub_state]
+
+def export_path(conf_id, filename):
+    d = os.path.join(MEDIA_ROOT, 'conference_'+str(conf_id)+'/exports/')
+    if not os.path.exists(d):
+        os.makedirs(d, 0o775)
+    return os.path.join(d, filename)
+
+def export_url(conf_id, filename):
+    d = os.path.join(MEDIA_URL, 'conference_'+str(conf_id)+'/exports/')
+    return os.path.join(d, filename)

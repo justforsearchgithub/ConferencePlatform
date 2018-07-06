@@ -137,3 +137,15 @@ to 前端：
     'not in modification period' 修改期限已过，给人家评建议修改也没有意义
     'invalid state choice' 如前所述的state_choice取值不对
     
+
+url: conference/conference/<int:id>/export_submission_info/
+method: get
+说明：导出提交信息的excel
+to 前端：
+    {'message':<str>, 'data':<str>}
+    data是一个相对url，如果服务器建设顺利，应该能够下载
+    message取值有：
+    'success'  'invalid conference id'
+
+url: conference/conference/<int:id>/export_register_info/
+细节同上

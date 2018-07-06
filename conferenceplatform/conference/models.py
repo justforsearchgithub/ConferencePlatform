@@ -20,7 +20,7 @@ class Conference(models.Model):
     # 会议地点
     venue = models.CharField(max_length=100, null=True, blank=True)
 
-    accept_start = models.DateTimeField(auto_now=True)
+    accept_start = models.DateTimeField(auto_now_add=True)
     accept_due = models.DateTimeField(blank=True, null=True)
     modify_due = models.DateTimeField(blank=True, null=True)
     # 中间有一个审核状态
@@ -44,12 +44,14 @@ class Submission(models.Model):
     conference = models.ForeignKey(Conference, on_delete=models.CASCADE)
 
     paper = models.FileField(upload_to=conference_directory_path, null=True)
+    paper_old = models.FileField(upload_to=conference_directory_path, blank=True, null=True)
     paper_name = models.CharField(max_length=200)
+    paper_name_old = models.CharField(max_length=200, null=True)
     paper_abstract = models.TextField()
     authors = models.CharField(max_length=200)
     institute = models.CharField(max_length=200)
     
-    submit_time = models.DateTimeField()
+    submit_time = models.DateTimeField(auto_now_add=True)
 
     modification_advice = models.TextField(null=True)
     modified = models.BooleanField(default=False)
@@ -64,7 +66,7 @@ class Submission(models.Model):
     )
     state = models.CharField(max_length=1, choices=STATE_CHOICES)
 
-    class meta:
+    class Meta:
         unique_together = ('submitter', 'conference')
 
     
@@ -75,5 +77,5 @@ class RegisterInformation(models.Model):
     participants = models.TextField()
     pay_voucher = models.FileField(upload_to=conference_directory_path)
 
-    class meta:
+    class Meta:
         unique_together=('user', 'conference')

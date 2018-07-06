@@ -62,7 +62,7 @@ output:
     data: { 'user_id',用户id
             'conference_id',会议id'
             'submission_id',论文提交信息的id
-            'participants',
+            'participants', ***也返回对象吧***
             'pay_voucher',文件路径,返回的是路径/media/xxx，加到ip地址后可访问}
 
 path:conference/submission/<int:id>/
@@ -77,6 +77,11 @@ output:
             'conference_title',
             'paper': 文件路径,返回的是路径/media/xxx，加到ip地址后可访问
             'paper_name',
+           ***************新添加***********
+            'paper_old': 文件路径,返回的是路径/media/xxx，加到ip地址后可访问
+            'paper_name_old',论文旧名称
+            没有则返回null,paper永远是最新的版本
+            ********************************
             'paper_abstract',
             'authors', 为一json对象（而非字符串），
             格式详见 conference_interface.txt中conference/conference/<会议的主键id>/paper_submit/里的描述

@@ -50,12 +50,14 @@ output:
                 'paper_url': xxx,
                 'state': xxx,
                 'submitter': xxx,
+                'modification_advice': 修改建议
             },{
                 'submission_id': xxx,
                 'paper_name': xxx,
                 'paper_url': xxx,
                 'state': xxx,
                 'submitter': xxx,
+                'modification_advice': 修改建议
             }]
 
 path:display/conference/<int:id>/activities/
