@@ -62,7 +62,7 @@ output:
     data: { 'user_id',用户id
             'conference_id',会议id'
             'submission_id',论文提交信息的id
-            'participants',
+            'participants', ***也返回对象吧***
             'pay_voucher',文件路径,返回的是路径/media/xxx，加到ip地址后可访问}
 
 path:conference/submission/<int:id>/

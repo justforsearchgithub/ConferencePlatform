@@ -66,7 +66,7 @@ class Submission(models.Model):
     )
     state = models.CharField(max_length=1, choices=STATE_CHOICES)
 
-    class meta:
+    class Meta:
         unique_together = ('submitter', 'conference')
 
     
@@ -77,5 +77,5 @@ class RegisterInformation(models.Model):
     participants = models.TextField()
     pay_voucher = models.FileField(upload_to=conference_directory_path)
 
-    class meta:
+    class Meta:
         unique_together=('user', 'conference')

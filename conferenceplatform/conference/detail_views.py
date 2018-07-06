@@ -92,11 +92,12 @@ def get_submission_detail(submission):
 
 
 def get_register_detail(info):
+    par = json.loads(info.participants)
     data = {
         'user_id': info.user.pk,
         'conference_id': info.conference.pk,
-        'submission_id': info.sumbission.pk,
-        'participants': info.participants,
+        'submission_id': info.submission.pk,
+        'participants': par,
         'pay_voucher': info.pay_voucher.url,
     }
     return data
