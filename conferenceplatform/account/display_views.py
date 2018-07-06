@@ -100,6 +100,7 @@ def get_papers_by_conference(request, id):
                 'state': paper.state,
                 'submitter': paper.submitter.user.username,
                 'modification_advice': paper.modification_advice,
+                'modified': paper.modified,
             })
         result['data'] = data
         result['message'] = 'success'
