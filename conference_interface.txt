@@ -128,6 +128,9 @@ method: post
 from 前端：
     单字母的评审建议 state_choice ，P为通过，R为拒绝，M为建议修改
     state_choice为M时，还要给出修改建议 advice
+    ************新添加***********
+    state_choice为R时，还要给出拒绝理由 advice
+    *****************************
 to 前端：
     {'message':<str>} 取值如下：
     success
@@ -149,3 +152,14 @@ to 前端：
 
 url: conference/conference/<int:id>/export_register_info/
 细节同上
+
+
+url: conference/count_conferences_based_on_subject/
+method: get
+说明: 返回属于某一主题的会议的数量,
+     请求写在url的参数里面
+from 前端：
+    'subject'
+to ：
+    'success'
+    'invalid subject name'
