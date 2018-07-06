@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.http import JsonResponse
 from django.utils.datastructures import MultiValueDictKeyError
 from django.db import transaction as database_transaction   
-from django.db import IntegrityError, DatabaseError
+from django.db import IntegrityError, DatabaseError, models
 from django.utils import timezone
 from django.core.exceptions import *
 import datetime
@@ -13,6 +13,7 @@ from .models import *
 from .forms import *
 from .utils import *
 from account.decorators import user_has_permission
+
 
 @user_has_permission('account.ConferenceRelated_Permission')
 def add_conference(request):
@@ -35,7 +36,7 @@ def add_conference(request):
                 soliciting_requirement=form.cleaned_data['soliciting_requirement'],            
                 register_requirement=form.cleaned_data['register_requirement'],                
                 accept_due=form.cleaned_data['accept_due'],
-                modify_due=form.cleaned_data['modify_due'],
+                # modify_due=form.cleaned_data['modify_due'],
                 register_start=form.cleaned_data['register_start'],
                 register_due=form.cleaned_data['register_due'],
                 conference_start=form.cleaned_data['conference_start'],
@@ -44,8 +45,9 @@ def add_conference(request):
                 venue=form.cleaned_data['venue'],
             )
             conf.paper_template = request.FILES['paper_template']
-            """ if 'modify_due' in request.POST:
-                conf.modify_due = request.POST['modify_due'] """
+            if 'modify_due' in request.POST:
+                f = forms.DateTimeField()
+                conf.modify_due = f.clean(request.POST['modify_due'])
             conf.save()
             if not valid_timepoints(conf):
                 conf.delete()
@@ -57,9 +59,8 @@ def add_conference(request):
             try:
                 for activity in activities_json:
                     add_activity(conf, activity)
-            except KeyError as e:
-                print(e)
-                assert(False)
+            except KeyError as e:                
+                raise e
             return JsonResponse({'message': 'success', 'data': {'pk': conf.pk}})
     else:
         return JsonResponse({'message': 'invalid uploaded data'})
@@ -80,7 +81,7 @@ def paper_submit(request, id):
                 paper_name=request.POST['paper_name'], 
                 paper_abstract=request.POST['paper_abstract'],
                 authors=request.POST['authors'],
-                state='S', 
+                state='S',
             )
             s.paper = request.FILES['paper']
             s.save()

@@ -12,7 +12,7 @@ import json
 
 ORG_NAME = 'test@qq.com'
 ORG_PASSWORD = '123'
-FILE_PATH = '/home/shiletong/fuckfuck'
+FILE_PATH = '/home/elin/more.txt'
 
 
 
@@ -26,7 +26,8 @@ subject_set = Subject.objects.all()
 subject = subject_set[randrange(0,len(subject_set))].name
 
 accept_due = datetime.now() + timedelta(hours = 1)
-register_start = accept_due + timedelta(hours = 1)
+modify_due = accept_due + timedelta(hours = 1)
+register_start = modify_due + timedelta(hours = 1)
 register_due = register_start + timedelta(hours = 1)
 conference_start = register_due + timedelta(hours = 1)
 conference_due = conference_start + timedelta(hours = 1)
@@ -61,7 +62,8 @@ if __name__ == '__main__':
             'paper_template' : paper_template,
             'activities' : activities,
             'template_no' : 1,
-
+            'venue' : 'venue',
+            'modify_due' : modify_due,
         }
     )
     print(response.content)
