@@ -128,6 +128,9 @@ method: post
 from 前端：
     单字母的评审建议 state_choice ，P为通过，R为拒绝，M为建议修改
     state_choice为M时，还要给出修改建议 advice
+    ************新添加***********
+    state_choice为R时，还要给出拒绝理由 advice
+    *****************************
 to 前端：
     {'message':<str>} 取值如下：
     success

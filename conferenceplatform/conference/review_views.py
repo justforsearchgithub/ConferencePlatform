@@ -32,6 +32,8 @@ def review_submission(request,id):
                 subject = 'congratulations'
                 message = 'your submission in ' + con_name + ' has been passed'
             elif state == 'R':
+                advice = cleaner.clean(request.POST['advice'])
+                sub.modification_advice = advice
                 subject = 'sorry'
                 message = 'your submission in ' + con_name + ' has been rejected'
             elif state == 'M':
