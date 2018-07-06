@@ -10,7 +10,7 @@ class ConferenceInfoForm(forms.Form):
     template_no = forms.IntegerField()
     # accept_start = forms.DateTimeField()
     accept_due = forms.DateTimeField()
-    # modify_due = forms.DateTimeField()
+    modify_due = forms.DateTimeField()
     register_start = forms.DateTimeField()
     register_due = forms.DateTimeField()
     conference_start = forms.DateTimeField()

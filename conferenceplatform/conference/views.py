@@ -35,7 +35,7 @@ def add_conference(request):
                 soliciting_requirement=form.cleaned_data['soliciting_requirement'],            
                 register_requirement=form.cleaned_data['register_requirement'],                
                 accept_due=form.cleaned_data['accept_due'],
-                # modify_due=form.cleaned_data['modify_due'],
+                modify_due=form.cleaned_data['modify_due'],
                 register_start=form.cleaned_data['register_start'],
                 register_due=form.cleaned_data['register_due'],
                 conference_start=form.cleaned_data['conference_start'],
@@ -44,8 +44,8 @@ def add_conference(request):
                 venue=form.cleaned_data['venue'],
             )
             conf.paper_template = request.FILES['paper_template']
-            if 'modify_due' in request.POST:
-                conf.modify_due = request.POST['modify_due']
+            """ if 'modify_due' in request.POST:
+                conf.modify_due = request.POST['modify_due'] """
             conf.save()
             if not valid_timepoints(conf):
                 conf.delete()
