@@ -110,8 +110,8 @@ url: conference/submission/<int:id>/submit_after_modification/
 method: post
 说明：修改后的再次提交，url中的id应为第一次提交后的Submission的主键
 from 前端：
-    explain 修改的解释 paper 修改后的文件 name 论文名称 abstract 摘要 
-    其中 name 和 abstract 若不变，则可以不上传这两项，空字符串也可以
+    explain 修改的解释 paper 修改后的文件 name 论文名称 abstract 摘要  authors 作者
+    其中 name 和 abstract 和 authors 若不变，则可以不上传这三项，空字符串也可以
 to 前端：
     {'message':<str>} message有如下取值
     'success'
