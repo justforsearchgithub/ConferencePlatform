@@ -190,12 +190,26 @@ from celery import platforms
 platforms.C_FORCE_ROOT = True
 #BROKER_TRANSPORT = 'redis'
 
-from datetime import timedelta
+from celery.schedules import crontab
 CELERYBEAT_SCHEDULE = {
-    'add-every-60-seconds': {
-        'task': 'account.tasks.send_register_email',
-        # 'schedule': crontab(minute=u'40', hour=u'17',),
-        'schedule': timedelta(seconds=60),
-        'args': ('852217427@qq.com',),
+    'daily_send_register_start_email': {
+        'task': 'conference.tasks.send_register_start_email',
+        'schedule': crontab(minute=u'00', hour=u'3'),
+        'args': (tuple()),
+    },
+    'daily_send_register_due_email': {
+        'task' : 'conference.tasks.send_register_due_email',
+        'schedule': crontab(minute=u'00', hour=u'3'),
+        'args': (tuple()),
+    },
+    'daily_send_accept_due_email': {
+        'task' : 'conference.tasks.send_accept_due_email',
+        'schedule': crontab(minute=u'00', hour=u'3'),
+        'args': (tuple()),
+    },
+    'daily_send_modify_due_email': {
+        'task' : 'conference.tasks.send_modify_due_email',
+        'schedule': crontab(minute=u'00', hour=u'3'),
+        'args': (tuple()),
     }
 }
