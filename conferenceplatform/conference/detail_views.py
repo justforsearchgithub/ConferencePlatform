@@ -61,15 +61,12 @@ def get_activity_detail(activity):
 
 
 def get_submission_detail(submission):
-    try:
-        authors = json.loads(submission.authors)
-    except JSONDecodeError:
-        authors = submission.authors
-
+    authors = json.loads(submission.authors)
     if str(submission.paper_old) == "":
         paper_old = None
     else:
-        paper_old = submission.paper_old
+        paper_old = submission.paper_old.url
+
     data = {
         'submitter_id': submission.submitter.pk,
         'conference_id': submission.conference.pk,

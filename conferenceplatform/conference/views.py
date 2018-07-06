@@ -71,10 +71,8 @@ def paper_submit(request, id):
     try:
         with database_transaction.atomic():
             conf = Conference.objects.get(pk=id)
-            '''
             if conference_status(conf) != ConferenceStatus.accepting_submission:
                 return JsonResponse({'message': 'wrong time range'})
-            '''
             normal_user = request.user.normaluser
             s = Submission.objects.create(
                 submitter=normal_user, institute=request.POST['institute'],                
