@@ -189,3 +189,11 @@ def count_conferences_based_on_subject(request):
         return JsonResponse({'message': 'successs', 'data': n})
     except Subject.DoesNotExist:
         return JsonResponse({'message': 'invalid subject name'})
+
+def count_conferences_for_all_subjects(request):
+    ret = {'message': 'success', 'data': None}        
+    data = dict()
+    for s in Subject.objects.all():
+        data[s.name] = s.conference_set.count()
+    ret['data'] = data
+    return JsonResponse(ret)    
