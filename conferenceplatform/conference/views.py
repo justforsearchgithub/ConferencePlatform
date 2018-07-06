@@ -224,6 +224,13 @@ def submit_after_modification(request, id):
             except MultiValueDictKeyError:
                 pass
 
+            try:
+                authors = textcleaner.clean(request.POST['authors'])
+                if authors != '':
+                    prevsub.authors = authors
+            except MultiValueDictKeyError:
+                pass
+
             prevsub.modified = True
             prevsub.save()
 

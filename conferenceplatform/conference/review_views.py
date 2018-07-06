@@ -44,7 +44,7 @@ def review_submission(request,id):
             else:
                 return JsonResponse({'message': 'invalid state choice'})
             sub.save()
-            my_send_email(subject, message, [sub.submitter.user.username])
+            # my_send_email(subject, message, [sub.submitter.user.username])
             return JsonResponse({'message': 'success'})
     except Submission.DoesNotExist:
         return JsonResponse({'message': 'invalid submission pk'})
