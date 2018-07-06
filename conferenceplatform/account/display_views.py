@@ -8,12 +8,19 @@ from conference import detail_views
 from account import decorators
 from .tasks import my_send_email
 from django.core.mail import send_mail
+from conference.email import *
 
 
 def test1(request):
     to_email = ['chd19970620@163.com']
-    send_mail('sadasdasdw', 'asdsadasage.', 'demonsNearby@163.com',
-              to_email, fail_silently=False)
+    con = Conference.objects.filter()
+    for conference in con:
+        submissions = conference.submission_set.filter(state='M')
+        for submission in submissions:
+            send_mail(SUBJECT['modify_due'],
+                      MESSAGE['modify_due'].format(submission.submitter.user.username, conference.title, conference.modify_due),
+                      'demonsNearby@163.com',
+                      to_email, fail_silently=False)
     return JsonResponse({'123': '123'})
 
 
