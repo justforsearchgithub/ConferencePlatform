@@ -44,6 +44,8 @@ def add_conference(request):
                 venue=form.cleaned_data['venue'],
             )
             conf.paper_template = request.FILES['paper_template']
+            if 'modify_due' in request.POST['modify_due']:
+                conf.modify_due = request.POST['modify_due']
             conf.save()
             if not valid_timepoints(conf):
                 conf.delete()
@@ -148,8 +150,8 @@ def set_modify_due(request, id):
             if get_organization(request.user).id != id:
                 return JsonResponse({'message': 'permission error'})
 
-            if conf.modify_due != None:
-                return JsonResponse({'message': 'already set'})
+            """ if conf.modify_due != None:
+                return JsonResponse({'message': 'already set'}) """
 
             cleaner = forms.DateTimeField()
             due = cleaner.clean(request.POST['modify_due'])

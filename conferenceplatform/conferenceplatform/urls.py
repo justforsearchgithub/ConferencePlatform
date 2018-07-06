@@ -21,4 +21,5 @@ urlpatterns = [
     path('account/', include('account.urls')),
     path('conference/', include('conference.urls')),
     path('display/', include('account.display_urls')),
+    path('search/', include('search.urls')),
 ]
