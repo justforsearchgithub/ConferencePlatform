@@ -189,3 +189,13 @@ CELERY_RESULT_BACKEND = 'amqp://guest@localhost//'
 from celery import platforms
 platforms.C_FORCE_ROOT = True
 #BROKER_TRANSPORT = 'redis'
+
+from datetime import timedelta
+CELERYBEAT_SCHEDULE = {
+    'add-every-60-seconds': {
+        'task': 'account.tasks.send_register_email',
+        # 'schedule': crontab(minute=u'40', hour=u'17',),
+        'schedule': timedelta(seconds=60),
+        'args': ('852217427@qq.com',),
+    }
+}
