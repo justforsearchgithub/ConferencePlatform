@@ -7,7 +7,7 @@ from django.db.transaction import atomic, DatabaseError
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.auth.models import Permission
 from .forms import OrganizationUserRegisterForm
-from .tasks import send_register_email
+from .tasks import my_send_email
 
 #我们在这里用email来作为username
 def organization_user_register(request):
@@ -64,7 +64,11 @@ def organization_user_register(request):
 
             organization_user.save()
             data['message'] = 'success'
-            send_register_email.delay(username)
+            my_send_email.delay(
+                subject='尊敬的'+username,
+                message='请您静静等待管理员的审核',
+                to_email=[username,]
+            )
     except DatabaseError as e:
         data['message'] = str(e)
     
