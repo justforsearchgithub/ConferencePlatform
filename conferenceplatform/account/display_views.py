@@ -93,6 +93,10 @@ def get_papers_by_conference(request, id):
                 paper_url = paper.paper.url
             except ValueError:
                 paper_url = None
+            if str(paper.paper_old) == "":
+                paper_old = None
+            else:
+                paper_old = paper.paper_old.url
             data.append({
                 'submission_id': paper.pk,
                 'paper_name': paper.paper_name,
@@ -101,6 +105,8 @@ def get_papers_by_conference(request, id):
                 'submitter': paper.submitter.user.username,
                 'modification_advice': paper.modification_advice,
                 'modified': paper.modified,
+                'paper_old': paper_old,
+                'paper_name_old': paper.paper_name_old,
             })
         result['data'] = data
         result['message'] = 'success'

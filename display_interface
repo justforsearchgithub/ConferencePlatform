@@ -51,6 +51,8 @@ output:
                 'state': xxx,
                 'submitter': xxx,
                 'modification_advice': 修改建议
+                'paper_old': 旧论文的url,
+                'paper_name_old': 旧论文名称,
             },{
                 'submission_id': xxx,
                 'paper_name': xxx,
@@ -58,6 +60,8 @@ output:
                 'state': xxx,
                 'submitter': xxx,
                 'modification_advice': 修改建议
+                'paper_old': 旧论文的url,
+                'paper_name_old': 旧论文名称,
             }]
 
 path:display/conference/<int:id>/activities/
