@@ -45,8 +45,8 @@ def user_login(request):
         if len(user) != 0:
             if user[0].check_password(password):
                 data['message'] = 'not active'
-        else:
-            data['message'] = 'username or password error'
+                return JsonResponse(data)
+        data['message'] = 'username or password error'
 
     return JsonResponse(data, safe=False)
 
