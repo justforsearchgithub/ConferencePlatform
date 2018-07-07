@@ -3,11 +3,11 @@ SUBJECT = {
     'register_due': '会议注册截止通知',
     'accept_due': '会议投稿截止通知',
     'modify_due': '修改稿投递截止通知',
-    'first_passed': '恭喜，你他娘的竟然通过了评审',
-    'first_rejected': '你个菜逼你的投稿被拒绝了',
+    'first_passed': '论文评审结果通知',
+    'first_rejected': '论文评审结果通知',
     'need_modified': '论文修改通知',
-    'modification_passed': '恭喜，你他娘的竟然活了',
-    'modification_rejected': '你个菜逼你的修改稿被拒绝了',
+    'modification_passed': '论文修改稿评审结果通知',
+    'modification_rejected': '论文修改稿评审结果通知',
 }
 
 MESSAGE = {
