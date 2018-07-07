@@ -163,3 +163,9 @@ from 前端：
 to ：
     'success'
     'invalid subject name'
+
+url: conference/count_conferences_for_all_subjects/
+method: get
+说明：返回
+to 前端：
+    {'message': 'success', 'data': {'经济' : <int>, '法律': <int>, ...} }
