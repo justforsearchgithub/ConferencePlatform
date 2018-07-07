@@ -87,7 +87,7 @@ def edit_conference_by_id(request, id):
                 except KeyError:
                     return JsonResponse({'message': 'activity key error'})
 
-            if 'paper_template' in request.POST:
+            if 'paper_template' in request.FILES:
                 conference.paper_template = request.FILES['paper_template']
 
             conference.save()
