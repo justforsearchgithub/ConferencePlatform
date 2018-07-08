@@ -287,7 +287,7 @@ def export_submission_info(request, id):
         
 @user_has_permission('account.ConferenceRelated_Permission')
 def export_register_info(request, id):
-    try:
+    """ try:
         conf = Conference.objects.get(pk=id)
         if get_organization(request.user).pk != conf.organization.pk:
             return JsonResponse({'message': 'permission error'})
@@ -317,5 +317,35 @@ def export_register_info(request, id):
         url = export_url(id, fn)
         wb.save(path)
         return JsonResponse({"message": 'success', 'data': url})
+    except Conference.DoesNotExist:
+        return JsonResponse({'message': 'invalid conference pk'}) """
+    try:
+        conf = Conference.objects.get(pk=id)
+        if get_organization(request.user).pk != conf.organization.pk:
+            return JsonResponse({'message': 'permission error'})
+
+        reg_set = RegisterInformation.objects.filter(conference_id=id)
+        wb = Workbook()
+        ws = wb.active
+        ws.append(['姓名', '性别', '是否住宿', '提交用户', '聆听/论文编号'])
+        for reg in reg_set:
+            tail = [reg.user.user.username,]
+            if reg.submission == None:
+                tail.append('聆听')
+            else:
+                tail.append(reg.submission.pk)
+            participants = json.loads(reg.participants)
+            first = True
+            for p in participants:
+                li = [p['name'], p['gender'], '是' if p['reservation'] else '否']
+                if first:
+                    first = False
+                    li.extend(tail)
+                ws.append(li)
+        fn = 'register_info.xlsx'
+        path = export_path(id, fn)
+        url = export_url(id, fn)
+        wb.save(path)
+        return JsonResponse({'message': 'success'})
     except Conference.DoesNotExist:
         return JsonResponse({'message': 'invalid conference pk'})
