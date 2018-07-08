@@ -346,6 +346,6 @@ def export_register_info(request, id):
         path = export_path(id, fn)
         url = export_url(id, fn)
         wb.save(path)
-        return JsonResponse({'message': 'success'})
+        return JsonResponse({'message': 'success', 'data': url})
     except Conference.DoesNotExist:
         return JsonResponse({'message': 'invalid conference pk'})
